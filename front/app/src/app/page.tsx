@@ -1,6 +1,3 @@
-
 export default function Home() {
-  return (
-    <></>
-  );
+  return <>Hola máquina</>;
 }

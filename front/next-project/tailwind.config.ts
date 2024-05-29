@@ -15,6 +15,7 @@ const config: Config = {
       },
       colors: {
         wine: "#c23a2e",
+        wineMasOscuro: "#4c0033"
       },
       fontFamily: {
         'Lato': ['Lato', 'sans-serif'],

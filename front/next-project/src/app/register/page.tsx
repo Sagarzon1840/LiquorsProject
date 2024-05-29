@@ -59,7 +59,7 @@ const RegisterComponent: React.FC = (): React.ReactNode => {
                 className="w-full p-3 rounded border border-gray-400 outline-none hover:border-wine hover:ring-1 hover:ring-wine focus:border-wine focus:ring-2 focus:ring-wine transition duration-200"
                 type="text"
                 value={formData.name}
-                name="email"
+                name="name"
                 placeholder="Nombre"
                 onChange={handleChange}
               />

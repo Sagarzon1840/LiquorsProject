@@ -1,20 +1,34 @@
-import React from "react";
-import Link from "next/link";
+"use client";
+import React, { useState, useEffect } from "react";
 
 const HalfLanding = () => {
-  return (
-    <div>
-      component HalfLanding
-      <div>
-        <img
-          src="/liquors1.jpg"
-          alt="halfImage"
-          className="max-w-full max-h-auto"
-        />
+  const [scrollY, setScrollY] = useState(0);
 
-        <button className="flex items-center justify-center bg-white text-black m-2 p-2 w-20 border border-black rounded">
-          elButton <Link href="/home"></Link>
-        </button>
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  return (
+    <div className="relative w-1/2 h-screen bg-gray-200 flex flex-col items-center justify-center shadow-lg">
+      <img
+        src="/liquors1.jpg"
+        alt=""
+        className="absolute object-cover w-full h-full z-0"
+        style={{ transform: `translateY(-${scrollY * 0.5}px)` }} // Ajusta el valor multiplicador según lo desees
+      />
+      <div className="relative z-10">
+        <h1 className="text-4xl font-bold">Componente HalfLanding</h1>
+        <p className="mt-4 text-lg">
+          Este es un componente que ocupa media pantalla.
+        </p>
       </div>
     </div>
   );

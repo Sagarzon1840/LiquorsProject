@@ -1,5 +1,5 @@
-const Category = () => {
-  return <div>page Category</div>;
+const Wine = () => {
+  return <div>page Wine</div>;
 };
 
-export default Category;
+export default Wine;

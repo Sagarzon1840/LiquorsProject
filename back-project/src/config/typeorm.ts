@@ -12,13 +12,13 @@ const config = {
   port: process.env.DB_PORT as unknown as number,
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
-  entities: ['dist/modules/entities/*.entity{.js,.ts}'],
+  entities: ['dist/entities/*.entity{.js,.ts}'],
   migrations: ['dist/migrations/*{.js,.ts}'],
   logging: true,
   autoLoadEntities: true,
   synchronize: true,
-  dropSchema: false,
+  dropSchema: true,
 };
 export default registerAs('typeorm', () => config);
 
-export const connectionSoruce = new DataSource(config as DataSourceOptions);
+export const connectionSource = new DataSource(config as DataSourceOptions);

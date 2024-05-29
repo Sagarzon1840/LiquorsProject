@@ -1,14 +1,14 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { Subcription } from 'src/entities/Subcription.entity';
 import { Repository } from 'typeorm';
 import { Users } from 'src/entities/User.entity';
+import { Subscription } from 'src/entities/Subscription.entity';
 
 @Injectable()
-export class SubcriptionService {
+export class SubscriptionService {
   constructor(
-    @InjectRepository(Subcription)
-    private subcriptionRepository: Repository<Subcription>,
+    @InjectRepository(Subscription)
+    private subcriptionRepository: Repository<Subscription>,
     @InjectRepository(Users) private userRepository: Repository<Users>,
   ) {}
 

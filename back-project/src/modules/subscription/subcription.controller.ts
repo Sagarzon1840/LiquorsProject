@@ -7,12 +7,12 @@ import {
   ParseUUIDPipe,
   Put,
 } from '@nestjs/common';
-import { SubcriptionService } from './subcription.service';
+import { SubscriptionService } from './subcription.service';
 // import { SubcriptionDto } from 'src/dtos/subcription.dto';
 
 @Controller('subcription')
 export class SubcriptionController {
-  constructor(private readonly subcriptionService: SubcriptionService) {}
+  constructor(private readonly subcriptionService: SubscriptionService) {}
 
   @Get()
   getSubcription() {

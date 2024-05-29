@@ -1,5 +1,5 @@
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { User } from 'src/entities/User.entity';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+// import { Users } from 'src/entities/User.entity';
 
 @Entity({
   name: 'subcription',
@@ -12,7 +12,7 @@ export class Subcription {
   type: string;
 
   @Column()
-  status: "active" | "inactive";
+  status: 'active' | 'inactive';
 
   @Column()
   dateInit: Date;
@@ -23,6 +23,6 @@ export class Subcription {
   @Column()
   price: number;
 
-  @OneToOne()
-  userId: User;
+  // @OneToOne()
+  // userId: Users;
 }

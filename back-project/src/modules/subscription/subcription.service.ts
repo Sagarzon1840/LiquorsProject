@@ -2,13 +2,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { Subcription } from 'src/entities/Subcription.entity';
 import { Repository } from 'typeorm';
-import { User } from 'src/entities/User.entity';
+import { Users } from 'src/entities/User.entity';
 
 @Injectable()
 export class SubcriptionService {
 
   constructor(@InjectRepository(Subcription) private subcriptionRepository: Repository<Subcription>,
-    @InjectRepository(User) private userRepository: Repository<User>   
+    @InjectRepository(Users) private userRepository: Repository<Users>   
 ) {}
 
   async getSubcription() {
@@ -16,7 +16,7 @@ export class SubcriptionService {
   }
 
   async deleteSubcription(userId: string ) {
-    const user: User = this.userRepository.findOne({where:{id:userId},
+    const user: Users = this.userRepository.findOne({where:{id:userId},
     relations:{ subcription: true }})
     const {id} = user.subcription;
     user.supcription = null

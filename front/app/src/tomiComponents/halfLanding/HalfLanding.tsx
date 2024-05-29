@@ -17,12 +17,12 @@ const HalfLanding = () => {
   }, []);
 
   return (
-    <div className="relative w-1/2 h-screen bg-gray-200 flex flex-col items-center justify-center shadow-lg">
+    <div className="relative w-1/2 h-screen bg-gray-200 flex flex-col items-center justify-center shadow-lg overflow-hidden">
       <img
         src="/liquors1.jpg"
         alt=""
-        className="absolute object-cover w-full h-full z-0"
-        style={{ transform: `translateY(-${scrollY * 0.5}px)` }} // Ajusta el valor multiplicador según lo desees
+        className="absolute object-cover w-full h-[200%] z-0"
+        style={{ transform: `translateY(-${scrollY * 10.5}px)` }} // Ajusta el valor multiplicador según lo desees
       />
       <div className="relative z-10">
         <h1 className="text-4xl font-bold">Componente HalfLanding</h1>

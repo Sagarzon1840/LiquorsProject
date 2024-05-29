@@ -1,9 +1,19 @@
 export class ProductDto {
-  name;
+  name: string;
 
-  description;
+  description: string;
 
-  price;
+  price: number;
 
-  category;
+  category: string;
+
+  country: string;
+
+  brand: string;
+
+  type: string;
+
+  grade: number;
+
+  size: string;
 }

@@ -1,35 +1,39 @@
 import {
+  Body,
   Controller,
   Delete,
   Get,
+  Param,
   ParseUUIDPipe,
   Post,
   Put,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { ProductDto } from 'src/dtos/product.dto';
+import { Product } from 'src/entities/product.entity';
 
-@Controller('product')
+@Controller('products')
 export class ProductController {
   constructor(private readonly productsService: ProductService) {}
 
   @Get()
   getAllProducts() {
-    this.productsService.getAllProducts();
+    return this.productsService.getAllProducts();
   }
 
   @Post()
-  createProduct(product: ProductDto) {
-    this.productsService.createProduct(product);
+  createProduct(@Body() product: ProductDto) {
+    return this.productsService.createProduct(product);
   }
 
   @Put()
-  updateProduct(product: ProductDto) {
-    this.productsService.updateProduct(product);
+  updateProduct(@Body() product: Product) {
+    return this.productsService.updateProduct(product);
   }
 
-  @Delete()
-  deleteProduct(id: ParseUUIDPipe) {
-    this.productsService.deleteProduct(id);
+  @Delete(':id')
+  //cambiar id a string
+  deleteProduct(@Param('id') id: string) {
+    return this.productsService.deleteProduct(Number(id));
   }
 }

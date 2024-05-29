@@ -1,5 +1,5 @@
 import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { User } from 'src/entities/User.entity';
+import { Users } from 'src/entities/User.entity';
 
 @Entity({
   name: 'subcription',
@@ -24,5 +24,5 @@ export class Subcription {
   price: number;
 
   @OneToOne()
-  userId: User;
+  userId: Users;
 }

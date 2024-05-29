@@ -1,7 +1,6 @@
 import { Module, ValidationPipe } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ProductModule } from './modules/product/product.module';
 import { UserModule } from './modules/user/user.module';
 import typeOrm from './config/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -22,7 +21,7 @@ import { GlobalExceptionFilter } from './interceptors/globalExceptions.intercept
       inject: [ConfigService],
       useFactory: (config: ConfigService) => config.get('typeorm'),
     }),
-    ProductModule,
+    // ProductModule,
     UserModule,
     ReviewsModule,
     SubscriptionModule,

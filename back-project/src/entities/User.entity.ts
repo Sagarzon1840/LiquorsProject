@@ -1,27 +1,22 @@
 import {
   Column,
   Entity,
-//   OneToMany,
-//   OneToOne,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-
-export enum UserRole {
-  USER = 'user',
-  ADMIN = 'admin',
-}
-
-export enum SubscriptionType {
-  BASIC = 'basic',
-  PREMIUM = 'premium',
-  SELLER = 'seller',
-}
+import { Subscription } from './Subscription.entity';
+import { Reviews } from './review.entity';
+import { Product } from './product.entity';
+import { UserRole } from 'src/enums/roles.enum';
 
 @Entity({
   name: 'users',
 })
 export class Users {
-
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -50,19 +45,27 @@ export class Users {
   @Column({
     type: 'enum',
     enum: UserRole,
-    default: UserRole.USER,
+    default: UserRole.User,
     nullable: false,
   })
   role: UserRole;
 
-  //faltan traer la otras entidades
+  @JoinColumn({ name: 'subscriptionId' })
+  @OneToOne(() => Subscription, (subscription) => subscription.userId)
+  subscriptionId: Subscription;
 
-//   @OneToOne(() => Subscription, (subscription) => subscription.user)
-//   subscription: Subscription;
+  @JoinColumn({ name: 'review_id' })
+  @OneToMany(() => Reviews, (review) => review.userId)
+  reviews: Reviews[];
 
-//   @OneToMany(() => Review, (review) => review.user)
-//   review: Review[];
-
-//   @OneToOne(() => Favorite, (Favorite) => Favorite.user)
-//   favorite: Favorite[];
+  @ManyToMany(() => Product)
+  @JoinTable({
+    name: 'favorites_products',
+    joinColumn: { name: 'product_id', referencedColumnName: 'id' },
+    inverseJoinColumn: {
+      name: 'favorite_id',
+      referencedColumnName: 'id',
+    },
+  })
+  favorite: Product[];
 }

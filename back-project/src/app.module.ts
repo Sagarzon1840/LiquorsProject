@@ -10,9 +10,11 @@ import { APP_FILTER, APP_PIPE } from '@nestjs/core';
 import { SubscriptionModule } from './modules/subscription/subcription.module';
 import { JwtModule } from '@nestjs/jwt';
 import { GlobalExceptionFilter } from './interceptors/globalExceptions.interceptor';
+import { Product } from './entities/Product.entity';
 
 @Module({
   imports: [
+    TypeOrmModule.forFeature([Product]),
     ConfigModule.forRoot({
       isGlobal: true,
       load: [typeOrm],

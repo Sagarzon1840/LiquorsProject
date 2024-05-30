@@ -29,8 +29,8 @@ export class SubcriptionController {
     return this.subcriptionService.createSubcription(type, price);
   }
 
-  // @Delete()
-  // deleteSubcription(@Param("id", ParseUUIDPipe) id:string) {
-  //   return this.subcriptionService.deleteSubcription(id);
-  // }
+  @Delete()
+  deleteSubcription(@Param("id", ParseUUIDPipe) id:string) {
+    return this.subcriptionService.deleteSubcription(id);
+  }
 }

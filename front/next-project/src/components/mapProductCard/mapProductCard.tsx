@@ -22,9 +22,11 @@ export const MapProductCard: React.FC = (): React.ReactNode => {
   return (
       <>
           {/*Mapea el arreglo de productos y renderiza un Card para cada uno*/}
-          {arrayWines.map((product) => (
+          <div className="flex space-x-4">
+            {arrayWines.map((product:any) => (
               <ProductCard key={product.id} product={product} />
-          ))}
+            ))}
+          </div>
       </>
   );
 };

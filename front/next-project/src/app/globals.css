@@ -18,6 +18,47 @@
   }
 }
 
+/*estilos globales para esconder la scrollbar y que solo aparezca la flecha para scrolear*/
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/*______________*/
+
+/**/
+@keyframes slideInFromLeft {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInFromRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.slide-left {
+  animation: slideInFromLeft 0.3s ease-out forwards;
+}
+
+.slide-right {
+  animation: slideInFromRight 0.3s ease-out forwards;
+}
+/**/
+
 body {
   @apply bg-grey5 mx-small
   lg:mx-large

@@ -1,16 +1,14 @@
 'use client'
 import React from "react"
-import ProductCard from "../productCard/productCard"
+import MapProductCard from "../mapProductCard/mapProductCard"
 
 const BannerProducts = () => {
     return (
-        <>
-            <div className="flex justify-center flex-col bg-white">
+        <>  
+        {/* RENDERIZA MapProductCard, el cual mapea una card por cada producto.*/}
+            <div className="flex justify-center flex-col pt-7 bg-white">
                 <div className="flex justify-center flex-row">
-                    <h1></h1>
-                    <ProductCard/>
-                    <ProductCard/>
-                    <ProductCard/>
+                    <MapProductCard/>
                 </div>
                 <section className="flex justify-center">
                     <span > mas categorias de vinos</span>
@@ -19,7 +17,6 @@ const BannerProducts = () => {
                     <button></button>
                 </section>
             </div>
-            
         </>
     )
 }

@@ -4,7 +4,9 @@ import BannerProducts from "@/components/bannerProductHome/banner";
 const Home: React.FC = ():React.ReactNode => {
   return (
     <>
-     <BannerProducts/>
+      <BannerProducts/>
+      <hr></hr>
+      <BannerProducts/>
     </>
   )
 };

@@ -19,8 +19,7 @@
 }
 
 body {
-  @apply bg-grey5 mx-small
-  lg:mx-large
+  @apply bg-grey5
 }
 
 @layer utilities {
@@ -36,5 +35,10 @@ body {
 
 .buttonSecondary {
   @apply border-beige text-beige font-Lato font-black rounded px-6 py-2 flex gap-2
+  hover:bg-grey4
+}
+
+.buttonTiny {
+  @apply text-beige font-Lato rounded px-3 py-1 flex justify-center gap-2
   hover:bg-grey4
 }

@@ -4,11 +4,11 @@ const SquareWineLanding = () => {
   return (
     <div className="relative h-[25vw] w-[25vw]">
       <Link href="category/wine">
-        <div className="absolute inset-0">
+        <div className="absolute inset-0 overflow-hidden">
           <img
             src="/squareWine.jpg"
             alt="categoryImage"
-            className="object-cover w-full h-full"
+            className="object-cover w-full h-[110%]"
           />
         </div>
 

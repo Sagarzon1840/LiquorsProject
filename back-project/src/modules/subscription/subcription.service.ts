@@ -15,14 +15,14 @@ export class SubcriptionService {
    return await this.subcriptionRepository.find()
   }
 
-  async deleteSubcription(userId: string ) {
-    const user: Users = this.userRepository.findOne({where:{id:userId},
-    relations:{ subcription: true }})
-    const {id} = user.subcription;
-    user.supcription = null
-    await this.userRepository.update(user.id, user)
-    await this.subcriptionRepository.delete(id);
-  }
+  // async deleteSubcription(userId: string ) {
+  //   const user: Users = this.userRepository.findOne({where:{id:userId},
+  //   relations:{ subcription: true }})
+  //   const {id} = user.subcription;
+  //   user.supcription = null
+  //   await this.userRepository.update(user.id, user)
+  //   await this.subcriptionRepository.delete(id);
+  // }
 
   async createSubcription(type: string, price: number){
     const dateInit = new Date();

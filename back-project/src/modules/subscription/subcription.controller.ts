@@ -30,9 +30,9 @@ import { SubcriptionService } from './subcription.service';
     }
   
   
-    @Delete()
-    deleteSubcription(@Param("id", ParseUUIDPipe) id:string) {
-      return this.subcriptionService.deleteSubcription(id);
-    }
+    // @Delete()
+    // deleteSubcription(@Param("id", ParseUUIDPipe) id:string) {
+    //   return this.subcriptionService.deleteSubcription(id);
+    // }
   }
   

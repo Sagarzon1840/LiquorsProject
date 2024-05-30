@@ -23,6 +23,6 @@ export class Subcription {
   @Column()
   price: number;
 
-  @OneToOne()
-  userId: Users;
+  // @OneToOne()
+  // userId: Users;
 }

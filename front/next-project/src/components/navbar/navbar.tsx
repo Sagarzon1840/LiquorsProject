@@ -18,7 +18,7 @@ export const NavBar: React.FC = () => {
 
     return (
         <div>
-            <nav className="px-8 py-2 my-3">
+            <nav className="pt-2">
                 <div className="flex justify-between items-center p-3">
                     <div>
                         <h1>logo</h1>

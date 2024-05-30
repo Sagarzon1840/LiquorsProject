@@ -23,7 +23,7 @@ const config: Config = {
         grey2: "#C0BEBF",
         grey3: "#908F8F",
         grey4: "#605F60",
-        grey5: "#484748"
+        grey5: "#484748",
       },
       fontFamily: {
         'Lato': ['Lato', 'sans-serif'],

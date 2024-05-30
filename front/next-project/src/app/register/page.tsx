@@ -10,7 +10,6 @@ import { Register} from "@/interfaces/interfaz";
 import validate from "@/utils/validate";
 
 
-
 const RegisterComponent: React.FC = (): React.ReactNode => {
   //ESTADOS
   const [formData, setFormData] = useState<Register>({
@@ -52,49 +51,58 @@ const RegisterComponent: React.FC = (): React.ReactNode => {
         </div>
 
         <div className="rounded border border-wine">
-          <form className="justify-end p-12" onSubmit={handleSubmit}>
+          <form className="justify-end text-sm p-12" onSubmit={handleSubmit}>
 
             <div className="pb-2">
               <input
-                className="w-full p-3 rounded border border-gray-400 outline-none hover:border-wine hover:ring-1 hover:ring-wine focus:border-wine focus:ring-2 focus:ring-wine transition duration-200"
+                className="w-full p-3 rounded border border-gray-400 outline-none hover:border-wine hover:ring-1 hover:ring-wine focus:border-wine  focus:ring-wine transition duration-200"
                 type="text"
                 value={formData.name}
                 name="name"
                 placeholder="Nombre"
                 onChange={handleChange}
               />
+              {errors.name && <p>{errors.name}</p>}
+
             </div>
 
             <div className="pb-2">
               <input
-                className=" p-3 rounded border w-full border-gray-400 outline-none hover:border-wine hover:ring-1 hover:ring-wine focus:border-wine focus:ring-2 focus:ring-wine transition duration-200"
+                className={`p-3 rounded border w-full ${errors.email ? 'border-red-700' : 'border-gray-400'} outline-none hover:border-wine hover:ring-1 hover:ring-wine focus:border-wine  focus:ring-wine transition duration-200`}
                 type="text"
                 value={formData.email}
                 name="email"
                 placeholder="Email"
                 onChange={handleChange}
               />
+              {errors.email && <p>{errors.email}</p>}
+
             </div>
 
-            <div className="pb-2">
+            <div className="pb-2  max-w-xs">
               <input
-                className=" p-3 rounded border border-gray-400 w-full outline-none hover:border-wine hover:ring-1 hover:ring-wine focus:border-wine focus:ring-2 focus:ring-wine transition duration-200"
+                className=" p-3 rounded border border-gray-400 w-full outline-none hover:border-wine hover:ring-1 hover:ring-wine focus:border-wine  focus:ring-wine transition duration-200"
                 type="password"
                 value={formData.password}
                 name="password"
                 placeholder="*******"
                 onChange={handleChange}
               />
+              {errors.password && <p className="text-gray-500">{errors.password}</p>}
             </div>
 
             <div className="text-center">
               <button
-                className={`inline-block mt-7 cursor-pointer w-full max-w-xs p-4 rounded-lg ${ !(formData.email.trim() && formData.password.trim()) ? 'opacity-60 pointer-events-none' : ''} bg-wine text-white text-lg mt-0 hover:brightness-110 transition duration-200`}
+                className={`inline-block mt-7 cursor-pointer w-full max-w-xs p-3 rounded-lg ${
+                  !(formData.email.trim() && formData.password.trim()) || Object.values(errors).some((error) => !!error)
+                    ? 'opacity-60 pointer-events-none'
+                    : ''
+                } bg-wine text-white text-lg mt-0 hover:brightness-110 transition duration-200`}
                 type="submit"
                 disabled={
-                    isLoading ||
-                    Object.values(formData).some((value) => !value.trim()) ||
-                    Object.values(errors).some((error) => !!error)
+                  isLoading ||
+                  Object.values(formData).some((value) => !value.trim()) ||
+                  Object.values(errors).some((error) => !!error)
                 }
               >
                 {isLoading ? 'Enviando...' : 'Registrarse'}

@@ -63,7 +63,7 @@ export class Users {
     name: 'favorites_products',
     joinColumn: { name: 'product_id', referencedColumnName: 'id' },
     inverseJoinColumn: {
-      name: 'favorite_id',
+      name: 'user_id',
       referencedColumnName: 'id',
     },
   })

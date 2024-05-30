@@ -12,9 +12,8 @@ export class ReviewsService {
   async createReview() {}
 
   async getReviews(page: number, limit: number) {
-    let reviews = await this.reviewRepository.find({
-      //   relations: { category: true },
-    });
+    //Buscar producto
+    let reviews = await this.reviewRepository.find();
     const startIndex = (page - 1) * limit;
     const endIndex = startIndex + limit;
 

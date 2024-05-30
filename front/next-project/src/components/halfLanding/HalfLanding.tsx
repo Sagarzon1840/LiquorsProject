@@ -21,8 +21,8 @@ const HalfLanding = () => {
       <img
         src="/liquors1.jpg"
         alt=""
-        className="absolute object-cover w-full h-[200%] z-0"
-        style={{ transform: `translateY(-${scrollY * 10.5}px)` }} // Ajusta el valor multiplicador según lo desees
+        className="absolute object-cover w-full h-[300%] z-0"
+        style={{ transform: `translateY(-${scrollY * 0.3}px)` }} // Ajusta el valor multiplicador según lo desees
       />
       <div className="relative z-10">
         <h1 className="text-4xl font-bold">Componente HalfLanding</h1>

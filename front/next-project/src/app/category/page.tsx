@@ -1,5 +1,5 @@
-const Wine = () => {
-  return <div>page Wine</div>;
+const Reviews = () => {
+  return <div>page all</div>;
 };
 
-export default Wine;
+export default Reviews;

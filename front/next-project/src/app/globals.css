@@ -19,17 +19,22 @@
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  @apply bg-grey5 mx-small
+  lg:mx-large
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+.buttonPrimary {
+  @apply border-beige text-beige font-Lato font-black border-2 rounded px-6 py-2 flex gap-2
+  hover:bg-grey4
+}
+
+.buttonSecondary {
+  @apply border-beige text-beige font-Lato font-black rounded px-6 py-2 flex gap-2
+  hover:bg-grey4
 }

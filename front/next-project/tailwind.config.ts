@@ -15,6 +15,9 @@ const config: Config = {
       },
       colors: {
         wine: "#c23a2e",
+        wineMasOscuro: "#4c0033",
+        gin: "#64bad6",
+        licor: "#d1cc39",
         beige: "#EEE4B1",
         grey1: "#D8D6D7",
         grey2: "#C0BEBF",

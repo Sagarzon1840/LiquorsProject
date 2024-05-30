@@ -2,10 +2,12 @@ import {
   Column,
   Entity,
   JoinColumn,
+  ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Reviews } from './review.entity';
+import { Users } from './User.entity';
 
 
 @Entity({
@@ -40,7 +42,13 @@ export class Product {
   @Column()
   size: string;
 
+  @Column()
+  userId: string;
+
   @JoinColumn({ name: 'review_id' })
   @OneToMany(() => Reviews, (reviews) => reviews.productId)
   reviewId: Reviews[];
+
+  @ManyToMany(()=> Users, (user)=> user.favorites)
+  users: Users[];
 }

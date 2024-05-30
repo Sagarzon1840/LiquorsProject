@@ -11,6 +11,7 @@ import { SubscriptionModule } from './modules/subscription/subcription.module';
 import { JwtModule } from '@nestjs/jwt';
 import { GlobalExceptionFilter } from './interceptors/globalExceptions.interceptor';
 import { Product } from './entities/Product.entity';
+import { ProductModule } from './modules/product/product.module';
 
 @Module({
   imports: [
@@ -23,7 +24,7 @@ import { Product } from './entities/Product.entity';
       inject: [ConfigService],
       useFactory: (config: ConfigService) => config.get('typeorm'),
     }),
-    // ProductModule,
+    ProductModule,
     UserModule,
     ReviewsModule,
     SubscriptionModule,

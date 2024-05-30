@@ -1,6 +1,5 @@
 [
   {
-    "id": 1,
     "name": "Whisky Johnnie Walker Black Label",
     "description": "Whisky escocés de mezcla de 12 años, suave y con sabor a vainilla y frutas.",
     "category": "Whisky",
@@ -13,7 +12,6 @@
     }
   },
   {
-    "id": 2,
     "name": "Ron Bacardí Carta Blanca",
     "description": "Ron blanco clásico, ideal para cócteles y mojitos.",
     "category": "Ron",
@@ -26,7 +24,6 @@
     }
   },
   {
-    "id": 3,
     "name": "Tequila Don Julio Blanco",
     "description": "Tequila 100% agave, fresco y limpio con notas cítricas.",
     "category": "Tequila",
@@ -39,7 +36,6 @@
     }
   },
   {
-    "id": 4,
     "name": "Vodka Grey Goose",
     "description": "Vodka francés de alta calidad, destilado del mejor trigo.",
     "category": "Vodka",
@@ -52,7 +48,6 @@
     }
   },
   {
-    "id": 5,
     "name": "Gin Bombay Sapphire",
     "description": "Gin premium con un equilibrio perfecto de 10 ingredientes botánicos.",
     "category": "Gin",

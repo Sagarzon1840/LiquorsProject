@@ -13,7 +13,7 @@ const SquareRumLanding = () => {
         </div>
 
         <div className="absolute inset-0 flex items-center justify-center transition-all duration-700 bg-amber-950 opacity-0 hover:opacity-80">
-          <h2 className="text-center">Rum</h2>
+          <h2 className="text-center">RUM</h2>
         </div>
       </Link>
     </div>

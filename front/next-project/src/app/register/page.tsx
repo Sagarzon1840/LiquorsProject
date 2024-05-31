@@ -3,11 +3,15 @@ import React from "react";
 //HOOKS
 import { useState} from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 //INTERFACES DATOS
 import { Register} from "@/interfaces/interfaz";
 //FUNCION PARA VALIDAR FORM.
 import validate from "@/utils/validate";
+//FUNCION REGISTRO FIREBASE
+import registerUserFirebase from "@/utils/registerFirebase";
+//FIREBASE CONFIGS
+import { initializeApp } from "firebase/app";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 
 const RegisterComponent: React.FC = (): React.ReactNode => {
@@ -18,11 +22,25 @@ const RegisterComponent: React.FC = (): React.ReactNode => {
     password: '',
   });
 
+  //ojo con modularizar esta config, me dio problemas.
+  const firebaseConfig = {
+    apiKey: "AIzaSyDqE_jxE5V0OgwbwLCLON_EjnroiQZyIgo",
+    authDomain: "liquors-12b23.firebaseapp.com",
+    projectId: "liquors-12b23",
+    storageBucket: "liquors-12b23.appspot.com",
+    messagingSenderId: "713998563348",
+    appId: "1:713998563348:web:65bb9301a4c0ea78b00f01"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [registerToken, setToken] = useState('')
 
   //EVENT HANDLER LLENADO DE INPUTS
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,23 +53,20 @@ const RegisterComponent: React.FC = (): React.ReactNode => {
   };
 
   //EVENT HANDLER ENVIO FORMULARIO 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
-    //registerUser(formData, setIsSuccess, setErrors, router, errors, setIsLoading); --> FUNCION ASYNC API: Hace POST API, se encarga de setear estados, 
-    setTimeout(() => {
-      router.push("/");
-    }, 3000)
-  };
+    registerUserFirebase(formData, auth, createUserWithEmailAndPassword, setIsSuccess, setErrors, router, errors, setIsLoading, setToken )
+    }
 
   return (
-    <div className="flex justify-center items-center  text-center pt-32 pb-32 bg-white">
+    <div className="flex justify-center items-center  text-center pt-32 pb-32 bg-grey5">
         <div className="justify-start justmt-0 mr-32">
           <h1 className="pb-8 text-gray-600 text-6xl font-normal">Unite a </h1><p className="text-wine pb-8 font-Lato text-6xl">Liquors</p>
         </div>
 
         <div className="rounded border border-wine">
-          <form className="justify-end text-sm p-12" onSubmit={handleSubmit}>
+          <form className="justify-end  text-sm p-12" onSubmit={handleSubmit}>
 
             <div className="pb-2">
               <input

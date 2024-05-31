@@ -10,7 +10,7 @@ import {
 } from 'typeorm';
 import { Subscription } from './Subscription.entity';
 import { Reviews } from './review.entity';
-import { Product } from './product.entity';
+import { Product } from './Product.entity';
 import { UserRole } from 'src/enums/roles.enum';
 
 @Entity({
@@ -67,5 +67,5 @@ export class Users {
       referencedColumnName: 'id',
     },
   })
-  favorite: Product[];
+  favorites: Product[];
 }

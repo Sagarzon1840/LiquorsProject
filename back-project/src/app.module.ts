@@ -12,10 +12,11 @@ import { JwtModule } from '@nestjs/jwt';
 import { GlobalExceptionFilter } from './interceptors/globalExceptions.interceptor';
 import { Product } from './entities/Product.entity';
 import { ProductModule } from './modules/product/product.module';
+import { Users } from './entities/User.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Product]),
+    TypeOrmModule.forFeature([Product, Users]),
     ConfigModule.forRoot({
       isGlobal: true,
       load: [typeOrm],

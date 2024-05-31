@@ -22,6 +22,3 @@ const Product: React.FC = ():React.ReactNode => {
 
   </div>
   )
-};
-
-export default Product;

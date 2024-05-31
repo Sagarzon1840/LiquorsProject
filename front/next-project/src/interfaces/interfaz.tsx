@@ -18,3 +18,10 @@ export interface IProduct {
     category: string;
     image: string;
 }
+
+export interface IReview {
+    id: number,
+    rate: number,
+    comment: string,
+    user: string,
+}

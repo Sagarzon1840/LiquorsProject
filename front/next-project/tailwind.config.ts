@@ -30,7 +30,7 @@ const config: Config = {
       fontFamily: {
         'Lato': ['Lato', 'sans-serif'],
         'Marcellus': ['Marcellus SC', 'sans-serif'],
-        'Alegreya': ['Alegreya Sans SC', 'sans-serif'],
+        'Alegreya': ['Alegreya Sans SC', 'serif'],
         'Lora': ['Lora', 'sans-serif']
       },
       spacing: {

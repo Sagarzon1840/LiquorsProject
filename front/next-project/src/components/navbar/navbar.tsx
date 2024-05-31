@@ -19,10 +19,12 @@ export const NavBar: React.FC = () => {
     return (
         <div>
             <nav className="pt-2">
-                <div className="flex justify-between items-center p-3">
+                <div className="flex justify-between items-center p-3 mx-large">
                     <div>
-                        <h1>logo</h1>
-                    </div>
+                        <a href="/">
+                            <img className="w-20" src="/logo.png" alt="logo" />
+                        </a>
+                    </div>  
                     <div>
                         <ul className="flex space-x-6">
                             <li>

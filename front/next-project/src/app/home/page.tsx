@@ -1,5 +1,5 @@
 import React from "react";
-import BannerProducts from "@/components/bannerProductHome/banner";
+
 import SquareWineLanding from "@/components/squareLanding/SquareWineLanding";
 import SquareWhiskeyLanding from "@/components/squareLanding/SquareWhiskeyLanding";
 import HalfLanding from "@/components/halfLanding/HalfLanding";
@@ -9,6 +9,7 @@ import MiddleLanding2 from "@/components/middleLanding/MiddleLanding2";
 import MiddleLanding from "@/components/middleLanding/MiddleLanding";
 import MiddleSlide from "@/components/middleLanding/MiddleSlide";
 import SuscribeCards from "@/components/suscribeCards/SuscribeCards";
+
 
 const Home: React.FC = (): React.ReactNode => {
   return (

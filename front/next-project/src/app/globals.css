@@ -18,9 +18,49 @@
   }
 }
 
+/*estilos globales para esconder la scrollbar y que solo aparezca la flecha para scrolear*/
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/*______________*/
+
+/**/
+@keyframes slideInFromLeft {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInFromRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.slide-left {
+  animation: slideInFromLeft 0.3s ease-out forwards;
+}
+
+.slide-right {
+  animation: slideInFromRight 0.3s ease-out forwards;
+}
+/**/
+
 body {
-  @apply bg-grey5 mx-small
-  lg:mx-large
+  @apply bg-grey5
 }
 
 @layer utilities {
@@ -29,12 +69,43 @@ body {
   }
 }
 
+.header1 {
+  @apply text-beige font-Marcellus text-2xl
+} 
+.header2 {
+  @apply text-beige font-Marcellus text-xl
+} 
+.header3 {
+  @apply text-beige font-Marcellus text-lg
+} 
+.subtitle1 {
+  @apply text-beige font-Alegreya text-lg font-thin
+}
+
+.subtitle2 {
+  @apply text-beige font-Alegreya text-lg
+}
+
+.body1 {
+  @apply text-beige font-Lato text-base
+}
+
+
 .buttonPrimary {
-  @apply border-beige text-beige font-Lato font-black border-2 rounded px-6 py-2 flex gap-2
+  @apply border-beige text-beige font-Lato font-black border-2 rounded px-6 py-2 flex gap-2  
   hover:bg-grey4
 }
 
 .buttonSecondary {
   @apply border-beige text-beige font-Lato font-black rounded px-6 py-2 flex gap-2
   hover:bg-grey4
+}
+
+.buttonTiny {
+  @apply text-beige font-Lato rounded px-3 py-1 flex justify-center gap-2
+  hover:bg-grey4
+}
+
+.imageProductDetail {
+  @apply h-80 rounded
 }

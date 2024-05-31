@@ -10,9 +10,13 @@ import { APP_FILTER, APP_PIPE } from '@nestjs/core';
 import { SubscriptionModule } from './modules/subscription/subcription.module';
 import { JwtModule } from '@nestjs/jwt';
 import { GlobalExceptionFilter } from './interceptors/globalExceptions.interceptor';
+import { Product } from './entities/Product.entity';
+import { ProductModule } from './modules/product/product.module';
+import { Users } from './entities/User.entity';
 
 @Module({
   imports: [
+    TypeOrmModule.forFeature([Product, Users]),
     ConfigModule.forRoot({
       isGlobal: true,
       load: [typeOrm],
@@ -21,7 +25,7 @@ import { GlobalExceptionFilter } from './interceptors/globalExceptions.intercept
       inject: [ConfigService],
       useFactory: (config: ConfigService) => config.get('typeorm'),
     }),
-    // ProductModule,
+    ProductModule,
     UserModule,
     ReviewsModule,
     SubscriptionModule,

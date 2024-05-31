@@ -5,6 +5,7 @@ const config: Config = {
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    './src/app/globals.css',  
   ],
   theme: {
     extend: {
@@ -24,11 +25,12 @@ const config: Config = {
         grey3: "#908F8F",
         grey4: "#605F60",
         grey5: "#484748",
+        greyMLfilter: "#333333"
       },
       fontFamily: {
         'Lato': ['Lato', 'sans-serif'],
         'Marcellus': ['Marcellus SC', 'sans-serif'],
-        'Alegreya': ['Alegreya Sans SC', 'sans-serif'],
+        'Alegreya': ['Alegreya Sans SC', 'serif'],
         'Lora': ['Lora', 'sans-serif']
       },
       spacing: {

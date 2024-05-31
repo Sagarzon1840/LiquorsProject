@@ -1,0 +1,57 @@
+[
+  {
+    "name": "Whisky Johnnie Walker Black Label",
+    "description": "Whisky escocés de mezcla de 12 años, suave y con sabor a vainilla y frutas.",
+    "category": "Whisky",
+    "imgUrl": "https://example.com/default_whisky_image.jpg",
+    "id": "9b2e51b6-4de7-45a1-94f8-66d9f49c84d8",
+    "brand": "Johnnie Walker",
+    "country": "Escocia",
+    "size": "750ml",
+    "abv": 40
+  },
+  {
+    "name": "Ron Bacardí Carta Blanca",
+    "description": "Ron blanco clásico, ideal para cócteles y mojitos.",
+    "category": "Ron",
+    "imgUrl": "https://example.com/default_rum_image.jpg",
+    "id": "3c68ef7b-5e34-4c8b-bf99-1e2d2d254b2b",
+    "brand": "Bacardí",
+    "country": "Puerto Rico",
+    "size": "1L",
+    "abv": 37.5
+  },
+  {
+    "name": "Tequila Don Julio Blanco",
+    "description": "Tequila 100% agave, fresco y limpio con notas cítricas.",
+    "category": "Tequila",
+    "imgUrl": "https://example.com/default_tequila_image.jpg",
+    "id": "77c2af2d-7b4f-489b-930f-384c9e7f4b5b",
+    "brand": "Don Julio",
+    "country": "México",
+    "size": "750ml",
+    "abv": 38
+  },
+  {
+    "name": "Vodka Grey Goose",
+    "description": "Vodka francés de alta calidad, destilado del mejor trigo.",
+    "category": "Vodka",
+    "imgUrl": "https://example.com/default_vodka_image.jpg",
+    "id": "b62d707a-63df-4e9d-b5f4-c5b08f7e7d41",
+    "brand": "Grey Goose",
+    "country": "Francia",
+    "size": "750ml",
+    "abv": 40
+  },
+  {
+    "name": "Gin Bombay Sapphire",
+    "description": "Gin premium con un equilibrio perfecto de 10 ingredientes botánicos.",
+    "category": "Gin",
+    "imgUrl": "https://example.com/default_gin_image.jpg",
+    "id": "ea6715f6-b6a8-4bda-8454-68e8050a3b92",
+    "brand": "Bombay Sapphire",
+    "country": "Inglaterra",
+    "size": "750ml",
+    "abv": 40
+  }
+]

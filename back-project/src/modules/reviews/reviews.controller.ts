@@ -16,16 +16,43 @@ import { CreateReviewDto } from 'src/dtos/review.dto';
 export class ReviewsController {
   constructor(private readonly reviewsService: ReviewsService) {}
 
-  @Get()
-  getReviews(@Query('page') page: string, @Query('limit') limit: string) {
+  @Get('product')
+  getProductReviews(
+    @Query('page') page: string,
+    @Query('limit') limit: string,
+    @Param('id', ParseUUIDPipe) productId: string,
+  ) {
     const pageNumber = page ? Number(page) : 1;
     const limitNumber = limit ? Number(limit) : 5;
-    return this.reviewsService.getReviews(pageNumber, limitNumber);
+    return this.reviewsService.getProductReviews(
+      productId,
+      pageNumber,
+      limitNumber,
+    );
+  }
+
+  @Get('user')
+  getUserReviews(
+    @Query('page') page: string,
+    @Query('limit') limit: string,
+    @Param('id', ParseUUIDPipe) userId: string,
+  ) {
+    const pageNumber = page ? Number(page) : 1;
+    const limitNumber = limit ? Number(limit) : 5;
+    return this.reviewsService.getProductReviews(
+      userId,
+      pageNumber,
+      limitNumber,
+    );
   }
 
   @Post()
-  createReview() {
-    return this.reviewsService.createReview();
+  createReview(
+    @Body('id', ParseUUIDPipe) userId: string,
+    productId: string,
+    review: CreateReviewDto,
+  ) {
+    return this.reviewsService.createReview(userId, productId, review);
   }
 
   @Put(':id')

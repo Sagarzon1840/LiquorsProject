@@ -6,13 +6,13 @@ import ProductFilterCard from "@/components/filtroProducts/filtroProducts"
 
 const Reviews = () => {
 
+    //aqui guardaria los valores de los filtros
     const [filters, setFilters] = useState<any>({});
 
   const handleFilterChange = (newFilters: any) => {
     setFilters(newFilters);
     //Aquí se maneja la lógica de filtrado de productos usando los filtros actualizados.
   };
-
 
   return (
     <>

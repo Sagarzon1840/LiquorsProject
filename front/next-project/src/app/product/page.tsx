@@ -1,24 +1,28 @@
-import BannerProducts from "@/components/bannerProductHome/banner";
+"use client";
+import ProductFilterCard from "@/components/filtroProducts/filtroProducts";
+import MapProductCard from "@/components/mapProductCard/mapProductCard";
+import { SearchBar } from "@/components/searchBar/searchBar";
+import { useState } from "react";
 
-const Product: React.FC = ():React.ReactNode => {
+const Product: React.FC = (): React.ReactNode => {
+  //aqui guardaria los valores de los filtros
+  const [filters, setFilters] = useState<any>({});
+
+  const handleFilterChange = (newFilters: any) => {
+    setFilters(newFilters);
+    //Aquí se maneja la lógica de filtrado de productos usando los filtros actualizados.
+  };
   return (
-    <div className="flex flex-col scroll-smooth overflow-auto pt-10 items-center">
-
-      {/*SECCION UNO DE TARJETAS */}
-      <h1 className="text-center text-2xl text-white font-bold mb-4">
-        Explora nuestras categorías de vinos
-      </h1>
-      <div className="flex space-x-4">
-        <BannerProducts />
+    <div>
+      <SearchBar></SearchBar>
+      <div className="flex pt-10  items-start">
+        <ProductFilterCard onFilterChange={handleFilterChange} />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <MapProductCard />
+        </div>
       </div>
+    </div>
+  );
+};
 
-      {/*SECCION DOS DE TARJETAS */}
-      <h1 className="text-center text-2xl mt-6 text-white font-bold mb-4">
-        Explora nuestras categorías de vinos
-      </h1>
-      <div className="flex space-x-4">
-        <BannerProducts />
-      </div>
-
-  </div>
-  )
+export default Product;

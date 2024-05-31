@@ -7,6 +7,10 @@ import Link from "next/link";
 //INTERFACES
 import { Login } from "@/interfaces/interfaz";
 
+import loginUserFireBase from "@/utils/loginFireBase";
+
+import { initializeApp } from "firebase/app";
+import { getAuth, signInWithEmailAndPassword} from "firebase/auth";
 
 
 const LoginComponent: React.FC = (): React.ReactNode => {
@@ -16,8 +20,21 @@ const LoginComponent: React.FC = (): React.ReactNode => {
     password: '',
   });
 
-  const router = useRouter();
+  const firebaseConfig = {
+    apiKey: "AIzaSyDqE_jxE5V0OgwbwLCLON_EjnroiQZyIgo",
+    authDomain: "liquors-12b23.firebaseapp.com",
+    projectId: "liquors-12b23",
+    storageBucket: "liquors-12b23.appspot.com",
+    messagingSenderId: "713998563348",
+    appId: "1:713998563348:web:65bb9301a4c0ea78b00f01"
+  };
 
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  const router = useRouter();
+  
+  const [loginToken, setToken] = useState(null) //--> subiria ese token al localstorage para usarlo.
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [errorState, setError] = useState(null);
@@ -32,20 +49,17 @@ const LoginComponent: React.FC = (): React.ReactNode => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
-    //loginUser(formData, setToken, setError, setIsSuccess, setIsLoading); --> FUNCION ASYNC API: Le paso 
-    setTimeout(() => {
-      router.push("/");
-    }, 3000)
+    loginUserFireBase(formData, auth, signInWithEmailAndPassword, setIsSuccess, setError, router, setIsLoading, setToken); 
   };
 
   return (
-    <div className="flex justify-center items-center  text-center pt-32 pb-32 bg-white">
+    <div className="flex justify-center items-center  text-center pt-32 pb-32 bg-grey5">
         <div className="justify-start justmt-0 mr-32">
           <h1 className="pb-8 text-gray-600 text-6xl font-normal">Unite a </h1><p className="text-wine pb-8 font-Lato text-6xl">Liquors</p>
         </div>
 
         <div className="rounded border border-wine">
-          <form className="justify-end p-12" onSubmit={handleSubmit}>
+          <form className="justify-end bg-white p-12" onSubmit={handleSubmit}>
             <div className="pb-2">
               <input
                 className="w-full p-3 rounded border border-gray-400 outline-none hover:border-wine hover:ring-1 hover:ring-wine focus:border-wine focus:ring-2 focus:ring-wine transition duration-200"

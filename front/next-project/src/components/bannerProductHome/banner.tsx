@@ -33,7 +33,7 @@ const BannerProducts = () => {
     };
 
     return (
-      <div className="relative flex justify-center flex-col pt-7 pb-4 bg-grey5 w-full max-w-screen-lg mx-auto">
+      <div className="relative flex justify-center flex-col pt-7 pb-4 bg-grey5 w-3/4 max-w-screen-lg mx-auto">
         <div className="flex justify-center items-center relative w-full">
 
           {/* FLECHA IZQUIERDA */}
@@ -53,8 +53,9 @@ const BannerProducts = () => {
             <ArrowForwardIosIcon className="h-6 w-6 text-gray-700" />
           </button>
         </div>
-        <section className="flex justify-center mt-4">
+        <section className="flex justify-start text-white mt-4">
           <span>Más categorías de vinos</span>
+          <button></button>
         </section>
       </div>
     );

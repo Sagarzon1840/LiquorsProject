@@ -42,6 +42,24 @@ export class ReviewsService {
 
     let reviews = await this.reviewRepository.find({
       where: { id: product.id },
+      relations: { userId: true },
+    });
+    const startIndex = (page - 1) * limit;
+    const endIndex = startIndex + limit;
+
+    reviews = reviews.slice(startIndex, endIndex);
+
+    return reviews;
+  }
+
+  async getUserReviews(userId: string, page: number, limit: number) {
+    //Buscar User
+    const user = await this.usersRepository.findOneBy({ id: userId });
+    if (!user) throw new NotFoundException(`Product with id ${userId}`);
+
+    let reviews = await this.reviewRepository.find({
+      where: { id: user.id },
+      relations: { productId: true },
     });
     const startIndex = (page - 1) * limit;
     const endIndex = startIndex + limit;

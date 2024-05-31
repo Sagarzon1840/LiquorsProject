@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Users } from './User.entity';
-import { Product } from './product.entity';
+import { Product } from './Product.entity';
 
 @Entity({
   name: 'reviews',

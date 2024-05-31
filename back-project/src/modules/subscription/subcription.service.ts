@@ -3,6 +3,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { Users } from 'src/entities/User.entity';
 import { Subscription } from 'src/entities/Subscription.entity';
+import { SubscriptionDto } from 'src/dtos/subscription.dto';
 
 @Injectable()
 export class SubscriptionService {
@@ -16,27 +17,34 @@ export class SubscriptionService {
     return await this.subcriptionRepository.find();
   }
 
-  // async deleteSubcription(userId: string ) {
-  //   const user: Users = this.userRepository.findOne({where:{id:userId},
-  //   relations:{ subcription: true }})
-  //   const {id} = user.subcription;
-  //   user.supcription = null
-  //   await this.userRepository.update(user.id, user)
-  //   await this.subcriptionRepository.delete(id);
-  // }
+  async deleteSubcription(userId: string) {
+    const user: Users = await this.userRepository.findOne({
+      where: { id: userId },
+      relations: { subscriptionId: true },
+    });
+    const { id } = user.subscriptionId;
+    user.subscriptionId = null;
+    await this.userRepository.update(user.id, user);
+    await this.subcriptionRepository.delete(id);
+  }
 
-  async createSubcription(type: string, price: number) {
+  async createSubcription(id: string, subscription: SubscriptionDto) {
     const dateInit = new Date();
     const dateFin = new Date(dateInit.getTime());
     dateFin.setDate(dateFin.getDate() + 30);
-    const subcription = this.subcriptionRepository.create({
-      type: type,
-      status: 'active',
-      dateInit: dateInit,
-      dateFin: dateFin,
-      price: price,
-    });
-    return await this.subcriptionRepository.save(subcription);
+
+    const NewSubcription = new Subscription();
+    const user = await this.userRepository.findOne({ where: { id } });
+
+    NewSubcription.userId = user;
+
+    NewSubcription.type = subscription.type;
+    NewSubcription.status = 'active';
+    NewSubcription.dateInit = dateInit;
+    NewSubcription.dateFin = dateFin;
+    NewSubcription.price = subscription.price;
+
+    return await this.subcriptionRepository.save(NewSubcription);
   }
 
   async updateSubcriptionType(id: string, type: string, status: string) {

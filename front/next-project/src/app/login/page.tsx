@@ -53,13 +53,13 @@ const LoginComponent: React.FC = (): React.ReactNode => {
   };
 
   return (
-    <div className="flex justify-center items-center  text-center pt-32 pb-32 bg-grey5">
+    <div className="flex justify-center items-center  text-center pt-32 pb-32 bg-white">
         <div className="justify-start justmt-0 mr-32">
           <h1 className="pb-8 text-gray-600 text-6xl font-normal">Unite a </h1><p className="text-wine pb-8 font-Lato text-6xl">Liquors</p>
         </div>
 
         <div className="rounded border border-wine">
-          <form className="justify-end bg-white p-12" onSubmit={handleSubmit}>
+          <form className="justify-end w-96  bg-white p-12" onSubmit={handleSubmit}>
             <div className="pb-2">
               <input
                 className="w-full p-3 rounded border border-gray-400 outline-none hover:border-wine hover:ring-1 hover:ring-wine focus:border-wine focus:ring-2 focus:ring-wine transition duration-200"

@@ -60,13 +60,13 @@ const RegisterComponent: React.FC = (): React.ReactNode => {
     }
 
   return (
-    <div className="flex justify-center items-center  text-center pt-32 pb-32 bg-grey5">
+    <div className="flex justify-center items-center text-center pt-32 pb-32 bg-white">
         <div className="justify-start justmt-0 mr-32">
           <h1 className="pb-8 text-gray-600 text-6xl font-normal">Unite a </h1><p className="text-wine pb-8 font-Lato text-6xl">Liquors</p>
         </div>
 
         <div className="rounded border border-wine">
-          <form className="justify-end  text-sm p-12" onSubmit={handleSubmit}>
+          <form className="justify-end w-96  text-sm p-12" onSubmit={handleSubmit}>
 
             <div className="pb-2">
               <input
@@ -77,20 +77,20 @@ const RegisterComponent: React.FC = (): React.ReactNode => {
                 placeholder="Nombre"
                 onChange={handleChange}
               />
-              {errors.name && <p>{errors.name}</p>}
+              {errors.name && <p className=" max-w-full">{errors.name}</p>}
 
             </div>
 
             <div className="pb-2">
               <input
-                className={`p-3 rounded border w-full ${errors.email ? 'border-red-700' : 'border-gray-400'} outline-none hover:border-wine hover:ring-1 hover:ring-wine focus:border-wine  focus:ring-wine transition duration-200`}
+                className={`p-3 rounded border  w-full ${errors.email ? 'border-red-700' : 'border-gray-400'} outline-none hover:border-wine hover:ring-1 hover:ring-wine focus:border-wine  focus:ring-wine transition duration-200`}
                 type="text"
                 value={formData.email}
                 name="email"
                 placeholder="Email"
                 onChange={handleChange}
               />
-              {errors.email && <p>{errors.email}</p>}
+              {errors.email && <p className=" text-gray-500 max-w-full">{errors.email}</p>}
 
             </div>
 
@@ -103,12 +103,12 @@ const RegisterComponent: React.FC = (): React.ReactNode => {
                 placeholder="*******"
                 onChange={handleChange}
               />
-              {errors.password && <p className="text-gray-500">{errors.password}</p>}
+              {errors.password && <p className="text-gray-500 max-w-full">{errors.password}</p>}
             </div>
 
             <div className="text-center">
               <button
-                className={`inline-block mt-7 cursor-pointer w-full max-w-xs p-3 rounded-lg ${
+                className={`inline-block mt-7 cursor-pointer w-full max-w-full p-3 rounded-lg ${
                   !(formData.email.trim() && formData.password.trim()) || Object.values(errors).some((error) => !!error)
                     ? 'opacity-60 pointer-events-none'
                     : ''
@@ -123,7 +123,7 @@ const RegisterComponent: React.FC = (): React.ReactNode => {
                 {isLoading ? 'Enviando...' : 'Registrarse'}
               </button>
             </div>
-            {isSuccess && <span>¡Registro exitoso!</span>}
+            {isSuccess && <span className="max-w-full">¡Registro exitoso!</span>}
            {!isSuccess && errors.submit && <span>{errors.submit}</span>}
           </form>
         </div>      

@@ -1,13 +1,10 @@
 import { IsDecimal, IsString } from 'class-validator';
 
-export class SubcriptionDto {
+export class SubscriptionDto {
 
     @IsString()
     type: string;
-  
-    @IsString()
-    status: "active" | "inactive";
-  
+
     @IsDecimal()
     price: number;
 }

@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap");
 
 :root {
   --foreground-rgb: 0, 0, 0;
@@ -60,7 +60,7 @@
 /**/
 
 body {
-  @apply bg-grey5
+  @apply bg-grey5;
 }
 
 @layer utilities {
@@ -70,42 +70,41 @@ body {
 }
 
 .header1 {
-  @apply text-beige font-Marcellus text-2xl
-} 
+  @apply text-beige font-Marcellus text-2xl;
+}
 .header2 {
-  @apply text-beige font-Marcellus text-xl
-} 
+  @apply text-beige font-Marcellus text-xl;
+}
 .header3 {
-  @apply text-beige font-Marcellus text-lg
-} 
+  @apply text-beige font-Marcellus text-lg;
+}
 .subtitle1 {
-  @apply text-beige font-Alegreya text-lg font-thin
+  @apply text-beige font-Alegreya text-lg font-thin;
 }
 
 .subtitle2 {
-  @apply text-beige font-Alegreya text-lg
+  @apply text-beige font-Alegreya text-lg;
 }
 
 .body1 {
-  @apply text-beige font-Lato text-base
+  @apply text-beige font-Lato text-base;
 }
-
 
 .buttonPrimary {
   @apply border-beige text-beige font-Lato font-black border-2 rounded px-6 py-2 flex gap-2  
-  hover:bg-grey4
+  hover:bg-grey4;
 }
 
 .buttonSecondary {
   @apply border-beige text-beige font-Lato font-black rounded px-6 py-2 flex gap-2
-  hover:bg-grey4
+  hover:bg-grey4;
 }
 
 .buttonTiny {
   @apply text-beige font-Lato rounded px-3 py-1 flex justify-center gap-2
-  hover:bg-grey4
+  hover:bg-grey4;
 }
 
 .imageProductDetail {
-  @apply h-80 rounded
+  @apply h-80 rounded;
 }

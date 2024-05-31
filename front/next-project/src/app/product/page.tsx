@@ -1,22 +1,24 @@
-import { ProductDetail } from "@/components/productDetail/productDetail";
+import BannerProducts from "@/components/bannerProductHome/banner";
 
-const productPreload = {
-  id: 1,
-  name: "nombre Vino",
-  description: "Descripcion del vino",
-  category: "vino",
-  image: "/vinoCard.jpg",
-  price: 100
-  }
-
-const Product = async ({params}: {params: { productId: string }}) => {
-  // const product = await getDataById(String(params.productId))
-
+const Product: React.FC = ():React.ReactNode => {
   return (
-    <ProductDetail product={productPreload} />
+    <div className="flex flex-col scroll-smooth overflow-auto pt-10 items-center">
+
+      {/*SECCION UNO DE TARJETAS */}
+      <h1 className="text-center text-2xl text-white font-bold mb-4">
+        Explora nuestras categorías de vinos
+      </h1>
+      <div className="flex space-x-4">
+        <BannerProducts />
+      </div>
+
+      {/*SECCION DOS DE TARJETAS */}
+      <h1 className="text-center text-2xl mt-6 text-white font-bold mb-4">
+        Explora nuestras categorías de vinos
+      </h1>
+      <div className="flex space-x-4">
+        <BannerProducts />
+      </div>
+
+  </div>
   )
-
-
-};
-
-export default Product;

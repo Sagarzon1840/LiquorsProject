@@ -5,12 +5,14 @@ import {
   Get,
   Param,
   ParseUUIDPipe,
+  Post,
   Put,
 } from '@nestjs/common';
 import { SubscriptionService } from './subcription.service';
-// import { SubcriptionDto } from 'src/dtos/subcription.dto';
+import { SubscriptionDto } from 'src/dtos/subscription.dto';
+import { UpdateSubscriptionDto } from 'src/dtos/updateSubscription.dto';
 
-@Controller('subcription')
+@Controller('subscription')
 export class SubcriptionController {
   constructor(private readonly subcriptionService: SubscriptionService) {}
 
@@ -20,17 +22,19 @@ export class SubcriptionController {
   }
 
   @Put(':id')
-  updateSubcriptionType(@Body() id: string, type: string, status: string) {
-    return this.subcriptionService.updateSubcriptionType(id, type, status);
+  updateSubcriptionType(@Param('id') id: string, @Body() updateSubscriptionDto: UpdateSubscriptionDto) {
+    return this.subcriptionService.updateSubcriptionType(id, updateSubscriptionDto.type, updateSubscriptionDto.status);
   }
 
-  @Put(':id')
-  createSubcriptionType(@Body() type: string, price: number) {
-    return this.subcriptionService.createSubcription(type, price);
+  @Post(':id')
+  createSubcriptionType(
+    @Param("id",ParseUUIDPipe)id:string,
+    @Body() susbcription:SubscriptionDto) {
+    return this.subcriptionService.createSubcription(id,susbcription);
   }
 
-  // @Delete()
-  // deleteSubcription(@Param("id", ParseUUIDPipe) id:string) {
-  //   return this.subcriptionService.deleteSubcription(id);
-  // }
+  @Delete(':id')
+  deleteSubcription(@Param("id", ParseUUIDPipe) id:string) {
+    return this.subcriptionService.deleteSubcription(id);
+  }
 }

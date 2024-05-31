@@ -5,6 +5,7 @@ import { NavBar } from "@/components/navBar/navBar";
 import { SearchBar } from "@/components/searchBar/searchBar";
 import { Footer } from "@/components/footer/footer";
 
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {

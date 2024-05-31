@@ -3,17 +3,15 @@ export class ProductDto {
 
   description: string;
 
-  price: number;
-
   category: string;
 
   country: string;
 
   brand: string;
 
-  type: string;
+  abv: number;
 
-  grade: number;
+  imgUrl: string;
 
   size: string;
 }

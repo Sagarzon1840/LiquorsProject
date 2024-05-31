@@ -25,6 +25,7 @@ const config: Config = {
         grey3: "#908F8F",
         grey4: "#605F60",
         grey5: "#484748",
+        greyMLfilter: "#333333"
       },
       fontFamily: {
         'Lato': ['Lato', 'sans-serif'],

@@ -9,7 +9,7 @@ export class ProductDto {
 
   brand: string;
 
-  ABV: number;
+  abv: number;
 
   imgUrl: string;
 

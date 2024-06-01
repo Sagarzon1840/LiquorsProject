@@ -29,3 +29,10 @@ export interface IReview {
   comment: string;
   user: string;
 }
+
+export interface ITeamMember {
+  id: number;
+  name: string;
+  role: string;
+  img: string;
+}

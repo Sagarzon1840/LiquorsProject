@@ -1,16 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
-
-/* le puse un let para que no llore por ahora */
-
-/* let usersReducer = {};
-
+import productsReducer from "./reducers/productsSlice";
 const store = configureStore({
   reducer: {
-    data: {
-      users: usersReducer,
-    },
+    products: productsReducer,
   },
 });
 
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
+
 export default store;
- */

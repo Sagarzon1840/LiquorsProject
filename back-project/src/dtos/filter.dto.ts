@@ -1,11 +1,11 @@
-import { IsOptional, IsString } from 'class-validator';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class FilterDto {
   @IsOptional()
   @IsString()
   category: string = '';
   @IsOptional()
-  @IsString()
+  @IsNumber()
   abv: number = 0;
   @IsOptional()
   @IsString()

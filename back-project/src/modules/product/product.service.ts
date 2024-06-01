@@ -11,15 +11,8 @@ export class ProductService {
     @InjectRepository(Product) private productRepository: Repository<Product>,
   ) {}
 
-  async getAllProducts(page, limit) {
-    const products = await this.productRepository.find();
-    const start = (page - 1) * limit;
-    const end = start + limit;
-    return products.slice(start, end);
-  }
-
-  async filterProducts(filters: FilterDto, page: number, limit: number) {
-    let products = await this.getAllProducts(page, limit);
+  async getAllProducts(filters: FilterDto, page: number, limit: number) {
+    let products = await this.productRepository.find();
     const { category, abv, brand, country, size } = filters;
     if (category)
       products = products.filter((product) => product.category === category);
@@ -28,7 +21,10 @@ export class ProductService {
     if (country)
       products = products.filter((product) => product.country === country);
     if (size) products = products.filter((product) => product.size === size);
-    return products;
+    const start = (page - 1) * limit;
+    const end = start + limit;
+    const productsSlice = products.slice(start, end);
+    return productsSlice;
   }
 
   async getProduct(id: string) {

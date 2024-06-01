@@ -21,13 +21,22 @@ export class ProductController {
 
   @Get()
   getAllProducts(
-    @Body() filters?: FilterDto,
+    @Body()
+    filters: FilterDto = {
+      category: '',
+      abv: 0,
+      brand: '',
+      country: '',
+      size: '',
+    },
     @Query('page') page: string = '1',
     @Query('limit') limit: string = '5',
   ) {
-    if (filters)
-      this.productsService.filterProducts(filters, Number(page), Number(limit));
-    return this.productsService.getAllProducts(Number(page), Number(limit));
+    return this.productsService.getAllProducts(
+      filters,
+      Number(page),
+      Number(limit),
+    );
   }
 
   @Get(':id')

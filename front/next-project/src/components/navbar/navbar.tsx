@@ -34,14 +34,14 @@ export const NavBar: React.FC = () => {
                 </Link>
               </li>
               <li>
-                <a className="buttonSecondary" href="/recommendation">
+                <Link className="buttonSecondary" href="/recommendation">
                   Recomendacion del mes
-                </a>
+                </Link>
               </li>
               <li>
-                <a className="buttonSecondary" href="/newsletter">
+                <Link className="buttonSecondary" href="/newsletter">
                   Newsletter
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

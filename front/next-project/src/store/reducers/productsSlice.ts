@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppDispatch } from "@/store/store";
 import axios from "axios";
 
-interface Product {
+export interface Product {
   id: string;
   name: string;
   description: string;

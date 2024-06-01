@@ -17,7 +17,7 @@ const HalfLanding = () => {
   }, []);
 
   return (
-    <div className="relative w-1/2 h-screen bg-gray-200 opacity-90 flex flex-col items-center justify-center shadow-lg overflow-hidden">
+    <div className="relative w-1/2 h-screen bg-gray-200 opacity-90   flex flex-col items-center justify-center shadow-lg overflow-hidden">
       <img
         src="/liquors1.jpg"
         alt=""

@@ -2,17 +2,17 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppDispatch } from "@/store/store";
 import axios from "axios";
 
-export interface Product {
-  id: number;
-  title: string;
-  price: number;
+interface Product {
+  id: string;
+  name: string;
   description: string;
+  imgUrl: string;
   category: string;
-  image: string;
-  rating: {
-    rate: number;
-    count: number;
-  };
+  abv: number;
+  brand: string;
+  country: string;
+  size: string;
+  userId: string;
 }
 
 interface ProductsState {
@@ -28,7 +28,9 @@ const productsSlice = createSlice({
   name: "products",
   initialState,
   reducers: {
-    createProducts(state, action) {},
+    createProducts(state, action: PayloadAction<Product>) {
+      state.data.push(action.payload);
+    },
     readProducts(state, action: PayloadAction<Product[]>) {
       state.data = state.data.concat(action.payload);
     },

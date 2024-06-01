@@ -9,11 +9,12 @@ const ProductsList: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchProducts());
+    /* le puse este condicional para que no stackear infinitamente */
+    if (products.length === 0) dispatch(fetchProducts());
     /* esta funcion está declarada en el slice de products */
   }, [dispatch]);
 
-  // Verificación adicional para asegurarnos de que products es un arreglo
+  /* confirmar que products es array */
   if (!Array.isArray(products)) {
     return <div>Loading...</div>;
   }

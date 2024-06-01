@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Logged } from "../logged/logged";
 import { UnLogged } from "../unLogged/unLogged";
+import Link from "next/link";
 
 export const NavBar: React.FC = () => {
   const pathname = usePathname();
@@ -21,16 +22,16 @@ export const NavBar: React.FC = () => {
       <nav className="pt-2">
         <div className="flex justify-between items-center p-3 mx-large">
           <div>
-            <a href="/">
+            <Link href="/">
               <img className="w-20" src="/logo.png" alt="logo" />
-            </a>
+            </Link>
           </div>
           <div>
             <ul className="flex space-x-6">
               <li>
-                <a className="buttonSecondary" href="/product">
+                <Link className="buttonSecondary" href="/product">
                   Productos
-                </a>
+                </Link>
               </li>
               <li>
                 <a className="buttonSecondary" href="/recommendation">

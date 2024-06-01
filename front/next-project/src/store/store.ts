@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import productsReducer from "./reducers/productsSlice";
 import usersReducer from "./reducers/usersSlice";
 import reviewsReducer from "./reducers/reviewsSlice";
+
 const store = configureStore({
   reducer: {
     products: productsReducer,

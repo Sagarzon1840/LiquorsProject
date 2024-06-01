@@ -5,14 +5,15 @@ import StarIcon from "@mui/icons-material/Star";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 //interface
 import { IProduct } from "@/interfaces/interfaz";
-//utils (logica para color-borde condicional.)
+//utils (logica para color borde top condicional.)
 import { getColorClass } from "@/utils/cardBorderColorDinamic";
 
-const ProductCard: React.FC<{ product: IProduct }> = ({
-  product,
-}): React.ReactNode => {
+const ProductCard: React.FC<{ product: IProduct }> = ({product}): React.ReactNode => {
+
+  //constante con valor de funcione para color borde-top condicional.
   const colorClass = getColorClass(product.category);
 
+  //funcion para color borde condicional ()
   const getColorClassDos = (category: string): string => {
     if (category === "vino") {
       return "border-wine";
@@ -24,6 +25,7 @@ const ProductCard: React.FC<{ product: IProduct }> = ({
     return "";
   };
 
+  //constante con valor de funcione para color borde condicional.
   const colorClassDos = getColorClassDos(product.category);
 
   return (

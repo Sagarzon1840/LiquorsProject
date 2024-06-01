@@ -1,6 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppDispatch } from "@/store/store";
 import axios from "axios";
+//tipados de react para redux.
+import { Dispatch, SetStateAction } from "react";
 
 export interface Product {
   id: string;
@@ -43,10 +45,10 @@ const productsSlice = createSlice({
 export const { createProducts, readProducts, updateProducts, deleteProducts } =
   productsSlice.actions;
 
-export const fetchProducts = () => async (dispatch: AppDispatch) => {
+const fetchProducts = async (dispatch: AppDispatch, setProducts: Dispatch<SetStateAction<Product[]>>) => {
   try {
-    const res = await axios.get<Product[]>("https://fakestoreapi.com/products");
-    dispatch(readProducts(res.data));
+    const res = await axios.get<Product[]>("http://localhost:3001/products");
+    console.log("res del fetch", res);
   } catch (err) {
     console.error(err);
   }

@@ -2,7 +2,7 @@ import React from "react";
 
 const SuscribeCard = () => {
   return (
-    <div className="max-w-sm w-full bg-white rounded-xl shadow-md overflow-hidden my-4">
+    <div className="max-w-sm w-full bg-white rounded-xl shadow-md overflow-hidden my-4 bg-opacity-85">
       <div className="p-8">
         <h2 className="block mt-1 text-2xl leading-tight font-semibold text-gray-900">
           Suscríbete a la Membresía Premium

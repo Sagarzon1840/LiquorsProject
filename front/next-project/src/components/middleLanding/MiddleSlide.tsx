@@ -2,7 +2,7 @@ import React from "react";
 
 const MiddleSlide = () => {
   return (
-    <div className="relative h-[40vh] overflow-hidden">
+    <div className="relative h-[40vh] overflow-hidden opacity-90">
       <div className="absolute inset-0 overflow-hidden">
         <img
           src="/winesBanner.webp"

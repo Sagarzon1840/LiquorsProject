@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const MiddleLanding2 = () => {
   return (
-    <div className="flex h-1/2 ">
+    <div className="flex h-1/2 opacity-90 ">
       <div className="flex-1 flex items-center justify-center overflow-hidden">
         <img src="/blackLabel.png" alt="whiskeyComponent" className="h-4/5" />
       </div>

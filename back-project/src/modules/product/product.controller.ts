@@ -14,13 +14,22 @@ import { ProductService } from './product.service';
 import { ProductDto } from 'src/dtos/product.dto';
 import { Product } from 'src/entities/product.entity';
 import { FilterDto } from 'src/dtos/filter.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiQuery, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Productos')
 @Controller('products')
 export class ProductController {
   constructor(private readonly productsService: ProductService) {}
 
+  //@ApiBearerAuth()
+
+  @ApiQuery({ name: 'page', description: 'Pagina a mostrar', required: false })
+  @ApiQuery({
+    name: 'limit',
+    description: 'Limite de por pagina',
+    required: false,
+  })
+  @ApiBody({ required: false })
   @Get()
   getAllProducts(
     @Body()
@@ -52,7 +61,7 @@ export class ProductController {
   }
 
   @Put(':id')
-  updateProduct(@Param('id') id: string, @Body() product: Product) {
+  updateProduct(@Param('id') id: string, @Body() product: ProductDto) {
     return this.productsService.updateProduct(id, product);
   }
 

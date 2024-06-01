@@ -1,0 +1,1 @@
+-instale un paquete para poder configurar cors y permitir solicitudes desde localhost 3000. Se pushearon una banda de cosas q na q ver, solo miren los commits correspondientes al back ahi se ve lo q hice.

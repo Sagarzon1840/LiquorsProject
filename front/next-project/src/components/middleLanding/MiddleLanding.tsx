@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const MiddleLanding = () => {
   return (
-    <div className="flex h-1/2">
+    <div className="flex h-1/2 opacity-90">
       <div className="flex-1 flex items-center justify-center">
         <div className="text-center">
           <h2 className="text-4xl font-bold">Componente MiddleLanding</h2>

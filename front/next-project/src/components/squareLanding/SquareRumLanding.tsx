@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 const SquareRumLanding = () => {
   return (
-    <div className="relative h-[25vw] w-[25vw]">
+    <div className="relative h-[25vw] w-[25vw] opacity-90">
       <Link href="category/rum">
         <div className="absolute inset-0 overflow-hidden">
           <img

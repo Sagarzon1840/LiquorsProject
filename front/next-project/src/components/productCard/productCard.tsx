@@ -33,7 +33,7 @@ const ProductCard: React.FC<{ product: IProduct }> = ({
       <h2 className="text-center text-lg font-Lora mb-2">{product.name}</h2>
       <img
         className="my-2 h-48 w-48 object-cover rounded-md"
-        src={product.image}
+        src={product.imgUrl}
         alt="imagen bebida"
       />
       <br></br>

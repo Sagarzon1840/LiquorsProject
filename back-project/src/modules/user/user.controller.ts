@@ -10,7 +10,7 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto, UpdateUserDto } from 'src/dtos/user.dto';
 import { Users } from 'src/entities/User.entity';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('users')
 @Controller('users')
@@ -18,6 +18,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
+  @ApiBody({ type : CreateUserDto})
   create(@Body() createUserDto: CreateUserDto): Promise<Users> {
     return this.userService.create(createUserDto);
   }

@@ -7,6 +7,7 @@ async function bootstrap() {
   app.enableCors({
     origin: 'http://localhost:3000', //Permitir solo solicitudes desde este origen
   });
+
   const swaggerConfig = new DocumentBuilder()
   .setTitle('Documentacion del backend de Liqours')
   .setDescription('Rutas para el uso del servidor')
@@ -16,6 +17,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('api', app, document);
   
+
   await app.listen(3001);
 }
 bootstrap();

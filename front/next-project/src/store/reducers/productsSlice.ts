@@ -1,23 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AppDispatch } from "@/store/store";
-import axios from "axios";
-
-export interface Product {
-  id: string;
-  name: string;
-  description: string;
-  imgUrl: string;
-  category: string;
-  abv: number;
-  brand: string;
-  country: string;
-  size: string;
-  userId: string;
-}
-
-interface ProductsState {
-  data: Product[];
-}
+import { Product, ProductsState } from "@/interfaces/interfaz";
 
 const initialState: ProductsState = {
   data: [],
@@ -42,15 +24,6 @@ const productsSlice = createSlice({
 
 export const { createProducts, readProducts, updateProducts, deleteProducts } =
   productsSlice.actions;
-
-export const fetchProducts = () => async (dispatch: AppDispatch) => {
-  try {
-    const res = await axios.get<Product[]>("https://fakestoreapi.com/products");
-    dispatch(readProducts(res.data));
-  } catch (err) {
-    console.error(err);
-  }
-};
 
 export default productsSlice.reducer;
 /* 

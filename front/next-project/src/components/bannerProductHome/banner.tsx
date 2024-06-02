@@ -1,10 +1,12 @@
 "use client";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import MapProductCard from "../mapProductCard/mapProductCard";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import { Product } from "@/interfaces/interfaz";
 
-const BannerProducts = () => {
+const BannerProducts: React.FC = () => {
+
   const scrollContainer = useRef<HTMLDivElement>(null);
 
   //Función para hacer scroll hacia la izquierda con animación

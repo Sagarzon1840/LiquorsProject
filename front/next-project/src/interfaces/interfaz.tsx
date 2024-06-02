@@ -9,8 +9,7 @@ export interface Register {
   password: string;
 }
 
-//AUN FALTA CONFIRMAR QUE CARACT. DE PRODUCTO ENVIARA EL BACK.
-export interface IProduct {
+export interface Product {
   id: string;
   name: string;
   description: string;
@@ -21,6 +20,10 @@ export interface IProduct {
   country: string;
   size: string;
   userId: string;
+}
+
+export interface ProductsState {
+  data: Product[];
 }
 
 export interface IReview {

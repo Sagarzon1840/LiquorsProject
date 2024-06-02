@@ -39,3 +39,11 @@ export interface ITeamMember {
   role: string;
   img: string;
 }
+
+export interface IRecommendation {
+  title: string;
+  description: string;
+  image: string;
+  color: string;
+  link: string;
+}

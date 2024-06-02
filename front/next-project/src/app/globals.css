@@ -108,3 +108,8 @@ body {
 .imageProductDetail {
   @apply h-80 rounded;
 }
+
+.cardTeamImg {
+  @apply w-20 h-20 border-2 border-beige;
+  border-radius: 50%;
+}

@@ -1,5 +1,9 @@
+import { WorkProcessPage } from "@/components/workProcessPage/workProcessPage";
+
 const Recommendation = () => {
-  return <div>page recomendacion del mes</div>;
+  return <div>
+    <WorkProcessPage />
+  </div>;
 };
 
 export default Recommendation;

@@ -6,7 +6,6 @@ const registerUserFirebase = async (formData: any, auth:any, createUserWithEmail
             console.log('lo que devuelve firebase:', user);
             setIsSuccess(true);
             setErrors({});
-            setToken(user.accessToken)
             setTimeout(() => {
                   router.push("/login")
             }, 2000);

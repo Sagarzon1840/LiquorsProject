@@ -21,12 +21,12 @@ const LoginComponent: React.FC = (): React.ReactNode => {
   });
 
   const firebaseConfig = {
-    apiKey: "AIzaSyDqE_jxE5V0OgwbwLCLON_EjnroiQZyIgo",
-    authDomain: "liquors-12b23.firebaseapp.com",
-    projectId: "liquors-12b23",
-    storageBucket: "liquors-12b23.appspot.com",
-    messagingSenderId: "713998563348",
-    appId: "1:713998563348:web:65bb9301a4c0ea78b00f01"
+    apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+    authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+    storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
   };
 
   const app = initializeApp(firebaseConfig);
@@ -34,7 +34,6 @@ const LoginComponent: React.FC = (): React.ReactNode => {
 
   const router = useRouter();
   
-  const [loginToken, setToken] = useState(null) //--> subiria ese token al localstorage para usarlo.
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [errorState, setError] = useState(null);
@@ -49,9 +48,10 @@ const LoginComponent: React.FC = (): React.ReactNode => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
-    loginUserFireBase(formData, auth, signInWithEmailAndPassword, setIsSuccess, setError, router, setIsLoading, setToken); 
+    loginUserFireBase(formData, auth, signInWithEmailAndPassword, setIsSuccess, setError, router, setIsLoading);
   };
 
+  
   return (
     <div className="flex justify-center items-center  text-center pt-32 pb-32 bg-white">
         <div className="justify-start justmt-0 mr-32">

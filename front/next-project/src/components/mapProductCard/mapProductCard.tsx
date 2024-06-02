@@ -6,6 +6,8 @@ import ProductCard from "../productCard/productCard";
 import { fetchProducts } from "@/utils/getProducts";
 import { useDispatch} from "react-redux";
 import { useSelector } from "react-redux";
+import Link from "next/link";
+import { Product } from "@/interfaces/interfaz";
 
 export const MapProductCard: React.FC = (): React.ReactNode => {
 
@@ -20,12 +22,21 @@ export const MapProductCard: React.FC = (): React.ReactNode => {
   }
  }, [dispatch, dataGlobal.length])
 
+ const detailProduct = (product: Product) => {
+  const data = JSON.stringify(product)
+  localStorage.setItem("detailProduct", data)
+ }
+
   //RENDERIZO UNA CARD POR CADA ELEMENTO DE LA STORE.
   return (
       <>
           {/*Mapea el arreglo de productos y renderiza un Card para cada uno*/}
             {dataGlobal.map((product:any) => (
-              <ProductCard key={product.id} product={product} />
+              <Link href={`/product/${product.name}`}>
+                <p   onClick={() => detailProduct(product)}>
+                  <ProductCard key={product.id} product={product} />
+                </p>
+              </Link>
             ))}
       </>
   );

@@ -8,11 +8,13 @@ import Link from "next/link";
 
 export const NavBar: React.FC = () => {
   const pathname = usePathname();
-  const [token, setToken] = useState<string | null>(null);
+  const [token, setToken] = useState(null);
+
+  console.log(token);
 
   useEffect(() => {
     if (typeof window !== "undefined" && window.localStorage) {
-      const userToken = localStorage.getItem("userSession");
+      const userToken = localStorage.getItem("loginToken");
       setToken(JSON.parse(userToken!));
     }
   }, [pathname]);
@@ -23,7 +25,7 @@ export const NavBar: React.FC = () => {
         <div className="flex justify-between items-center p-3 mx-large">
           <div>
             <Link href="/">
-              <img className="w-20" src="/logo.png" alt="logo" />
+              <p className="font-plus-jakarta-sans text-3xl font-extrabold text-wine ">Liquors</p>
             </Link>
           </div>
           <div>

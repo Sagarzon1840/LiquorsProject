@@ -1,9 +1,13 @@
-import { WorkProcessPage } from "@/components/workProcessPage/workProcessPage";
+import HalfRecommendationFather from "@/components/halfLanding/halfRecommendation/HalfRecommendationFather";
 
 const Recommendation = () => {
-  return <div>
-    <WorkProcessPage />
-  </div>;
+  return (
+    <div>
+      <div>
+        <HalfRecommendationFather />
+      </div>
+    </div>
+  );
 };
 
 export default Recommendation;

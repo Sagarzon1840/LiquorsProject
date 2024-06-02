@@ -1,20 +1,26 @@
 
+import Carousel from "@/components/carousel/Carousel";
+
+
 import BannerProducts from "@/components/bannerProductHome/banner";
 import React,{ useEffect} from "react";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
+
 export default function Landing() {
-  
   return (
     <div>
+
+      <Carousel></Carousel>
       <div className="flex flex-col bg-greyMLfilter scroll-smooth overflow-auto pt-10 items-center">
+
         {/*SECCION UNO DE TARJETAS */}
           <h1 className="text-center text-2xl text-black font-plus-jakarta-sans font-normal mb-4">
             Explore our <b className="text-wine">wine</b> categories
           </h1>
         <ExpandMoreIcon className="flex items-center"/>
         <div className="flex space-x-4">
-          <BannerProducts  />
+          <BannerProducts />
         </div>
 
         {/*SECCION DOS DE TARJETAS */}

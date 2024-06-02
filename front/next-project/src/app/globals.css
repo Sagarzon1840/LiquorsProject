@@ -95,6 +95,7 @@ body {
   hover:bg-grey4;
 }
 
+
 .buttonSecondary {
   @apply border-beige text-beige font-Lato font-black rounded px-6 py-2 flex gap-2
   hover:bg-grey4;

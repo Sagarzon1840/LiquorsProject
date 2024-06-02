@@ -1,5 +1,4 @@
 
-'use client'
 import BannerProducts from "@/components/bannerProductHome/banner";
 import React,{ useEffect} from "react";
 

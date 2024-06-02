@@ -1,1 +1,1 @@
-# revisar aca, hice muchos cambios de componentes que no me correspondian. Solo a modo de ver como quedaba la pagina con otro estio (fuentes, colores, dimensiones texto, etc)
+# En esta rama hice muchos cambios de componentes que no me correspondian, pero solo a modo de ver como quedaba la pagina con otro estio (fuentes, colores, dimensiones texto, etc). Por eso es que cree una nueva rama o feature aparte asi queda aislado de todo.

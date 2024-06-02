@@ -10,19 +10,18 @@ import MiddleLanding from "@/components/middleLanding/MiddleLanding";
 import MiddleSlide from "@/components/middleLanding/MiddleSlide";
 import SuscribeCards from "@/components/suscribeCards/SuscribeCards";
 
-
 const Home: React.FC = (): React.ReactNode => {
   return (
     <>
       <div>
         <div className="flex flex-row">
           <HalfLanding />
-          <div className="grid grid-cols-2 ">
+          {/*     <div className="grid grid-cols-2 ">
             <SquareWineLanding />
             <SquareWhiskeyLanding />
             <SquareSpiritsLanding />
             <SquareRumLanding />
-          </div>
+          </div> */}
         </div>
         <div>
           <MiddleLanding2 />

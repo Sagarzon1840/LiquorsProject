@@ -59,6 +59,9 @@ const RegisterComponent: React.FC = (): React.ReactNode => {
     registerUserFirebase(formData, auth, createUserWithEmailAndPassword, setIsSuccess, setErrors, router, errors, setIsLoading, setToken )
     }
 
+    console.log(registerToken);
+    
+
   return (
     <div className="flex justify-center items-center text-center pt-32 pb-32 bg-white">
         <div className="justify-start justmt-0 mr-32">
@@ -123,8 +126,8 @@ const RegisterComponent: React.FC = (): React.ReactNode => {
                 {isLoading ? 'Enviando...' : 'Registrarse'}
               </button>
             </div>
-            {isSuccess && <span className="max-w-full">¡Registro exitoso!</span>}
-           {!isSuccess && errors.submit && <span>{errors.submit}</span>}
+            {isSuccess && <span className="inline-block mt-2 rounded bg-green-500 text-white p-2">¡Registro exitoso!</span>}
+           {!isSuccess && errors.submit && <span className="inline-block cursor-pointer w-1/5 rounded bg-red-500 text-white p-2 mt-2">{errors.submit}</span>}
           </form>
         </div>      
     </div>

@@ -8,11 +8,13 @@ import Link from "next/link";
 
 export const NavBar: React.FC = () => {
   const pathname = usePathname();
-  const [token, setToken] = useState<string | null>(null);
+  const [token, setToken] = useState(null);
+
+  console.log(token);
 
   useEffect(() => {
     if (typeof window !== "undefined" && window.localStorage) {
-      const userToken = localStorage.getItem("userSession");
+      const userToken = localStorage.getItem("loginToken");
       setToken(JSON.parse(userToken!));
     }
   }, [pathname]);

@@ -1,8 +1,13 @@
+
+"use client"
 import { ProductDetail } from "@/components/productDetail/productDetail";
 import { ReviewContainer } from "@/components/reviewContainer/reviewContainer";
 import { ReviewForm } from "@/components/reviewForm/reviewForm";
+import { Product } from "@/interfaces/interfaz";
+import { useEffect, useState } from "react";
 
 const productTemporal = {
+  
   id: 1,
   name: "nombre Vino",
   description: "Descripcion del vino",
@@ -35,16 +40,27 @@ const productTemporal = {
 
 ]
 
-
-const Product = async ({params}: {params: { productId: string }}) => {
+const ProductF =  ({params}: {params: { productId: string }}) => {
   // const product = await getDataById(String(params.productId))
+
+  //estado local para guardar el detalle del producto. Luego enviar esta data por prop a ProductDetail?.
+  const [detailProduct, setDetailProduct] = useState<Partial<Product>>({});
+
+  console.log("detalle producto", detailProduct);
+  
+
+  //descargo del localstorage el detalle del producto y lo guardo en el estado local.
+  useEffect(() => {
+    const detailProductStorage: any = localStorage.getItem("detailProduct")
+    detailProductStorage && setDetailProduct(JSON.parse(detailProductStorage))
+  },[])
 
   return (
     <div className="mx-large flex flex-col gap-10">
-      <ProductDetail product={productTemporal} />
+      <ProductDetail product={detailProduct as Product} />
       <div className="flex flex-row gap-8">
         <div className="flex flex-col">
-          <h1 className="header3">{`Conoce la opinion de nuestros usuarios sobre ${productTemporal.name}`}</h1>
+          <h1 className="header3">{`Conoce la opinion de nuestros usuarios sobre ${detailProduct.name}`}</h1>
           <ReviewContainer reviews={reviewTemporal}/>
         </div>
         <div>
@@ -57,4 +73,4 @@ const Product = async ({params}: {params: { productId: string }}) => {
 
 };
 
-export default Product;
+export default ProductF;

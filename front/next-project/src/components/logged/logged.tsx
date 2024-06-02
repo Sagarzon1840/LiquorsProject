@@ -7,7 +7,7 @@ export const Logged: React.FC = () => {
   const router = useRouter();
 
   const logoutHandler: React.MouseEventHandler<HTMLButtonElement> = () => {
-    localStorage.removeItem("userSession");
+    localStorage.removeItem("loginToken");
     router.push("/home");
   };
 
@@ -21,9 +21,9 @@ export const Logged: React.FC = () => {
           </Link>
         </li>
         <li>
-          <Link href="" className="buttonSecondary">
+          <span onClick={logoutHandler} className="buttonSecondary">
             logout
-          </Link>
+          </span>
         </li>
       </ul>
     </div>

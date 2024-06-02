@@ -1,11 +1,11 @@
 'use client'
-import {IProduct} from "@/interfaces/interfaz";
+import {Product} from "@/interfaces/interfaz";
 import { useEffect, useState } from "react";
 import StarIcon from '@mui/icons-material/Star';
 
-export const ProductDetail = ({product} : {product: IProduct} ) => {
+export const ProductDetail = ({product} : {product: Product} ) => {
 
-    const { id, name, description, image, category } = product
+    const { id, name, description, imgUrl, category } = product
 
     const [favorite, setFavorite] = useState(false)
     
@@ -19,7 +19,7 @@ export const ProductDetail = ({product} : {product: IProduct} ) => {
     return (
         <div key={id} className="flex flex-row gap-10">
             <div className="w-1/2 flex items-center justify-center">
-                <img src={image} alt={name} className="imageProductDetail" />
+                <img src={imgUrl} alt={name} className="imageProductDetail" />
             </div>
             <div className="space-y-3">
                 <div className="w-250 flex flex-col gap-2">

@@ -1,13 +1,11 @@
-const loginUserFireBase = async (formData: any, auth:any, signInWithEmailAndPassword: any ,setIsSuccess: any, setError: any, router: any, setIsLoading: any, setToken:any) => {
+const loginUserFireBase = async (formData: any, auth:any, signInWithEmailAndPassword: any ,setIsSuccess: any, setError: any, router: any, setIsLoading: any) => {
 
   try {
         const userCredential = await signInWithEmailAndPassword(auth, formData.email, formData.password);
-        const user = userCredential.user;
-        console.log('Usuario ha iniciado sesión:', user);
-        //setToken: aca podria guardar un token al estado loca, y del componente al localstorage.
+        const user = JSON.stringify(userCredential.user.accessToken);
+        localStorage.setItem("loginToken", user)
         setIsSuccess(true);
         setError(null)
-        setToken(user.accesToken)
         setTimeout(() => {
           router.push("/")
         }, 2000);

@@ -25,7 +25,7 @@ export const NavBar: React.FC = () => {
         <div className="flex justify-between items-center p-3 mx-large">
           <div>
             <Link href="/">
-              <img className="w-20" src="/logo.png" alt="logo" />
+              <p className="font-plus-jakarta-sans text-3xl font-extrabold text-wine ">Liquors</p>
             </Link>
           </div>
           <div>

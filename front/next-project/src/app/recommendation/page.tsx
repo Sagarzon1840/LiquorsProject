@@ -1,5 +1,13 @@
+import HalfRecommendationFather from "@/components/halfLanding/halfRecommendation/HalfRecommendationFather";
+
 const Recommendation = () => {
-  return <div>page recomendacion del mes</div>;
+  return (
+    <div>
+      <div>
+        <HalfRecommendationFather />
+      </div>
+    </div>
+  );
 };
 
 export default Recommendation;

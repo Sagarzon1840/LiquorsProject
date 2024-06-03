@@ -1,5 +1,5 @@
 
-import axios from 'axios';
+/*import axios from 'axios';
 
 export const loginUser = async (formData: any, setToken: any, setError: any, setIsSuccess: any, setIsLoading:any) => {
   try {
@@ -15,4 +15,4 @@ export const loginUser = async (formData: any, setToken: any, setError: any, set
   } finally {
         setIsLoading(false);
   }
-};
+};*/

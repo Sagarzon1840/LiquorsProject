@@ -1,21 +1,14 @@
 export const getColorClass = (category: string): string => {
-    if (category === 'vino') {
+    if (category === 'Vino') {
         return 'border-t-wine'; 
-    } else if (category === 'gin') {
+    } else if (category === 'Gin') {
         return 'border-t-gin'; 
-    } else if (category === 'licor'){
+    } else if (category === 'Whisky'){
         return 'border-t-licor'; 
     }
     return '';
 };
 
-/*export const getColorClassDos = (category: string): string => {
-    if (category === 'vino') {
-        return 'border-t-wine'; 
-    } else if (category === 'gin') {
-        return 'border-t-gin'; 
-    } else if (category === 'licor'){
-        return 'border-t-licor'; 
-    }
-    return '';
-};*/
+
+
+

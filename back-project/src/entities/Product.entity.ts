@@ -31,7 +31,7 @@ export class Product {
   
   // alchol by volumen
   @Column({type: 'float', nullable: false})
-  ABV: number;
+  abv: number;
 
   @Column()
   brand: string;

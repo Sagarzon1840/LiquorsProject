@@ -2,7 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap");
+
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap");
 
 :root {
   --foreground-rgb: 0, 0, 0;
@@ -18,9 +20,49 @@
   }
 }
 
+/*estilos globales para esconder la scrollbar y que solo aparezca la flecha para scrolear*/
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/*______________*/
+
+/**/
+@keyframes slideInFromLeft {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInFromRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.slide-left {
+  animation: slideInFromLeft 0.3s ease-out forwards;
+}
+
+.slide-right {
+  animation: slideInFromRight 0.3s ease-out forwards;
+}
+/**/
+
 body {
-  @apply bg-grey5 mx-small
-  lg:mx-large
+  @apply bg-white;
 }
 
 @layer utilities {
@@ -29,12 +71,54 @@ body {
   }
 }
 
+.header1 {
+  @apply text-beige font-plus-jakarta-sans  font-normal text-base leading-6;
+}
+.header2 {
+  @apply text-beige  font-plus-jakarta-sans  font-normal text-base leading-6;
+}
+.header3 {
+  @apply text-beige  font-plus-jakarta-sans  font-normal text-base leading-6;
+}
+.subtitle1 {
+  @apply text-beige  font-plus-jakarta-sans  font-normal text-base leading-6;
+}
+
+.subtitle2 {
+  @apply font-plus-jakarta-sans  font-normal text-base leading-6;
+}
+
+.body1 {
+  @apply font-plus-jakarta-sans  font-normal text-base leading-6;
+}
+
 .buttonPrimary {
-  @apply border-beige text-beige font-Lato font-black border-2 rounded px-6 py-2 flex gap-2
-  hover:bg-grey4
+  @apply border-beige text-white bg-wine border rounded-lg p-3 font-plus-jakarta-sans  font-normal text-base leading-6;
+}
+
+.buttonPrimary:hover {
+  filter: brightness(1.2);
 }
 
 .buttonSecondary {
-  @apply border-beige text-beige font-Lato font-black rounded px-6 py-2 flex gap-2
-  hover:bg-grey4
+  @apply border-beige text-blackup  font-plus-jakarta-sans  font-normal text-base leading-6;
+}
+
+
+.buttonSecondary:hover {
+   color: #c23a2e;
+   transition: 0.3s;
+}
+
+.buttonTiny {
+  @apply text-blackup font-plus-jakarta-sans   font-plus-jakarta-sans  font-normal text-base leading-6;
+}
+
+.imageProductDetail {
+  @apply h-80 rounded;
+}
+
+.cardTeamImg {
+  @apply w-20 h-20 border-2 border-black;
+  border-radius: 50%;
 }

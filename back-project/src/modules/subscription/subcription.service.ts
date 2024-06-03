@@ -1,5 +1,5 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { Users } from 'src/entities/User.entity';
 import { Subscription } from 'src/entities/Subscription.entity';
@@ -33,11 +33,14 @@ export class SubscriptionService {
     const dateFin = new Date(dateInit.getTime());
     dateFin.setDate(dateFin.getDate() + 30);
 
-    const NewSubcription = new Subscription();
     const user = await this.userRepository.findOne({ where: { id } });
 
-    NewSubcription.userId = user;
+    if (!user) {
+        throw new NotFoundException('User not found');
+    }
 
+    const NewSubcription = new Subscription();
+    NewSubcription.userId = user;
     NewSubcription.type = subscription.type;
     NewSubcription.status = 'active';
     NewSubcription.dateInit = dateInit;
@@ -45,39 +48,68 @@ export class SubscriptionService {
     NewSubcription.price = subscription.price;
 
     return await this.subcriptionRepository.save(NewSubcription);
-  }
+}
 
+
+  // async updateSubcriptionType(id: string, type: string, status: string) {
+  //   if (status === 'active') {
+  //     const subcription = await this.subcriptionRepository.findOne({
+  //       where: { id },
+  //     });
+  //     const dateInit = new Date();
+  //     const dateFin = new Date(dateInit.getTime());
+  //     dateFin.setDate(dateFin.getDate() + 30);
+
+  //     (subcription.type = type),
+  //       (subcription.status = 'active'),
+  //       (subcription.dateInit = dateInit),
+  //       (subcription.dateFin = dateFin);
+
+  //     return await this.subcriptionRepository.save(subcription);
+  //   } else if (status === 'inactive') {
+  //     const subcription = await this.subcriptionRepository.findOne({
+  //       where: { id },
+  //     });
+  //     const dateInit = new Date();
+  //     const dateFin = new Date(dateInit.getTime());
+  //     dateFin.setDate(dateFin.getDate() + 30);
+
+  //     (subcription.type = type),
+  //       (subcription.status = 'inactive'),
+  //       (subcription.dateInit = dateInit),
+  //       (subcription.dateFin = dateFin);
+
+  //     return await this.subcriptionRepository.save(subcription);
+  //   } else {
+  //     throw new BadRequestException('El status es Incorrecto');
+  //   }
+  // }
   async updateSubcriptionType(id: string, type: string, status: string) {
-    if (status === 'active') {
+    // Convertir el status a minúsculas para comparación
+    status = status.toLowerCase();
+  
+    if (status === 'active' || status === 'inactive') {
       const subcription = await this.subcriptionRepository.findOne({
         where: { id },
       });
+  
+      if (!subcription) {
+        throw new NotFoundException('Subcription not found');
+      }
+  
       const dateInit = new Date();
       const dateFin = new Date(dateInit.getTime());
       dateFin.setDate(dateFin.getDate() + 30);
-
-      (subcription.type = type),
-        (subcription.status = 'active'),
-        (subcription.dateInit = dateInit),
-        (subcription.dateFin = dateFin);
-
-      return await this.subcriptionRepository.save(subcription);
-    } else if (status === 'inactive') {
-      const subcription = await this.subcriptionRepository.findOne({
-        where: { id },
-      });
-      const dateInit = new Date();
-      const dateFin = new Date(dateInit.getTime());
-      dateFin.setDate(dateFin.getDate() + 30);
-
-      (subcription.type = type),
-        (subcription.status = 'inactive'),
-        (subcription.dateInit = dateInit),
-        (subcription.dateFin = dateFin);
-
+  
+      subcription.type = type;
+      subcription.status = status;
+      subcription.dateInit = dateInit;
+      subcription.dateFin = dateFin;
+  
       return await this.subcriptionRepository.save(subcription);
     } else {
       throw new BadRequestException('El status es Incorrecto');
     }
   }
+  
 }

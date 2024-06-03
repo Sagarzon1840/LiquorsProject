@@ -11,6 +11,7 @@ import {
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { ProductDto } from 'src/dtos/product.dto';
+import { Product } from 'src/entities/product.entity';
 import { FilterDto } from 'src/dtos/filter.dto';
 import { ApiBody, ApiQuery, ApiTags } from '@nestjs/swagger';
 

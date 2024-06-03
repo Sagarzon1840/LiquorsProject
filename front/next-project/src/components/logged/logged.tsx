@@ -1,29 +1,31 @@
-import { useRouter } from "next/navigation"
-
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 //icons
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
-export const Logged : React.FC = () => {
-    const router = useRouter();
-    
-    const logoutHandler: React.MouseEventHandler<HTMLButtonElement> = () => {
-        localStorage.removeItem("userSession")
-        router.push("/home")
-    }
+export const Logged: React.FC = () => {
+  const router = useRouter();
 
-    return (
-        <div>
-        <ul className="flex space-x-6">
-             <li>
-                <a className="buttonSecondary" href="/profile/dashboard">
-                    <AccountCircleIcon />
-                    Perfil
-                </a>
-            </li>
-            <li>
-                <a className="buttonSecondary">logout</a>
-            </li>
-        </ul>
+  const logoutHandler: React.MouseEventHandler<HTMLButtonElement> = () => {
+    localStorage.removeItem("loginToken");
+    router.push("/home");
+  };
+
+  return (
+    <div>
+      <ul className="flex space-x-6">
+        <li>
+          <Link className="buttonSecondary" href="/profile/dashboard">
+            <AccountCircleIcon />
+            Perfil
+          </Link>
+        </li>
+        <li>
+          <span onClick={logoutHandler} className="buttonSecondary">
+            logout
+          </span>
+        </li>
+      </ul>
     </div>
-    )
-}
+  );
+};

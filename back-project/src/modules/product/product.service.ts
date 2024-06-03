@@ -40,7 +40,7 @@ export class ProductService {
     newProduct.category = product.category;
     newProduct.country = product.country;
     newProduct.imgUrl = product.imgUrl;
-    newProduct.ABV = product.ABV;
+    newProduct.abv = product.abv;
     newProduct.brand = product.brand;
     newProduct.size = product.size;
 

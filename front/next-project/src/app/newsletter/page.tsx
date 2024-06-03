@@ -1,5 +1,10 @@
+import { WorkProcessPage } from "@/components/workProcessPage/workProcessPage";
 const Newsletter = () => {
-  return <div>page NEWSLETTER</div>;
+  return (
+    <div>
+      <WorkProcessPage />
+    </div>
+  );
 };
 
 export default Newsletter;

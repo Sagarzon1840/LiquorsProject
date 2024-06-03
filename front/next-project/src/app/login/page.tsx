@@ -7,6 +7,10 @@ import Link from "next/link";
 //INTERFACES
 import { Login } from "@/interfaces/interfaz";
 
+import loginUserFireBase from "@/utils/loginFireBase";
+
+import { initializeApp } from "firebase/app";
+import { getAuth, signInWithEmailAndPassword} from "firebase/auth";
 
 
 const LoginComponent: React.FC = (): React.ReactNode => {
@@ -16,8 +20,20 @@ const LoginComponent: React.FC = (): React.ReactNode => {
     password: '',
   });
 
-  const router = useRouter();
+  const firebaseConfig = {
+    apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+    authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+    storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  };
 
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  const router = useRouter();
+  
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [errorState, setError] = useState(null);
@@ -32,12 +48,10 @@ const LoginComponent: React.FC = (): React.ReactNode => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
-    //loginUser(formData, setToken, setError, setIsSuccess, setIsLoading); --> FUNCION ASYNC API: Le paso 
-    setTimeout(() => {
-      router.push("/");
-    }, 3000)
+    loginUserFireBase(formData, auth, signInWithEmailAndPassword, setIsSuccess, setError, router, setIsLoading);
   };
 
+  
   return (
     <div className="flex justify-center items-center  text-center pt-32 pb-32 bg-white">
         <div className="justify-start justmt-0 mr-32">
@@ -45,7 +59,7 @@ const LoginComponent: React.FC = (): React.ReactNode => {
         </div>
 
         <div className="rounded border border-wine">
-          <form className="justify-end p-12" onSubmit={handleSubmit}>
+          <form className="justify-end w-96  bg-white p-12" onSubmit={handleSubmit}>
             <div className="pb-2">
               <input
                 className="w-full p-3 rounded border border-gray-400 outline-none hover:border-wine hover:ring-1 hover:ring-wine focus:border-wine focus:ring-2 focus:ring-wine transition duration-200"

@@ -18,7 +18,7 @@ const AboutUs = () => {
           pasión compartida por el desarrollo de software. Nuestro objetivo es
           colaborar estrechamente, aprovechar nuestras habilidades
           complementarias y superar cualquier desafío para lograr los objetivos
-          del proyecto con la mayor calidad y eficiencia.
+          del proyecto con la mayor calidad y eficiencia!
         </p>
       </section>
       <section className="my-10 flex flex-col gap-6">

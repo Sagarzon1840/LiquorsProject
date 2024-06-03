@@ -24,7 +24,7 @@ const HalfRecommendation = ({
 
   return (
     <div
-      className={`relative w-1/3 h-screen bg-${color} flex flex-col items-center justify-center overflow-hidden`}
+      className={`relative w-1/3 h-screen  flex flex-col items-center justify-center overflow-hidden`}
     >
       <img
         src={image}
@@ -32,9 +32,16 @@ const HalfRecommendation = ({
         className="absolute object-cover w-full h-[105%] z-0 opacity-95   "
         style={{ transform: `translateY(-${scrollY * 0.5}px)` }}
       />
-      <div className="relative z-10 text-center">
-        <h1 className="text-4xl font-bold text-white">{title}</h1>
-        <p className="mt-4 text-lg text-white">{description}</p>
+      <div className="relative z-10 text-base">
+        <h1
+          className="text-4xl mb-96 font-bold text-center"
+          style={{ color: color }}
+        >
+          {title}
+        </h1>
+        <p className="mt-8 text-lg  text-center" style={{ color: color }}>
+          {description}
+        </p>
       </div>
     </div>
   );

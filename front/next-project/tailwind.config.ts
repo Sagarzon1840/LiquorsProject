@@ -28,13 +28,16 @@ const config: Config = {
         greyMLfilter: "#EDEDED",
         greyVelas: "#f0f2f5",
         blackup: "#1e1e1e",
+        darkred: "#330000",
+        darkblue: "#000033",
+        darkgreen: "#003300",
       },
       fontFamily: {
         Lato: ["Lato", "sans-serif"],
         Marcellus: ["Marcellus SC", "sans-serif"],
         Alegreya: ["Alegreya Sans SC", "serif"],
         Lora: ["Lora", "sans-serif"],
-        'plus-jakarta-sans': ['"Plus Jakarta Sans"', 'sans-serif'],
+        "plus-jakarta-sans": ['"Plus Jakarta Sans"', "sans-serif"],
       },
       spacing: {
         small: "1rem",

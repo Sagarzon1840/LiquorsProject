@@ -47,3 +47,7 @@ export interface IRecommendation {
   color: string;
   link: string;
 }
+
+export interface ProductFiltered {
+  item: string;
+}

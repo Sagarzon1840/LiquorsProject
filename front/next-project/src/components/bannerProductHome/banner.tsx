@@ -46,7 +46,9 @@ const BannerProducts: React.FC = () => {
           disabled={currentSection === 0}
         >
           <div className="rounded-full bg-wine p-2 ">
-            <ArrowBackIosIcon className="h-6 w-6 text-white" />
+          
+          <ArrowBackIosIcon className="h-6 w-6 text-white" />
+          
           </div>
         </button>
         {/* Contenedor de tarjetas */}
@@ -63,7 +65,7 @@ const BannerProducts: React.FC = () => {
           disabled={currentSection === maxSections}
         >
           <div className="rounded-full bg-wine p-2 ">
-            <ArrowForwardIosIcon className="h-6 w-6 text-white" />
+          <ArrowForwardIosIcon className="h-6 w-6 text-white" />
           </div>
         </button>
       </div>

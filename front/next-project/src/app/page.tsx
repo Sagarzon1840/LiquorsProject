@@ -1,9 +1,8 @@
 import Carousel from "@/components/carousel/Carousel";
 
 import BannerProducts from "@/components/bannerProductHome/banner";
-import React, { useEffect } from "react";
+import React from "react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Footer } from "@/components/footer/footer";
 
 export default function Landing() {
   return (
@@ -30,7 +29,6 @@ export default function Landing() {
           <BannerProducts />
         </div>
       </div>
-      <Footer />
     </div>
   );
 }

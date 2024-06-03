@@ -6,6 +6,7 @@ const AboutUs = () => {
   const teamMembers = team;
 
   return (
+
     <div className="mx-large">
       <h1 className="text-black text-center">Conoce mas sobre nosotros</h1>
       <section className="my-10 flex flex-col gap-6">
@@ -26,10 +27,12 @@ const AboutUs = () => {
         <div className="flex flex-row gap-10 items-center justify-center">
           {teamMembers.map((member: ITeamMember) => (
             <CardTeam
+
               key={member.id}
               id={member.id}
               name={member.name}
               role={member.role}
+
               img={member.img}
             />
           ))}

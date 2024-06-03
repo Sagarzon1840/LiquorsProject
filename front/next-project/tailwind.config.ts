@@ -26,7 +26,7 @@ const config: Config = {
         grey4: "#605F60",
         grey5: "#484748",
         greyMLfilter: "#EDEDED",
-        greyVelas: "#f0f2f5",
+        greyVivino: "#fafafa",
         blackup: "#1e1e1e",
         darkred: "#330000",
         darkblue: "#000033",

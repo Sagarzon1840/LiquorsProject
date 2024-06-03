@@ -93,11 +93,21 @@ body {
 }
 
 .buttonPrimary {
-  @apply border-beige text-blackup  font-plus-jakarta-sans  font-normal text-base leading-6;
+  @apply border-beige text-white bg-wine border rounded-lg p-3 font-plus-jakarta-sans  font-normal text-base leading-6;
+}
+
+.buttonPrimary:hover {
+  filter: brightness(1.2);
 }
 
 .buttonSecondary {
   @apply border-beige text-blackup  font-plus-jakarta-sans  font-normal text-base leading-6;
+}
+
+
+.buttonSecondary:hover {
+   color: #c23a2e;
+   transition: 0.3s;
 }
 
 .buttonTiny {

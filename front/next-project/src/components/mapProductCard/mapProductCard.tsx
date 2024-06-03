@@ -14,13 +14,21 @@ export const MapProductCard: React.FC = (): React.ReactNode => {
  //defino useDispatch para pasarlo como argumento a fetchProducts
  const dispatch = useDispatch()
  const dataGlobal = useSelector((state: any) => state.products.data)
- 
- //GET PRODUCTS A LA API + CARGA DE DATOS EN LA STORE.
- useEffect(() => {
-  if (dataGlobal.length === 0) {
-    fetchProducts(dispatch);
-  }
- }, [dispatch, dataGlobal.length])
+
+ //const [dataGlobalLocal, setDataGlobalLocal] = useState()
+
+ console.log(dataGlobal.length);
+
+  //GET PRODUCTS A LA API + CARGA DE DATOS EN LA STORE.
+  useEffect(() => {
+    if (dataGlobal.length === 5) {
+      return; // Corta la ejecución del efecto si la longitud es igual a 5
+    }
+  
+    if (dataGlobal.length === 0 && dataGlobal.length <= 5) {
+      fetchProducts(dispatch);
+    }
+  }, [dispatch, dataGlobal.length]);
 
  const detailProduct = (product: Product) => {
   const data = JSON.stringify(product)

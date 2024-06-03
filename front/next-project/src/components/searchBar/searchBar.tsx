@@ -1,7 +1,7 @@
 import Link from "next/link";
 export const SearchBar: React.FC = () => {
   return (
-    <div className="flex flex-row justify-center gap-6">
+    <div className="flex flex-row pt-5 bg-greyVivino justify-center gap-6">
       <Link className="buttonPrimary" href="/category/rum">
         ron
       </Link>

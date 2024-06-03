@@ -5,7 +5,9 @@ export const Footer = () => {
     <div className="flex justify-around items-center p-3 mx-large my-9">
       <div className="">
         <Link href="/">
-          <img className="w-50" src="/logo.png" alt="logo" />
+          <p className="font-plus-jakarta-sans text-3xl font-extrabold text-wine ">
+            Liquors
+          </p>
         </Link>
       </div>
       <div>

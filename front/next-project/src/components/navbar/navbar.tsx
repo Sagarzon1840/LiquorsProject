@@ -45,6 +45,11 @@ export const NavBar: React.FC = () => {
                   Newsletter
                 </Link>
               </li>
+              <li>
+                <Link className="buttonSecondary" href="/aboutUs">
+                  About
+                </Link>
+              </li>
             </ul>
           </div>
           <div>{token ? <Logged /> : <UnLogged />}</div>

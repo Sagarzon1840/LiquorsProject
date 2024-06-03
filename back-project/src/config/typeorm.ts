@@ -9,7 +9,7 @@ const config = {
   database: process.env.DB_NAME,
   host: process.env.DB_HOST,
   // host: 'postgresdb',
-  port: process.env.DB_PORT as unknown as number,
+  port: process.env.DB_PORT,
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   entities: ['dist/entities/*.entity{.js,.ts}'],
@@ -17,7 +17,7 @@ const config = {
   logging: true,
   autoLoadEntities: true,
   synchronize: true,
-  dropSchema: false,
+  dropSchema: true,
 };
 export default registerAs('typeorm', () => config);
 

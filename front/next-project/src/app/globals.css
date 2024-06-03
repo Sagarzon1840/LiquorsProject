@@ -4,7 +4,7 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap");
 
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap");
 
 :root {
   --foreground-rgb: 0, 0, 0;
@@ -85,11 +85,11 @@ body {
 }
 
 .subtitle2 {
-  @apply  font-plus-jakarta-sans  font-normal text-base leading-6;
+  @apply font-plus-jakarta-sans  font-normal text-base leading-6;
 }
 
 .body1 {
-  @apply  font-plus-jakarta-sans  font-normal text-base leading-6;
+  @apply font-plus-jakarta-sans  font-normal text-base leading-6;
 }
 
 .buttonPrimary {
@@ -99,7 +99,6 @@ body {
 .buttonPrimary:hover {
   filter: brightness(1.2);
 }
-
 
 .buttonSecondary {
   @apply border-beige text-blackup  font-plus-jakarta-sans  font-normal text-base leading-6;
@@ -120,6 +119,6 @@ body {
 }
 
 .cardTeamImg {
-  @apply w-20 h-20 border-2 border-beige;
+  @apply w-20 h-20 border-2 border-black;
   border-radius: 50%;
 }

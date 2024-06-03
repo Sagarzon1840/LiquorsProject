@@ -1,7 +1,6 @@
 import { IsString } from 'class-validator';
 
 export class UpdateSubscriptionDto {
-
   /**
    * Es un tipo de subcripcion para el usuario
    * @example seller

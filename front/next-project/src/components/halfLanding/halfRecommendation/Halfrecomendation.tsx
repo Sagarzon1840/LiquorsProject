@@ -7,7 +7,8 @@ const HalfRecommendation = ({
 }: {
   recommendation: IRecommendation;
 }) => {
-  const { title, image, description, color, link } = recommendation;
+  const { title, imageB, imageF, imageP, description, color, link } =
+    recommendation;
   const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
@@ -24,10 +25,22 @@ const HalfRecommendation = ({
 
   return (
     <div
-      className={`relative w-1/3 h-screen  flex flex-col items-center justify-center overflow-hidden`}
+      className={`relative w-1/3 h-full flex flex-col items-center justify-center overflow-hidden mt-20`}
     >
       <img
-        src={image}
+        src={imageB}
+        alt=""
+        className="absolute object-cover w-full h-[105%] z-0 opacity-95   "
+        style={{ transform: `translateY(-${scrollY * 0.1}px)` }}
+      />
+      <img
+        src={imageP}
+        alt=""
+        className="absolute object-cover w-full h-[105%] z-0 opacity-95   "
+        style={{ transform: `translateY(-${scrollY * 0.2}px)` }}
+      />
+      <img
+        src={imageF}
         alt=""
         className="absolute object-cover w-full h-[105%] z-0 opacity-95   "
         style={{ transform: `translateY(-${scrollY * 0.5}px)` }}

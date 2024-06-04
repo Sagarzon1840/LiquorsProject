@@ -26,6 +26,6 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: /back-project/Dockerfile
+          file: ./back-project/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/liquors_project:latest

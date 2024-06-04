@@ -38,6 +38,8 @@ export interface ITeamMember {
   name: string;
   role: string;
   img: string;
+  GitHub: string;
+  LinkedIn: string;
 }
 
 export interface IRecommendation {

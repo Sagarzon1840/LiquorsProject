@@ -119,6 +119,6 @@ body {
 }
 
 .cardTeamImg {
-  @apply w-20 h-20 border-2 border-black;
+  @apply w-20 h-20 border-2 border-wine;
   border-radius: 50%;
 }

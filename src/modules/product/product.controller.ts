@@ -11,8 +11,6 @@ import {
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { ProductDto } from 'src/dtos/product.dto';
-import { Product } from 'src/entities/product.entity';
-import { FilterDto } from 'src/dtos/filter.dto';
 import { ApiBody, ApiQuery, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Productos')
@@ -31,19 +29,16 @@ export class ProductController {
   @ApiBody({ required: false })
   @Get()
   getAllProducts(
-    @Body()
-    filters: FilterDto = {
-      category: '',
-      abv: 0,
-      brand: '',
-      country: '',
-      size: '',
-    },
+    @Query('category') category: string = '',
+    @Query('abv') abv: number = 0,
+    @Query('brand') brand: string = '',
+    @Query('country') country: string = '',
+    @Query('size') size: string = '',
     @Query('page') page: string = '1',
     @Query('limit') limit: string = '5',
   ) {
     return this.productsService.getAllProducts(
-      filters,
+      { category, abv, brand, country, size },
       Number(page),
       Number(limit),
     );
@@ -51,7 +46,7 @@ export class ProductController {
 
   @Get(':id')
   getProduct(@Param('id', ParseUUIDPipe) id: string) {
-    this.productsService.getProduct(id);
+    return this.productsService.getProduct(id);
   }
 
   @Post(':id')
@@ -65,7 +60,6 @@ export class ProductController {
   }
 
   @Delete(':id')
-  //cambiar id a string
   deleteProduct(@Param('id') id: string) {
     return this.productsService.deleteProduct(id);
   }

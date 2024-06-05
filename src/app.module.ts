@@ -42,7 +42,7 @@ import { Users } from './entities/User.entity';
       provide: APP_PIPE,
       useClass: ValidationPipe,
     },
-    { provide: APP_FILTER, useClass: GlobalExceptionFilter },
+    // { provide: APP_FILTER, useClass: GlobalExceptionFilter },
   ],
 })
 export class AppModule {}

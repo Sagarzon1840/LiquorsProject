@@ -3,12 +3,12 @@ import {
   Entity,
   JoinColumn,
   ManyToMany,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Reviews } from './review.entity';
 import { Users } from './User.entity';
-
 
 @Entity({
   name: 'products',
@@ -23,14 +23,14 @@ export class Product {
   @Column({ type: 'text', nullable: false })
   description: string;
 
-  @Column({type: 'text', nullable: true})
+  @Column({ type: 'text', nullable: true })
   imgUrl: string;
-  
+
   @Column({ type: 'varchar', length: 30, nullable: false })
   category: string;
-  
+
   // alchol by volumen
-  @Column({type: 'float', nullable: false})
+  @Column({ type: 'float', nullable: false })
   abv: number;
 
   @Column()
@@ -42,13 +42,13 @@ export class Product {
   @Column()
   size: string;
 
-  @Column()
-  userId: string;
+  @ManyToOne(() => Users, (user) => user.products_id)
+  seller: Users;
 
   @JoinColumn({ name: 'review_id' })
   @OneToMany(() => Reviews, (reviews) => reviews.productId)
   reviewId: Reviews[];
 
-  @ManyToMany(()=> Users, (user)=> user.favorites)
+  @ManyToMany(() => Users, (user) => user.favorites)
   users: Users[];
 }

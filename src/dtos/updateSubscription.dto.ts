@@ -1,4 +1,4 @@
-import { IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 
 export class UpdateSubscriptionDto {
   /**
@@ -6,6 +6,7 @@ export class UpdateSubscriptionDto {
    * @example seller
    */
   @IsString()
+  @IsOptional()
   type: string;
 
   /**
@@ -13,5 +14,6 @@ export class UpdateSubscriptionDto {
    * @example active
    */
   @IsString()
+  @IsOptional()
   status: string;
 }

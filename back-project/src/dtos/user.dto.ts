@@ -1,11 +1,11 @@
 // import { SubscriptionType, UserRole } from 'src/entities/User.entity';
 
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, PickType } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
 // import { UserRole } from 'src/enums/roles.enum';
 // import { Column, PrimaryGeneratedColumn } from 'typeorm';
 
-export class CreateUserDto {
+export class CreateUserDTO {
   // @ApiProperty()
   // @PrimaryGeneratedColumn('uuid')
   // id:string
@@ -28,9 +28,9 @@ export class CreateUserDto {
 
   @IsString()
   @MinLength(6)
-  @ApiProperty({ 
+  @ApiProperty({
     example: 'password',
-   description: 'Contraseña del usuario' 
+    description: 'Contraseña del usuario',
   })
   password: string;
 
@@ -41,7 +41,7 @@ export class CreateUserDto {
   //   subcription: SubscriptionType;
 }
 
-export class UpdateUserDto {
+export class UpdateUserDTO {
   @ApiProperty({ example: 'Jorge Vega' })
   name?: string;
 
@@ -51,3 +51,8 @@ export class UpdateUserDto {
   @ApiProperty({ example: 'password' })
   password?: string;
 }
+
+export class LoginUsersDTO extends PickType(CreateUserDTO, [
+  'email',
+  'password',
+]) {}

@@ -8,7 +8,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto, UpdateUserDto } from 'src/dtos/user.dto';
+import { CreateUserDTO, LoginUsersDTO, UpdateUserDTO } from 'src/dtos/user.dto';
 import { Users } from 'src/entities/User.entity';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
 
@@ -17,32 +17,46 @@ import { ApiBody, ApiTags } from '@nestjs/swagger';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  //POST User
   @Post()
-  @ApiBody({ type : CreateUserDto})
-  create(@Body() createUserDto: CreateUserDto): Promise<Users> {
-    return this.userService.create(createUserDto);
+  @ApiBody({ type: CreateUserDTO })
+  create(@Body() user: CreateUserDTO): Promise<Users> {
+    return this.userService.createUser(user);
   }
-
+  //GET UserID
   @Get(':id')
   findOne(@Param('id') id: string): Promise<Users> {
-    return this.userService.findOne(id);
+    return this.userService.findOneUser(id);
   }
-
+  //GET AllUser
   @Get()
   findAll(): Promise<Users[]> {
-    return this.userService.findAll();
+    return this.userService.findAllUser();
   }
-
+//PUT User
   @Put(':id')
   update(
     @Param('id') id: string,
-    @Body() updateUserDto: UpdateUserDto,
+    @Body() updateUser: UpdateUserDTO,
   ): Promise<Users> {
-    return this.userService.update(id, updateUserDto);
+    return this.userService.updateUser(id, updateUser);
   }
-
+//DELETE for UserID
   @Delete(':id')
   remove(@Param('id') id: string): Promise<void> {
-    return this.userService.remove(id);
+    return this.userService.removeUser(id);
+  }
+//POST login
+  @Post('signin')
+  @ApiBody({ type: LoginUsersDTO })
+  signIn(@Body() login: LoginUsersDTO) {
+    const { email, password } = login;
+    return this.userService.signIn(email, password);
+  }
+//POST Register
+  @Post('signup')
+  @ApiBody({ type: CreateUserDTO })
+  signUp(@Body() user: CreateUserDTO) {
+    return this.userService.signUp(user);
   }
 }

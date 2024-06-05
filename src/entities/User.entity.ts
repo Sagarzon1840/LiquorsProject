@@ -9,7 +9,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Subscription } from './Subscription.entity';
-import { Reviews } from './review.entity';
+import { Reviews } from './Review.entity';
 import { Product } from './Product.entity';
 import { UserRole } from 'src/enums/roles.enum';
 

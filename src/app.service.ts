@@ -39,7 +39,7 @@ export class AppService implements OnModuleInit {
   }
 
   async addProductSeeder() {
-    const { id } = await this.usersRepository.findOne({
+    const user = await this.usersRepository.findOne({
       where: { email: 'jane.doe@example.com' },
     });
 
@@ -53,7 +53,7 @@ export class AppService implements OnModuleInit {
       newProduct.brand = product.brand;
       newProduct.country = product.country;
       newProduct.size = product.size;
-      newProduct.userId = id;
+      newProduct.seller = user;
 
       await this.productRepository
         .createQueryBuilder()

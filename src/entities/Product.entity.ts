@@ -3,6 +3,7 @@ import {
   Entity,
   JoinColumn,
   ManyToMany,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -41,8 +42,8 @@ export class Product {
   @Column()
   size: string;
 
-  @Column()
-  userId: string;
+  @ManyToOne(() => Users, (user) => user.products_id)
+  seller: Users;
 
   @JoinColumn({ name: 'review_id' })
   @OneToMany(() => Reviews, (reviews) => reviews.productId)

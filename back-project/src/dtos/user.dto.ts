@@ -1,7 +1,7 @@
 // import { SubscriptionType, UserRole } from 'src/entities/User.entity';
 
 import { ApiProperty, PickType } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, IsString, MinLength } from 'class-validator';
 // import { UserRole } from 'src/enums/roles.enum';
 // import { Column, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -34,10 +34,17 @@ export class CreateUserDTO {
   })
   password: string;
 
+  @IsString()
+  @IsOptional()
+  @ApiProperty({
+    example: 'firebaseUid12345678',
+    description: 'UID de Firebase del usuario',
+  })
+  firebaseUid?: string;
+
   // @ApiProperty({enum:UserRole})
   // @Column()
   // role: UserRole;
-
   //   subcription: SubscriptionType;
 }
 
@@ -56,3 +63,13 @@ export class LoginUsersDTO extends PickType(CreateUserDTO, [
   'email',
   'password',
 ]) {}
+
+export class FirebaseDTO{
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty({
+    example:'firebaseToken',
+    description:'Token de autenticación de Firebase',
+  })
+  token:string;
+}

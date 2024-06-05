@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import * as admin from 'firebase-admin';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDTO, UpdateUserDTO } from 'src/dtos/user.dto';
 import { Users } from 'src/entities/User.entity';
@@ -21,15 +22,18 @@ export class UserService {
   ) {}
 
   //---------------------Create a new user-------------------------
-  async createUser(createUserDto: CreateUserDTO): Promise<Users> {
-    const { email } = createUserDto;
+  async createUser(user: CreateUserDTO): Promise<Users> {
+    const { email, firebaseUid } = user;
     const existingUser = await this.usersRepository.findOne({
       where: { email },
     });
     if (existingUser) {
       throw new ConflictException('Email ya registrado!');
     }
-    const newUser = this.usersRepository.create(createUserDto);
+    const newUser = this.usersRepository.create({
+      ...user,
+      firebaseUid,
+    });
     return await this.usersRepository.save(newUser);
   }
   //---------------------Find a user by ID------------------------
@@ -111,6 +115,42 @@ export class UserService {
       password: hashedPassword,
     });
     //return save new User
+    return await this.usersRepository.save(newUser);
+  }
+  //-----------------User sign in with Firebase--------------------
+  async signInWithFirebase(token: string) {
+    const decodedToken = await admin.auth().verifyIdToken(token);
+    const { email } = decodedToken;
+
+    const user = await this.usersRepository.findOne({ where: { email } });
+    if (!user) {
+      throw new NotFoundException(
+        `Usuario con email ${email} no fue encontrado.`,
+      );
+    }
+
+    const payload = { id: user.id, email: user.email, role: user.role };
+    const jwtToken = this.jwtService.sign(payload);
+
+    return {
+      message: 'Usuario exitosamente logueado!',
+      token: jwtToken,
+    };
+  }
+  //-------------------User Sign Up with Firebase----------------
+  async signUpWithFirebase(token: string) {
+    const decodedToken = await admin.auth().verifyIdToken(token);
+    const { email, uid: firebaseUid } = decodedToken;
+
+    const foundUser = await this.usersRepository.findOne({ where: { email } });
+    if (foundUser) {
+      throw new BadRequestException('El email ya está registrado.');
+    }
+
+    const newUser = this.usersRepository.create({
+      email,
+      firebaseUid,
+    });
     return await this.usersRepository.save(newUser);
   }
 }

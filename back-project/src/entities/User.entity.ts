@@ -50,6 +50,14 @@ export class Users {
   })
   role: UserRole;
 
+  @Column({
+    type:'varchar',
+    length:128,
+    nullable:true,
+    unique:true
+  })
+  firebaseUid:string
+
   @JoinColumn({ name: 'subscriptionId' })
   @OneToOne(() => Subscription, (subscription) => subscription.userId)
   subscriptionId: Subscription;
@@ -68,4 +76,8 @@ export class Users {
     },
   })
   favorites: Product[];
+
+//@OneToMany(()=>Product, (prod)=>prod.seller)
+//products_id: Product[]
+
 }

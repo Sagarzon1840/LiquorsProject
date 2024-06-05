@@ -6,9 +6,8 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Reviews } from './review.entity';
+import { Reviews } from './Review.entity';
 import { Users } from './User.entity';
-
 
 @Entity({
   name: 'products',
@@ -23,14 +22,14 @@ export class Product {
   @Column({ type: 'text', nullable: false })
   description: string;
 
-  @Column({type: 'text', nullable: true})
+  @Column({ type: 'text', nullable: true })
   imgUrl: string;
-  
+
   @Column({ type: 'varchar', length: 30, nullable: false })
   category: string;
-  
+
   // alchol by volumen
-  @Column({type: 'float', nullable: false})
+  @Column({ type: 'float', nullable: false })
   abv: number;
 
   @Column()
@@ -49,6 +48,6 @@ export class Product {
   @OneToMany(() => Reviews, (reviews) => reviews.productId)
   reviewId: Reviews[];
 
-  @ManyToMany(()=> Users, (user)=> user.favorites)
+  @ManyToMany(() => Users, (user) => user.favorites)
   users: Users[];
 }

@@ -53,7 +53,7 @@ export class ProductService {
       name: newProduct.name,
     });
 
-    user.products_id = isProduct;
+    user.products_id.push(isProduct);
 
     await this.userRepository.update(user.id, user);
 

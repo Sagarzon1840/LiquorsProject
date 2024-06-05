@@ -1,9 +1,7 @@
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { Users } from './User.entity';
 
-@Entity({
-  name: 'subscription',
-})
+@Entity()
 export class Subscription {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -12,7 +10,10 @@ export class Subscription {
   type: string;
 
   @Column()
-  status: 'active' | 'inactive';
+  status: string;
+
+  @Column()
+  amount: number;
 
   @Column()
   dateInit: Date;
@@ -20,9 +21,6 @@ export class Subscription {
   @Column()
   dateFin: Date;
 
-  @Column()
-  price: number;
-
-  @OneToOne(() => Users, (user) => user.subscriptionId)
-  userId: Users;
+  @ManyToOne(() => Users, user => user.subscription)
+  user: Users;
 }

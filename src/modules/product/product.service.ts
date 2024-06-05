@@ -49,7 +49,15 @@ export class ProductService {
     newProduct.size = product.size;
 
     await this.productRepository.save(newProduct);
-    return newProduct;
+    const isProduct = await this.productRepository.findOneBy({
+      name: newProduct.name,
+    });
+
+    user.products_id = isProduct;
+
+    await this.userRepository.update(user.id, user);
+
+    return isProduct;
   }
 
   async updateProduct(id: string, product: ProductDto) {

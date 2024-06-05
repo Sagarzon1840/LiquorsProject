@@ -6,6 +6,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from 'src/entities/Product.entity';
 import { Users } from './entities/User.entity';
 import * as bcrypt from 'bcrypt';
+
 @Injectable()
 export class AppService implements OnModuleInit {
   constructor(

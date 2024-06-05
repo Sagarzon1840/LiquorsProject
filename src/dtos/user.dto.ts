@@ -1,11 +1,11 @@
 // import { SubscriptionType, UserRole } from 'src/entities/User.entity';
 
-import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
+import { ApiProperty, PickType } from '@nestjs/swagger';
+import { IsEmail, IsNotEmpty, IsOptional, IsString, MinLength } from 'class-validator';
 // import { UserRole } from 'src/enums/roles.enum';
 // import { Column, PrimaryGeneratedColumn } from 'typeorm';
 
-export class CreateUserDto {
+export class CreateUserDTO {
   // @ApiProperty()
   // @PrimaryGeneratedColumn('uuid')
   // id:string
@@ -28,20 +28,27 @@ export class CreateUserDto {
 
   @IsString()
   @MinLength(6)
-  @ApiProperty({ 
+  @ApiProperty({
     example: 'password',
-   description: 'Contraseña del usuario' 
+    description: 'Contraseña del usuario',
   })
   password: string;
+
+  @IsString()
+  @IsOptional()
+  @ApiProperty({
+    example: 'firebaseUid12345678',
+    description: 'UID de Firebase del usuario',
+  })
+  firebaseUid?: string;
 
   // @ApiProperty({enum:UserRole})
   // @Column()
   // role: UserRole;
-
   //   subcription: SubscriptionType;
 }
 
-export class UpdateUserDto {
+export class UpdateUserDTO {
   @ApiProperty({ example: 'Jorge Vega' })
   name?: string;
 
@@ -50,4 +57,19 @@ export class UpdateUserDto {
 
   @ApiProperty({ example: 'password' })
   password?: string;
+}
+
+export class LoginUsersDTO extends PickType(CreateUserDTO, [
+  'email',
+  'password',
+]) {}
+
+export class FirebaseDTO{
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty({
+    example:'firebaseToken',
+    description:'Token de autenticación de Firebase',
+  })
+  token:string;
 }

@@ -38,9 +38,9 @@ export class Users {
   @Column({
     type: 'varchar',
     length: 128, //bcript
-    nullable: false,
+    nullable: true,
   })
-  password: string;
+  password?: string;
 
   @Column({
     type: 'enum',

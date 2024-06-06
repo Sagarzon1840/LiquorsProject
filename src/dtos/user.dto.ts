@@ -1,7 +1,7 @@
 // import { SubscriptionType, UserRole } from 'src/entities/User.entity';
 
-import { ApiProperty, PickType } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, IsOptional, IsString, MinLength } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 // import { UserRole } from 'src/enums/roles.enum';
 // import { Column, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -26,13 +26,13 @@ export class CreateUserDTO {
   })
   email: string;
 
-  @IsString()
-  @MinLength(6)
-  @ApiProperty({
-    example: 'password',
-    description: 'Contraseña del usuario',
-  })
-  password: string;
+  // @IsString()
+  // @MinLength(6)
+  // @ApiProperty({
+  //   example: 'password',
+  //   description: 'Contraseña del usuario',
+  // })
+  // password?: string;
 
   @IsString()
   @IsOptional()
@@ -55,21 +55,17 @@ export class UpdateUserDTO {
   @ApiProperty({ example: 'jorge@gmail.com' })
   email?: string;
 
-  @ApiProperty({ example: 'password' })
-  password?: string;
+  // @ApiProperty({ example: 'password' })
+  // password?: string;
 }
 
-export class LoginUsersDTO extends PickType(CreateUserDTO, [
-  'email',
-  'password',
-]) {}
-
-export class FirebaseDTO{
-  @IsString()
-  @IsNotEmpty()
-  @ApiProperty({
-    example:'firebaseToken',
-    description:'Token de autenticación de Firebase',
-  })
-  token:string;
+export class LoginUsersDTO {
+  // login devolver nombre y email y el token de la persona 
+  //recibo email, uuid 
+  
+  @ApiProperty()
+  email: string;
+  
+  @ApiProperty()
+  id: string;
 }

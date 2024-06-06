@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ReviewsController } from './reviews.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Reviews } from 'src/entities/review.entity';
+import { Reviews } from 'src/entities/Review.entity';
 import { ReviewsService } from './reviews.service';
-import { Product } from 'src/entities/product.entity';
+import { Product } from 'src/entities/Product.entity';
 import { Users } from 'src/entities/User.entity';
 
 @Module({

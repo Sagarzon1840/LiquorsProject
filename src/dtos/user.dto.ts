@@ -1,11 +1,11 @@
 // import { SubscriptionType, UserRole } from 'src/entities/User.entity';
 
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 // import { UserRole } from 'src/enums/roles.enum';
 // import { Column, PrimaryGeneratedColumn } from 'typeorm';
 
-export class CreateUserDto {
+export class CreateUserDTO {
   // @ApiProperty()
   // @PrimaryGeneratedColumn('uuid')
   // id:string
@@ -26,28 +26,46 @@ export class CreateUserDto {
   })
   email: string;
 
+  // @IsString()
+  // @MinLength(6)
+  // @ApiProperty({
+  //   example: 'password',
+  //   description: 'Contraseña del usuario',
+  // })
+  // password?: string;
+
   @IsString()
-  @MinLength(6)
-  @ApiProperty({ 
-    example: 'password',
-   description: 'Contraseña del usuario' 
+  @IsOptional()
+  @ApiProperty({
+    example: 'firebaseUid12345678',
+    description: 'UID de Firebase del usuario',
   })
-  password: string;
+  firebaseUid?: string;
 
   // @ApiProperty({enum:UserRole})
   // @Column()
   // role: UserRole;
-
   //   subcription: SubscriptionType;
 }
 
-export class UpdateUserDto {
+export class UpdateUserDTO {
   @ApiProperty({ example: 'Jorge Vega' })
   name?: string;
 
   @ApiProperty({ example: 'jorge@gmail.com' })
   email?: string;
 
-  @ApiProperty({ example: 'password' })
-  password?: string;
+  // @ApiProperty({ example: 'password' })
+  // password?: string;
+}
+
+export class LoginUsersDTO {
+  // login devolver nombre y email y el token de la persona 
+  //recibo email, uuid 
+  
+  @ApiProperty()
+  email: string;
+  
+  @ApiProperty()
+  id: string;
 }

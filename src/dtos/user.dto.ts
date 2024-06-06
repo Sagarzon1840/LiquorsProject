@@ -62,10 +62,10 @@ export class UpdateUserDTO {
 export class LoginUsersDTO {
   // login devolver nombre y email y el token de la persona 
   //recibo email, uuid 
-  
-  @ApiProperty()
+
+  @ApiProperty({example:'jorge@gmail.com'})
   email: string;
   
-  @ApiProperty()
-  id: string;
+  @ApiProperty({example:'firebaseUid12345678'})
+  firebaseUid12345678: string;
 }

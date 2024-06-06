@@ -35,12 +35,12 @@ export class Users {
   })
   email: string;
 
-  @Column({
-    type: 'varchar',
-    length: 128, //bcript
-    nullable: true,
-  })
-  password?: string;
+  // @Column({
+  //   type: 'varchar',
+  //   length: 128, //bcript
+  //   nullable: true,
+  // })
+  // password?: string;
 
   @Column({
     type: 'enum',

@@ -74,9 +74,9 @@ export class UserService {
   }
   //********************LoginUsers***************************
   //--------------------User sign in-------------------------
-  //email, uuid
+  //email, uuidfirebase
   async signIn(login: LoginUsersDTO) {
-    const { email, id } = login;
+    const { email, firebaseUid12345678 } = login;
     //find User.email
     const user = await this.usersRepository.findOne({ where: { email } });
     if (!user) {
@@ -84,9 +84,10 @@ export class UserService {
         `Usuario con email ${email} no fue encontrado`,
       );
     }
-    if (user.id !== id) {
+    if (firebaseUid12345678!== user.firebaseUid) {
       throw new BadRequestException('Credenciales incorrectas');
     }
+    
     const payload={
       id:user.id,
       email:user.email,

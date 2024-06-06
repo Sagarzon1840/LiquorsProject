@@ -88,13 +88,15 @@ export class UserService {
       throw new BadRequestException('Credenciales incorrectas');
     }
     const payload={
-      id,
-      email,
+      id:user.id,
+      email:user.email,
       role:user.role
     }
     const token=this.jwtService.sign(payload)
     return {
       message: 'Usuario exitosamente logueado!',
+      id :user.id,
+      name:user.name,
       token
     };
   }

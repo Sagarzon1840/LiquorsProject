@@ -60,6 +60,9 @@ export class UpdateUserDTO {
 }
 
 export class LoginUsersDTO {
+  // login devolver nombre y email y el token de la persona 
+  //recibo email, uuid 
+  
   @ApiProperty()
   email: string;
   

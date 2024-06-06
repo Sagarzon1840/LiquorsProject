@@ -1,10 +1,10 @@
 import {
-  BadRequestException,
+  // BadRequestException,
   Body,
   Controller,
   Delete,
   Get,
-  NotFoundException,
+  // NotFoundException,
   Param,
   Post,
   Put,
@@ -12,7 +12,6 @@ import {
 import { UserService } from './user.service';
 import {
   CreateUserDTO,
-  FirebaseDTO,
   LoginUsersDTO,
   UpdateUserDTO,
 } from 'src/dtos/user.dto';
@@ -55,11 +54,11 @@ export class UserController {
   }
   //POST signin
   @Post('signin')
-  @ApiBody({ type: LoginUsersDTO })
+  @ApiBody({ type:LoginUsersDTO })
   signIn(@Body() login: LoginUsersDTO) {
-    const { email, password } = login;
-    return this.userService.signIn(email, password);
+    return this.userService.signIn(login);
   }
+
   //POST signup
   @Post('signup')
   @ApiBody({ type: CreateUserDTO })
@@ -67,28 +66,5 @@ export class UserController {
     return this.userService.signUp(user);
   }
 
-  //POST signIn_Firebase
-  @Post('firebase/signIn')
-  @ApiBody({ type: FirebaseDTO })
-  signInWithFirebase(@Body() firebase: FirebaseDTO) {
-    try {
-      const { token } = firebase;
-      return { message: 'Usuario exitosamente logueado!', token:token };
-    } catch (error) {
-      // Manejo de errores
-      if (error instanceof NotFoundException) {
-        throw new NotFoundException(error.message);
-      } else {
-        throw new BadRequestException('Error al iniciar sesión con Firebase');
-      }
-    }
-  }
-
-  //POST signUp_Firebase
-  @Post('firebase/signUp')
-  @ApiBody({ type: FirebaseDTO })
-  signUpWithFirebase(@Body() firebase: FirebaseDTO) {
-    const { token } = firebase;
-    return this.userService.signUpWithFirebase(token);
-  }
+ 
 }

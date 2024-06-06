@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Users } from 'src/entities/User.entity';
 import { Product } from 'src/entities/Product.entity';
@@ -14,22 +18,26 @@ export class ReviewsService {
   ) {}
 
   async createReview(
-    userId: string,
-    productId: string,
+    idUser: string,
+    idProduct: string,
     review: Partial<Reviews>,
   ) {
-    const user = await this.usersRepository.findOneBy({ id: userId });
-    if (!user) throw new NotFoundException(`User with id ${userId} not found`);
+    const user = await this.usersRepository.findOneBy({ id: idUser });
+    if (!user) throw new NotFoundException(`User with id ${idUser} not found`);
 
-    const product = await this.productRepository.findOneBy({ id: productId });
-    if (!product) throw new NotFoundException(`Product with id ${productId}`);
+    const product = await this.productRepository.findOneBy({ id: idProduct });
+    if (!product) throw new NotFoundException(`Product with id ${idProduct}`);
 
     const newReview = new Reviews();
-    newReview.comment = review.comment;
-    newReview.rate = review.rate;
-    newReview.userId = review.userId;
-    newReview.productId = review.productId;
 
+    try {
+      newReview.comment = review.comment;
+      newReview.rate = parseFloat(review.rate.toString());
+      newReview.userId = user;
+      newReview.productId = product;
+    } catch (error) {
+      throw new BadRequestException(`Review creation error: ${error.message}`);
+    }
     const uploadReview = await this.reviewRepository.save(newReview);
 
     return uploadReview;
@@ -41,8 +49,8 @@ export class ReviewsService {
     if (!product) throw new NotFoundException(`Product with id ${productId}`);
 
     let reviews = await this.reviewRepository.find({
-      where: { id: product.id },
-      relations: { userId: true },
+      where: { productId: { id: productId } },
+      relations: ['userId'],
     });
     const startIndex = (page - 1) * limit;
     const endIndex = startIndex + limit;
@@ -55,16 +63,30 @@ export class ReviewsService {
   async getUserReviews(userId: string, page: number, limit: number) {
     //Buscar User
     const user = await this.usersRepository.findOneBy({ id: userId });
-    if (!user) throw new NotFoundException(`Product with id ${userId}`);
+    if (!user) throw new NotFoundException(`User with id ${userId}`);
 
     let reviews = await this.reviewRepository.find({
-      where: { id: user.id },
-      relations: { productId: true },
+      where: { userId: { id: userId } },
+      relations: ['productId'],
     });
     const startIndex = (page - 1) * limit;
     const endIndex = startIndex + limit;
 
     reviews = reviews.slice(startIndex, endIndex);
+    return reviews;
+  }
+
+  async getAllReviews(page: number, limit: number) {
+    const startIndex = (page - 1) * limit;
+
+    const reviews = await this.reviewRepository
+      .createQueryBuilder('review')
+      .leftJoinAndSelect('review.userId', 'user')
+      .leftJoinAndSelect('review.productId', 'product')
+      .select(['review', 'user.id', 'user.name', 'product.id', 'product.name'])
+      .skip(startIndex)
+      .take(limit)
+      .getMany();
 
     return reviews;
   }
@@ -74,7 +96,7 @@ export class ReviewsService {
 
     const foundReview = await this.reviewRepository.findOneBy({ id });
     if (!foundReview)
-      throw new NotFoundException(`Product with id ${id} not found`);
+      throw new NotFoundException(`Review with id ${id} not found`);
 
     return foundReview;
   }
@@ -83,8 +105,8 @@ export class ReviewsService {
     const foundReview = this.reviewRepository.findOneBy({ id });
     if (foundReview) {
       await this.reviewRepository.delete({ id });
-      return id;
+      return `Review with ${id} deleted`;
     }
-    throw new NotFoundException(`Product with id ${id} not found`);
+    throw new NotFoundException(`Review with id ${id} not found`);
   }
 }

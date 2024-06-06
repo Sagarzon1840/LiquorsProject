@@ -1,8 +1,12 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
   Get,
+  HttpException,
+  HttpStatus,
+  NotFoundException,
   Param,
   ParseUUIDPipe,
   Post,
@@ -14,27 +18,34 @@ import { UpdateSubscriptionDto } from 'src/dtos/updateSubscription.dto';
 
 @Controller('subscription')
 export class SubcriptionController {
-  constructor(private readonly subcriptionService: SubscriptionService) {}
+  constructor(private readonly subscriptionService: SubscriptionService) {}
 
   @Get()
   getSubcription() {
-    return this.subcriptionService.getSubcription();
+    return this.subscriptionService.getSubcription();
   }
 
   @Put(':id')
   updateSubcriptionType(@Param('id') id: string, @Body() updateSubscriptionDto: UpdateSubscriptionDto) {
-    return this.subcriptionService.updateSubcriptionType(id, updateSubscriptionDto.type, updateSubscriptionDto.status);
+    return this.subscriptionService.updateSubscriptionType(id, updateSubscriptionDto.type, updateSubscriptionDto.status);
   }
 
   @Post(':id')
   createSubcriptionType(
-    @Param("id",ParseUUIDPipe)id:string,
-    @Body() susbcription:SubscriptionDto) {
-    return this.subcriptionService.createSubcription(id,susbcription);
+    @Param("id", ParseUUIDPipe) id: string,
+    @Body() subscription: SubscriptionDto) {
+    return this.subscriptionService.createSubscription(id, subscription);
   }
 
   @Delete(':id')
-  deleteSubcription(@Param("id", ParseUUIDPipe) id:string) {
-    return this.subcriptionService.deleteSubcription(id);
+  async deleteSubscription(@Param('id', ParseUUIDPipe) id: string) {
+    try {
+      return await this.subscriptionService.deleteSubscription(id);
+    } catch (error) {
+      if (error instanceof NotFoundException || error instanceof BadRequestException) {
+        throw new HttpException(error.message, error.getStatus());
+      }
+      throw new HttpException('Internal server error', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 }

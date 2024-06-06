@@ -2,13 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FilterDto } from 'src/dtos/filter.dto';
 import { ProductDto } from 'src/dtos/product.dto';
-import { Product } from 'src/entities/Product.entity';
+import { Users } from 'src/entities/User.entity';
+import { Product } from 'src/entities/product.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
 export class ProductService {
   constructor(
     @InjectRepository(Product) private productRepository: Repository<Product>,
+    @InjectRepository(Users) private userRepository: Repository<Users>,
   ) {}
 
   async getAllProducts(filters: FilterDto, page: number, limit: number) {
@@ -34,7 +36,9 @@ export class ProductService {
   async createProduct(product: ProductDto, id: string) {
     const newProduct = new Product();
 
-    newProduct.userId = id;
+    const user = await this.userRepository.findOneBy({ id });
+
+    newProduct.seller = user;
     newProduct.name = product.name;
     newProduct.description = product.description;
     newProduct.category = product.category;
@@ -45,7 +49,8 @@ export class ProductService {
     newProduct.size = product.size;
 
     await this.productRepository.save(newProduct);
-    return newProduct;
+
+    return { message: 'product created' };
   }
 
   async updateProduct(id: string, product: ProductDto) {

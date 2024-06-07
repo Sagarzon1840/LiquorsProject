@@ -87,9 +87,9 @@ export class SubscriptionService {
           failure: 'http://localhost:3000/home',
           pending: 'http://localhost:3000/home'
         },
-        notification_url: "https://568e-2803-9800-b8ca-80aa-9155-4909-4b3a-e70d.ngrok-free.app/subscription"
+        notification_url: "https://4dc4-2803-9800-b8ca-80aa-5c5d-ac43-c759-ec49.ngrok-free.app/subscription"
       };
-
+      
       const preferenceResponse = await this.preference.create({
         body: preferenceData,
       });

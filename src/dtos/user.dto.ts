@@ -42,6 +42,14 @@ export class CreateUserDTO {
   })
   firebaseUid?: string;
 
+  @IsString()
+  @IsOptional()
+  @ApiProperty({
+    example: 'google.com',
+    description: 'Proveedorde autenticación del usuario',
+  })
+  provider?: string;
+
   // @ApiProperty({enum:UserRole})
   // @Column()
   // role: UserRole;
@@ -60,12 +68,27 @@ export class UpdateUserDTO {
 }
 
 export class LoginUsersDTO {
-  // login devolver nombre y email y el token de la persona 
-  //recibo email, uuid 
-
-  @ApiProperty({example:'jorge@gmail.com'})
+  @ApiProperty({ example: 'jorge@gmail.com' })
   email: string;
-  
-  @ApiProperty({example:'firebaseUid12345678'})
-  firebaseUid12345678: string;
+
+  @ApiProperty({ example: 'firebaseUid12345678' })
+  firebaseUid: string;
 }
+
+//no se utiliza por que es el mismo campo del createUser
+// export class RegisterUsersDTO {
+// login devolver nombre y email y el token de la persona
+//recibo email, uuid
+
+//   @ApiProperty({ example: 'jorge@gmail.com' })
+//   email: string;
+
+//   @ApiProperty({ example: 'firebaseUid12345678' })
+//   firebaseUid: string;
+
+//   @ApiProperty({
+//     example: 'google.com',
+//     description: 'Proveedor de autenticación del usuario',
+//   })
+//   provider?: string;
+

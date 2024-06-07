@@ -22,12 +22,12 @@ export class ReviewsController {
   @ApiQuery({ name: 'page', description: 'Página a mostrar', required: false })
   @ApiQuery({
     name: 'limit',
-    description: 'Límite de productos por página',
+    description: 'Límite de productos por página. Por defecto 5.',
     required: false,
   })
   @ApiParam({
     name: 'id',
-    description: 'id del producto para obtener sus reviews',
+    description: 'id del producto para obtener sus reviews. Por defecto 1.',
     required: true,
   })
   @Get('product/:id')
@@ -48,12 +48,12 @@ export class ReviewsController {
   @ApiQuery({ name: 'page', description: 'Página a mostrar', required: false })
   @ApiQuery({
     name: 'limit',
-    description: 'Límite de productos por página',
+    description: 'Límite de productos por página. Por defecto 5.',
     required: false,
   })
   @ApiParam({
     name: 'id',
-    description: 'id del user para obtener sus reviews',
+    description: 'id del user para obtener sus reviews. Por defecto 1.',
     required: true,
   })
   @Get('user/:id')

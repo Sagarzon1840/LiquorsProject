@@ -1,7 +1,7 @@
 // import { SubscriptionType, UserRole } from 'src/entities/User.entity';
 
-import { ApiProperty, PickType } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, IsOptional, IsString, MinLength } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 // import { UserRole } from 'src/enums/roles.enum';
 // import { Column, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -26,13 +26,13 @@ export class CreateUserDTO {
   })
   email: string;
 
-  @IsString()
-  @MinLength(6)
-  @ApiProperty({
-    example: 'password',
-    description: 'Contraseña del usuario',
-  })
-  password: string;
+  // @IsString()
+  // @MinLength(6)
+  // @ApiProperty({
+  //   example: 'password',
+  //   description: 'Contraseña del usuario',
+  // })
+  // password?: string;
 
   @IsString()
   @IsOptional()
@@ -41,6 +41,14 @@ export class CreateUserDTO {
     description: 'UID de Firebase del usuario',
   })
   firebaseUid?: string;
+
+  @IsString()
+  @IsOptional()
+  @ApiProperty({
+    example: 'google.com',
+    description: 'Proveedorde autenticación del usuario',
+  })
+  provider?: string;
 
   // @ApiProperty({enum:UserRole})
   // @Column()
@@ -55,21 +63,32 @@ export class UpdateUserDTO {
   @ApiProperty({ example: 'jorge@gmail.com' })
   email?: string;
 
-  @ApiProperty({ example: 'password' })
-  password?: string;
+  // @ApiProperty({ example: 'password' })
+  // password?: string;
 }
 
-export class LoginUsersDTO extends PickType(CreateUserDTO, [
-  'email',
-  'password',
-]) {}
+export class LoginUsersDTO {
+  @ApiProperty({ example: 'jorge@gmail.com' })
+  email: string;
 
-export class FirebaseDTO{
-  @IsString()
-  @IsNotEmpty()
-  @ApiProperty({
-    example:'firebaseToken',
-    description:'Token de autenticación de Firebase',
-  })
-  token:string;
+  @ApiProperty({ example: 'firebaseUid12345678' })
+  firebaseUid: string;
 }
+
+//no se utiliza por que es el mismo campo del createUser
+// export class RegisterUsersDTO {
+// login devolver nombre y email y el token de la persona
+//recibo email, uuid
+
+//   @ApiProperty({ example: 'jorge@gmail.com' })
+//   email: string;
+
+//   @ApiProperty({ example: 'firebaseUid12345678' })
+//   firebaseUid: string;
+
+//   @ApiProperty({
+//     example: 'google.com',
+//     description: 'Proveedor de autenticación del usuario',
+//   })
+//   provider?: string;
+// }

@@ -9,6 +9,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDTO, LoginUsersDTO, UpdateUserDTO } from 'src/dtos/user.dto';
 import { Users } from 'src/entities/User.entity';
 import { Repository } from 'typeorm';
+// import { User } from 'mercadopago';
 
 @Injectable()
 export class UserService {
@@ -189,5 +190,4 @@ export class UserService {
       throw new Error('Ha ocurrido un error al registrar el usuario.');
     }
   }
-
 }

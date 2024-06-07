@@ -4,7 +4,11 @@ import { Repository } from 'typeorm';
 import { Subscription } from '../../entities/Subscription.entity';
 import { Users } from 'src/entities/User.entity';
 import { SubscriptionDto } from 'src/dtos/subscription.dto';
-import { MercadoPagoConfig, Preference } from 'mercadopago';
+import { MercadoPagoConfig, Payment, Preference } from 'mercadopago';
+import { SubDto } from 'src/dtos/sub.dto';
+import { PaymentSearchData } from 'mercadopago/dist/clients/payment/search/types';
+import { UserRole } from 'src/enums/roles.enum';
+// import * as mercadopago from 'mercadopago';
 
 @Injectable()
 export class SubscriptionService {
@@ -19,7 +23,7 @@ export class SubscriptionService {
     private usersRepository: Repository<Users>,
   ) {
     this.client = new MercadoPagoConfig({
-      accessToken: 'TEST-8579480717945015-060511-c10487fc986c430016b3b663064f7104-1845423782',
+      accessToken: 'TEST-720609286863999-060501-d1863148fd64d41481d5501518cd9b73-1842406931', // Reemplaza con tu access token real
       options: { timeout: 5000, idempotencyKey: 'abc' },
     });
     this.preference = new Preference(this.client);
@@ -58,59 +62,67 @@ export class SubscriptionService {
     }
   }
 
-
-  async createSubscription(userId: string, subscriptionDto: SubscriptionDto) {
+  async createFactura(userId: string, subscriptionDto: SubscriptionDto) {
+    
     try {
       const user = await this.usersRepository.findOne({ where: { id: userId } });
   
       if (!user) {
         throw new Error('User not found');
       }
-  
-      const dateInit = new Date();
-      const dateFin = new Date(dateInit.getTime());
-      dateFin.setDate(dateFin.getDate() + 30);
-  
-      const subscription = this.subscriptionRepository.create({
-        ...subscriptionDto,
-        user,
-        dateFin,
-        dateInit
-      });
-  
+
       const preferenceData = {
         items: [
           {
             id: '1',
             type: subscriptionDto.type,
-            status: subscriptionDto.status,
-            title: 'Subscription', // Valor por defecto
-            quantity: 1, // Valor por defecto
+            status: "inactive",
+            title: 'Subscription',
+            quantity: 1,
             unit_price: subscriptionDto.amount,
           },
         ],
         back_urls: {
-          success: 'http://localhost:3001/',
+          success: 'http://localhost:3000/home', 
+          failure: 'http://localhost:3000/home',
+          pending: 'http://localhost:3000/home'
         },
+        notification_url: "https://568e-2803-9800-b8ca-80aa-9155-4909-4b3a-e70d.ngrok-free.app/subscription"
       };
-  
+
       const preferenceResponse = await this.preference.create({
         body: preferenceData,
       });
-  
+      if (!userId) {
+        throw new BadRequestException('User ID is required for creating subscription');
+      }
+
+      
+      const dateInit = new Date();
+      const dateFin = new Date(dateInit.getTime());
+      dateFin.setDate(dateFin.getDate() + 30);
+
+      const subscription = this.subscriptionRepository.create({
+        ...subscriptionDto,
+        user,
+        dateFin,
+        dateInit,
+        status: 'inactive',
+        collector_Id: preferenceResponse.collector_id
+      });
+
       await this.subscriptionRepository.save(subscription);
       user.subscription = subscription;
       await this.usersRepository.save(user);
-  
+
       return preferenceResponse;
     } catch (error) {
       console.error(error);
       throw error;
     }
   }
-  
+
   async updateSubscriptionType(id: string, type: string, status: string) {
-    // Convertir el status a minúsculas para comparación
     status = status.toLowerCase();
   
     if (status === 'active' || status === 'inactive') {
@@ -136,8 +148,47 @@ export class SubscriptionService {
       throw new BadRequestException('El status es Incorrecto');
     }
   }
+  
+  async handlePaymentSuccess(dataId: PaymentSearchData, type: string) {
+    if (type === 'payment') {
+      try {
+        console.log('Payment Success - Data ID:', dataId);
+        console.log('Payment Success - Type:', type);
 
-  async paymentSuccess() {
-    return 'success';
+        const payment = new Payment(this.client);
+        const response : SubDto = await payment.search(dataId);
+
+        if (!response) {
+          throw new NotFoundException('Payment not found');
+        }
+
+        // Accedemos al objeto del pago
+        const paymentData = Number(response.results[0].collector_id);
+        const subscription = await this.subscriptionRepository.findOneBy({collector_Id:paymentData})
+        subscription.status = "active"
+        await this.subscriptionRepository.update(subscription.id,subscription)
+        const user = await this.usersRepository.findOneBy(subscription.user)
+        switch (subscription.type) {
+          case "premium":
+            user.role = UserRole.Premium
+            break;
+          case "seller":
+            user.role = UserRole.Seller
+            break;
+        }
+        await this.usersRepository.update(user.id, user)
+ 
+      } catch (error) {
+        this.logger.error(`Failed to retrieve payment for ID ${dataId}`, error.stack);
+        if (error.response && error.response.status === 404) {
+          console.error('Error during payment success processing:', error.response.data);
+        } else {
+          console.error('Error during payment success processing:', error);
+        }
+        throw error;
+      }
+    } else {
+      throw new BadRequestException('Invalid type');
+    }
   }
 }

@@ -1,5 +1,5 @@
 import {
-  // BadRequestException,
+
   Body,
   Controller,
   Delete,
@@ -13,7 +13,7 @@ import { UserService } from './user.service';
 import {
   CreateUserDTO,
   LoginUsersDTO,
-  UpdateUserDTO,
+  UpdateUserDTO
 } from 'src/dtos/user.dto';
 import { Users } from 'src/entities/User.entity';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
@@ -64,7 +64,7 @@ export class UserController {
   @ApiBody({ type: CreateUserDTO })
   signUp(@Body() user: CreateUserDTO) {
     return this.userService.signUp(user);
-  }
+  }  
 
  
 }

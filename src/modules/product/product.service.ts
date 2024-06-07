@@ -61,9 +61,21 @@ export class ProductService {
     return updateProduct;
   }
 
-  //cambiar id a string
   async deleteProduct(id: string) {
-    await this.productRepository.delete(id);
+    const product = await this.productRepository.findOne({
+      where: { id },
+      relations: { seller: true },
+    });
+    const user = await this.userRepository.findOne({
+      where: { id: product.seller.id },
+      relations: { products_id: true },
+    });
+    user.products_id = user.products_id.filter(
+      (element) => element !== product,
+    );
+    product.seller = null;
+    await this.userRepository.update(user.id, user);
+    await this.productRepository.delete(product.id);
     return { message: `el producto ha sido eliminado` };
   }
 }

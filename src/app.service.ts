@@ -34,8 +34,8 @@ export class AppService implements OnModuleInit {
   }
 
   async addUserSeeder() {
-    const hashedPassword = await bcrypt.hash(user.password, 10);
-    await this.usersRepository.save({ ...user, password: hashedPassword });
+    // const hashedPassword = await bcrypt.hash(user.password, 10);
+    await this.usersRepository.save({ ...user});
   }
 
   async addProductSeeder() {

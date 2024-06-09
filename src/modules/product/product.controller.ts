@@ -26,7 +26,20 @@ export class ProductController {
     description: 'Limite de por pagina',
     required: false,
   })
-  @ApiBody({ required: false })
+  @ApiQuery({ name: 'category', description: 'Categoria', required: false })
+  @ApiQuery({
+    name: 'adv',
+    description: 'Nivel de alcohol medido en volumen',
+    required: false,
+  })
+  @ApiQuery({ name: 'brand', description: 'Empresa', required: false })
+  @ApiQuery({ name: 'country', description: 'Ciudad', required: false })
+  @ApiQuery({
+    name: 'Size',
+    description: 'Tamaño de la botella',
+    required: false,
+  })
+  @ApiQuery({ name: 'rate', description: 'Rate del producto', required: false })
   @Get()
   getAllProducts(
     @Query('category') category: string = '',
@@ -34,11 +47,12 @@ export class ProductController {
     @Query('brand') brand: string = '',
     @Query('country') country: string = '',
     @Query('size') size: string = '',
+    @Query('rate') rate: number = 0,
     @Query('page') page: string = '1',
     @Query('limit') limit: string = '5',
   ) {
     return this.productsService.getAllProducts(
-      { category, abv, brand, country, size },
+      { category, abv, brand, country, size, rate },
       Number(page),
       Number(limit),
     );

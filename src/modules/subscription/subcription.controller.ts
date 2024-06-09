@@ -4,6 +4,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
   HttpException,
   HttpStatus,
   NotFoundException,
@@ -12,15 +13,15 @@ import {
   Post,
   Put,
   Query,
-  Req,
   Res,
 } from '@nestjs/common';
 import { SubscriptionService } from './subcription.service';
 import { SubscriptionDto } from 'src/dtos/subscription.dto';
 import { UpdateSubscriptionDto } from 'src/dtos/updateSubscription.dto';
-import { Request, request } from 'express';
-import { PaymentSearchData } from 'mercadopago/dist/clients/payment/search/types';
+import { Response } from 'express';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Subscription')
 @Controller('subscription')
 export class SubcriptionController {
   constructor(private readonly subscriptionService: SubscriptionService) {}
@@ -38,7 +39,9 @@ export class SubcriptionController {
   @Post(':id')
   createSubcriptionType(
     @Param("id", ParseUUIDPipe) id: string,
-    @Body() subscription: SubscriptionDto) {
+    @Body() subscription: SubscriptionDto
+    ) 
+  {
     return this.subscriptionService.createFactura(id, subscription);
   }
 
@@ -54,10 +57,17 @@ export class SubcriptionController {
     }
   }
 
+  @HttpCode(200)
   @Post()
-  async paymentSuccess(@Query('data.id') dataId: PaymentSearchData, @Query('type') type: string, @Res() res: Response) {
-
-      await this.subscriptionService.handlePaymentSuccess(dataId, type);
-      
+  async paymentSuccess(@Query('data.id') dataId, @Query('type') type1,@Res() res: Response) {
+    try {
+      const result = await this.subscriptionService.handlePaymentSuccess(dataId, type1);
+      return res.status(result.statusCode).json({ message: 'Subscription created successfully' });
+    } catch (error) {
+      if (error instanceof HttpException) {
+        return res.status(error.getStatus()).json(error.getResponse());
+      }
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: 'Internal server error' });
+    }
   }
 }

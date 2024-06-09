@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   NotFoundException,
   Param,
@@ -21,15 +22,15 @@ export class ReviewsController {
   @ApiQuery({ name: 'page', description: 'Página a mostrar', required: false })
   @ApiQuery({
     name: 'limit',
-    description: 'Límite de productos por página',
+    description: 'Límite de productos por página. Por defecto 5.',
     required: false,
   })
   @ApiParam({
     name: 'id',
-    description: 'id del producto para obtener sus reviews',
+    description: 'id del producto para obtener sus reviews. Por defecto 1.',
     required: true,
   })
-  @Get('product')
+  @Get('product/:id')
   getProductReviews(
     @Query('page') page: string,
     @Query('limit') limit: string,
@@ -47,15 +48,15 @@ export class ReviewsController {
   @ApiQuery({ name: 'page', description: 'Página a mostrar', required: false })
   @ApiQuery({
     name: 'limit',
-    description: 'Límite de productos por página',
+    description: 'Límite de productos por página. Por defecto 5.',
     required: false,
   })
   @ApiParam({
     name: 'id',
-    description: 'id del user para obtener sus reviews',
+    description: 'id del user para obtener sus reviews. Por defecto 1.',
     required: true,
   })
-  @Get('user')
+  @Get('user/:id')
   getUserReviews(
     @Query('page') page: string,
     @Query('limit') limit: string,
@@ -63,18 +64,29 @@ export class ReviewsController {
   ) {
     const pageNumber = page ? Number(page) : 1;
     const limitNumber = limit ? Number(limit) : 5;
-    return this.reviewsService.getProductReviews(
-      userId,
-      pageNumber,
-      limitNumber,
-    );
+    return this.reviewsService.getUserReviews(userId, pageNumber, limitNumber);
   }
+
+  @ApiQuery({ name: 'page', description: 'Página a mostrar', required: false })
+  @ApiQuery({
+    name: 'limit',
+    description: 'Límite de productos por página',
+    required: false,
+  })
+  @Get()
+  getAllReviews(@Query('page') page: string, @Query('limit') limit: string) {
+    const pageNumber = page ? Number(page) : 1;
+    const limitNumber = limit ? Number(limit) : 5;
+    return this.reviewsService.getAllReviews(pageNumber, limitNumber);
+  }
+
   @ApiBody({ required: false })
   @Post()
   createReview(
-    @Body('id', ParseUUIDPipe) userId: string,
+    @Query('userId', ParseUUIDPipe) userId: string,
+    @Query('productId', ParseUUIDPipe)
     productId: string,
-    review: CreateReviewDto,
+    @Body() review: CreateReviewDto,
   ) {
     return this.reviewsService.createReview(userId, productId, review);
   }
@@ -90,6 +102,19 @@ export class ReviewsController {
     @Body() review: CreateReviewDto,
   ) {
     const foundReview = this.reviewsService.updateReview(id, review);
+    if (!foundReview)
+      throw new NotFoundException(`Review with id ${id} not found`);
+    return foundReview;
+  }
+
+  @ApiParam({
+    name: 'id',
+    description: 'Id de la review a eliminar',
+    required: true,
+  })
+  @Delete(':id')
+  deleteReview(@Param('id', ParseUUIDPipe) id: string) {
+    const foundReview = this.reviewsService.deleteReview(id);
     if (!foundReview)
       throw new NotFoundException(`Review with id ${id} not found`);
     return foundReview;

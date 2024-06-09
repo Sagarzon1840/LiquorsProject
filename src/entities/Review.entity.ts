@@ -15,7 +15,7 @@ export class Reviews {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column('decimal', { precision: 2, scale: 1 })
   rate: number;
 
   @Column()

@@ -155,7 +155,7 @@ export class SubscriptionService {
         // console.log('Payment Success - Type:', type1);
   
         const payment = new Payment(this.client);
-        const response: SubDto = await payment.search(dataId);
+        const response = await payment.search(dataId);
   
         if (!response || !response.results || response.results.length === 0) {
           throw new BadRequestException('Payment not found');

@@ -110,7 +110,9 @@ export class UserService {
       return {
         message: 'Usuario exitosamente logueado!',
         id: user.id,
-        role:user.role,
+        name:user.name,
+        email:user.email,
+        role: user.role,
         token,
       };
     } catch (error) {
@@ -124,11 +126,11 @@ export class UserService {
     }
   }
   //--------------------User sign up--------------------------
-  
-// loguear usuario 
-//usuario con o sin provider 
-//si existe el mail y quiere registrar con provider(google)
-//si ya esta registrado loguearse
+
+  // loguear usuario
+  //usuario con o sin provider
+  //si existe el mail y quiere registrar con provider(google)
+  //si ya esta registrado loguearse
 
   async signUp(user: CreateUserDTO) {
     const { name, email, firebaseUid, provider } = user;
@@ -138,10 +140,8 @@ export class UserService {
         where: { email },
       });
       if (foundUser) {
-
         if (foundUser.email === email) {
           if (foundUser.provider === provider) {
-
             const payload = {
               id: foundUser.id,
               email: foundUser.email,
@@ -150,9 +150,12 @@ export class UserService {
             const token = this.jwtService.sign(payload);
             return {
               message: `Usuario logueado correctamente!`,
+              id: foundUser.id,
+              name:foundUser.name,
+              email: foundUser.email,
+              role: foundUser.role,
               token,
             };
-
           }
           throw new BadRequestException('El email ya está registrado.');
         }
@@ -180,6 +183,10 @@ export class UserService {
       const token = this.jwtService.sign(payload);
       return {
         message: `Usuario registrado correctamente!`,
+        id: savedUser.id,
+        name:savedUser.name,
+        email: savedUser.email,
+        role: savedUser.role,
         token,
       };
     } catch (error) {

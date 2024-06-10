@@ -1,4 +1,4 @@
-import { BadRequestException, HttpStatus, Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Subscription } from '../../entities/Subscription.entity';
@@ -8,10 +8,7 @@ import { MercadoPagoConfig, Payment, Preference } from 'mercadopago';
 import { SubDto } from 'src/dtos/sub.dto';
 import { PaymentSearchData } from 'mercadopago/dist/clients/payment/search/types';
 import { UserRole } from 'src/enums/roles.enum';
-import { v4 as uuidv4 } from 'uuid';
-import { title } from 'process';
 import { TempStorage } from 'src/entities/tempStorage';
-// import * as mercadopago from 'mercadopago';
 
 @Injectable()
 export class SubscriptionService {
@@ -28,7 +25,7 @@ export class SubscriptionService {
     private tempStorage: Repository<TempStorage>
   ) {
     this.client = new MercadoPagoConfig({
-      accessToken: 'TEST-720609286863999-060501-d1863148fd64d41481d5501518cd9b73-1842406931', // Reemplaza con tu access token real
+      accessToken: 'TEST-720609286863999-060501-d1863148fd64d41481d5501518cd9b73-1842406931',
       options: { timeout: 5000, idempotencyKey: 'abc' },
     });
     this.preference = new Preference(this.client);
@@ -98,8 +95,8 @@ export class SubscriptionService {
             },
             auto_return: 'approved',
             // para local
-            notification_url: "https://3778-2803-9800-b8ca-80aa-58-7638-269c-f8df.ngrok-free.app/subscription"
-            // notification_url: "https://liquors-project.onrender.com/subscription"
+            // notification_url: "https://3778-2803-9800-b8ca-80aa-58-7638-269c-f8df.ngrok-free.app/subscription"
+            notification_url: "https://liquors-project.onrender.com/subscription"
           };
         } else {
           throw new BadRequestException('User already has a subscription of type Premium');
@@ -123,8 +120,8 @@ export class SubscriptionService {
           },
           auto_return: 'approved',
           // para local
-          notification_url: "https://3778-2803-9800-b8ca-80aa-58-7638-269c-f8df.ngrok-free.app/subscription"
-          // notification_url: "https://liquors-project.onrender.com/subscription"
+          // notification_url: "https://3778-2803-9800-b8ca-80aa-58-7638-269c-f8df.ngrok-free.app/subscription"
+          notification_url: "https://liquors-project.onrender.com/subscription"
         };
       }
   

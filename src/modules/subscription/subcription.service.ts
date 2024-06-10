@@ -69,48 +69,76 @@ export class SubscriptionService {
 
   async createFactura(userId: string, subscriptionDto: SubscriptionDto) {
     try {
-      const user = await this.usersRepository.findOne({ where: { id: userId } });
+      const user = await this.usersRepository.findOne({ where: { id: userId }, relations: ['subscription'] });
   
       if (!user) {
         throw new Error('User not found');
       }
-      const validUser = await this.subscriptionRepository.findOne({
-        where: { user },
-      });
-      if (validUser) {
-        throw new BadRequestException('User already has a subscription');
-      }
-      const preferenceData = {
-        items: [
-          {
-            id: '1',
-            type: subscriptionDto.type,
-            status: "inactive",
-            title: 'Subscription',
-            quantity: 1,
-            unit_price: subscriptionDto.amount,
+  
+      let preferenceData;
+  
+      // Verificar si el usuario tiene una suscripción existente
+      if (user.subscription) {
+        if (user.subscription.type === "premium" && subscriptionDto.type === "seller") {
+          // Actualizar suscripción de premium a seller
+          preferenceData = {
+            items: [
+              {
+                id: '1',
+                type: subscriptionDto.type,
+                status: "inactive",
+                title: 'Subscription Update',
+                quantity: 1,
+                unit_price: subscriptionDto.amountDif, // Usar amountDif para la actualización
+              },
+            ],
+            back_urls: {
+              success: 'http://localhost:3000/login',
+              failure: 'http://localhost:3000/login'
+            },
+            auto_return: 'approved',
+            // para local
+            notification_url: "https://3778-2803-9800-b8ca-80aa-58-7638-269c-f8df.ngrok-free.app/subscription"
+            // notification_url: "https://liquors-project.onrender.com/subscription"
+          };
+        } else {
+          throw new BadRequestException('User already has a subscription of type Premium');
+        }
+      } else {
+        // Crear una nueva suscripción
+        preferenceData = {
+          items: [
+            {
+              id: '1',
+              type: subscriptionDto.type,
+              status: "inactive",
+              title: 'Subscription',
+              quantity: 1,
+              unit_price: subscriptionDto.amount,
+            },
+          ],
+          back_urls: {
+            success: 'http://localhost:3000/login',
+            failure: 'http://localhost:3000/login'
           },
-        ],
-        back_urls: {
-          success: 'http://localhost:3000/login',
-          failure: 'http://localhost:3000/login'
-        },
-        auto_return: 'approved',
-        // para local
-        // notification_url: "https://4398-2803-9800-b8ca-80aa-704a-cf83-a988-f7be.ngrok-free.app/subscription"
-         notification_url: "https://liquors-project.onrender.com/subscription"
-      };
+          auto_return: 'approved',
+          // para local
+          notification_url: "https://3778-2803-9800-b8ca-80aa-58-7638-269c-f8df.ngrok-free.app/subscription"
+          // notification_url: "https://liquors-project.onrender.com/subscription"
+        };
+      }
   
       const preferenceResponse = await this.preference.create({
         body: preferenceData,
       });
   
       // Almacena la información temporalmente (puedes usar una base de datos o Redis)
-      const tempData = new TempStorage()
-      tempData.userId = userId,
-      tempData.type = subscriptionDto.type
-      tempData.amount = subscriptionDto.amount
-
+      const tempData = new TempStorage();
+      tempData.userId = userId;
+      tempData.type = subscriptionDto.type;
+      tempData.amount = subscriptionDto.amount;
+      tempData.amountDif = subscriptionDto.amountDif;
+  
       await this.tempStorage.save(tempData);
   
       return preferenceResponse;
@@ -153,78 +181,88 @@ export class SubscriptionService {
       try {
         // console.log('Payment Success - Data ID:', dataId);
         // console.log('Payment Success - Type:', type1);
-  
+
         const payment = new Payment(this.client);
-        const response = await payment.search(dataId);
-  
+        const response: SubDto = await payment.search(dataId);
+
         if (!response || !response.results || response.results.length === 0) {
-          throw new BadRequestException('Payment not found');
+          throw new NotFoundException('Payment not found');
         }
-  
+
         // Recupera la información temporal
         const tempData = await this.tempStorage.find();
         if (!tempData || tempData.length === 0) {
-          throw new BadRequestException('Temp data not found');
-        }
-
-        if (!tempData[0].userId || !tempData[0].amount || !tempData[0].type || !tempData[0].id) {
-          throw new BadRequestException('Invalid temp data');
+          throw new NotFoundException('Temp data not found');
         }
 
         const userId = tempData[0].userId;
         const amount = tempData[0].amount;
+        const amountDif = tempData[0].amountDif;
         const type = tempData[0].type;
         const idTemp = tempData[0].id;
+
+        if (!userId || !amount || !type || !idTemp) {
+          throw new BadRequestException('Invalid temp data');
+        }
 
         // console.log(userId);
         // console.log(amount);
         // console.log(type);
         // console.log(idTemp);
-  
-        const user = await this.usersRepository.findOne({ where: { id: userId } });
+
+        const user = await this.usersRepository.findOne({ where: { id: userId }, relations: ['subscription'] });
         if (!user) {
           throw new NotFoundException('User not found');
         }
-  
-        const validUser = await this.subscriptionRepository.findOne({
-          where: { user },
-        });
-        if (validUser) {
-          throw new BadRequestException('User already has a subscription');
+
+        let subscription = user.subscription;
+
+        if (subscription && subscription.type === 'premium' && type === 'seller') {
+          // El usuario tiene una suscripción premium y quiere actualizar a seller
+          if (amount < amountDif) {
+            throw new BadRequestException('Insufficient amount for subscription upgrade');
+          }
+
+          subscription.type = 'seller';
+          subscription.amount = amount;
+          subscription.status = 'active';
+
+          await this.subscriptionRepository.save(subscription);
+
+          user.role = UserRole.Seller;
+          await this.usersRepository.save(user);
+        } else {
+          const dateInit = new Date();
+          const dateFin = new Date(dateInit.getTime());
+          dateFin.setDate(dateFin.getDate() + 30);
+
+          subscription = this.subscriptionRepository.create({
+            amount,
+            type,
+            user,
+            dateFin,
+            dateInit,
+            status: 'active',
+            });
+            
+            await this.subscriptionRepository.save(subscription);
+            user.subscription = subscription;
+        
+            switch (subscription.type) {
+              case "premium":
+                user.role = UserRole.Premium
+                break;
+              case "seller":
+                user.role = UserRole.Seller
+                break;
+            }
+            await this.usersRepository.update(user.id, user)
+            await this.usersRepository.save(user);
         }
 
-        const dateInit = new Date();
-        const dateFin = new Date(dateInit.getTime());
-        dateFin.setDate(dateFin.getDate() + 30);
-  
-        const subscription = this.subscriptionRepository.create({
-          amount,
-          type,
-          user,
-          dateFin,
-          dateInit,
-          status: 'active',
-        });
-        
-        
-        await this.subscriptionRepository.save(subscription);
-        user.subscription = subscription;
-        
-        switch (subscription.type) {
-          case "premium":
-            user.role = UserRole.Premium
-            break;
-          case "seller":
-            user.role = UserRole.Seller
-            break;
-        }
-        await this.usersRepository.update(user.id, user)
-        
-        await this.usersRepository.save(user);
-  
         // Elimina la información temporal
         await this.tempStorage.delete({ id: idTemp });
-  
+
         return { statusCode: 200 };
       } catch (error) {
         this.logger.error(`Failed to retrieve payment for ID ${dataId}`, error.stack);

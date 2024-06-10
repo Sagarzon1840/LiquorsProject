@@ -14,4 +14,6 @@ export class TempStorage {
   @Column({nullable:true})
   type: string;
 
+  @Column({nullable:true})
+  amountDif: number;
 }

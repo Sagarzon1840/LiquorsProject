@@ -16,4 +16,12 @@ export class SubscriptionDto {
   @IsNumber()
   @IsNotEmpty()
   amount: number;
+
+   /**
+   * Diferencia de precio entre tipo de subscripcion a updatear
+   * @example 100
+   */
+   @IsNumber()
+   @IsOptional()
+   amountDif?: number;
 }

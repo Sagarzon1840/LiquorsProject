@@ -5,7 +5,6 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from 'src/entities/Product.entity';
 import { Users } from './entities/User.entity';
-import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AppService implements OnModuleInit {
@@ -34,13 +33,12 @@ export class AppService implements OnModuleInit {
   }
 
   async addUserSeeder() {
-    // const hashedPassword = await bcrypt.hash(user.password, 10);
     await this.usersRepository.save({ ...user});
   }
 
   async addProductSeeder() {
     const user = await this.usersRepository.findOne({
-      where: { email: 'jane.doe@example.com' },
+      where: { email: "l10nel@example.com" },
     });
 
     for (const product of data) {
@@ -49,7 +47,7 @@ export class AppService implements OnModuleInit {
       newProduct.description = product.description;
       newProduct.imgUrl = product.imgUrl;
       newProduct.category = product.category;
-      newProduct.abv = product.abv; // Asegúrate de que el DTO y la entidad coincidan
+      newProduct.abv = product.abv;
       newProduct.brand = product.brand;
       newProduct.country = product.country;
       newProduct.size = product.size;

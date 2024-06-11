@@ -8,10 +8,13 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { ProductDto } from 'src/dtos/product.dto';
 import { ApiBody, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from 'src/guards/auth.guard';
+import { RolesGuard } from 'src/guards/roles.guard';
 
 @ApiTags('Productos')
 @Controller('products')
@@ -51,6 +54,8 @@ export class ProductController {
     @Query('page') page: string = '1',
     @Query('limit') limit: string = '5',
   ) {
+    abv = Number(abv);
+    rate = Number(rate);
     return this.productsService.getAllProducts(
       { category, abv, brand, country, size, rate },
       Number(page),
@@ -63,16 +68,19 @@ export class ProductController {
     return this.productsService.getProduct(id);
   }
 
+  @UseGuards(AuthGuard)
   @Post(':id')
   createProduct(@Body() product: ProductDto, @Param('id') id: string) {
     return this.productsService.createProduct(product, id);
   }
 
+  @UseGuards(AuthGuard, RolesGuard)
   @Put(':id')
   updateProduct(@Param('id') id: string, @Body() product: ProductDto) {
     return this.productsService.updateProduct(id, product);
   }
 
+  @UseGuards(AuthGuard, RolesGuard)
   @Delete(':id')
   deleteProduct(@Param('id') id: string) {
     return this.productsService.deleteProduct(id);

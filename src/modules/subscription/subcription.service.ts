@@ -74,10 +74,8 @@ export class SubscriptionService {
   
       let preferenceData;
   
-      // Verificar si el usuario tiene una suscripción existente
       if (user.subscription) {
         if (user.subscription.type === "premium" && subscriptionDto.type === "seller") {
-          // Actualizar suscripción de premium a seller
           preferenceData = {
             items: [
               {
@@ -86,7 +84,7 @@ export class SubscriptionService {
                 status: "inactive",
                 title: 'Subscription Update',
                 quantity: 1,
-                unit_price: subscriptionDto.amountDif, // Usar amountDif para la actualización
+                unit_price: subscriptionDto.amountDif,
               },
             ],
             back_urls: {
@@ -102,7 +100,6 @@ export class SubscriptionService {
           throw new BadRequestException('User already has a subscription of type Premium');
         }
       } else {
-        // Crear una nueva suscripción
         preferenceData = {
           items: [
             {
@@ -129,7 +126,6 @@ export class SubscriptionService {
         body: preferenceData,
       });
   
-      // Almacena la información temporalmente (puedes usar una base de datos o Redis)
       const tempData = new TempStorage();
       tempData.userId = userId;
       tempData.type = subscriptionDto.type;
@@ -186,7 +182,6 @@ export class SubscriptionService {
           throw new NotFoundException('Payment not found');
         }
 
-        // Recupera la información temporal
         const tempData = await this.tempStorage.find();
         if (!tempData || tempData.length === 0) {
           throw new NotFoundException('Temp data not found');
@@ -215,7 +210,6 @@ export class SubscriptionService {
         let subscription = user.subscription;
 
         if (subscription && subscription.type === 'premium' && type === 'seller') {
-          // El usuario tiene una suscripción premium y quiere actualizar a seller
           if (amount < amountDif) {
             throw new BadRequestException('Insufficient amount for subscription upgrade');
           }
@@ -257,7 +251,6 @@ export class SubscriptionService {
             await this.usersRepository.save(user);
         }
 
-        // Elimina la información temporal
         await this.tempStorage.delete({ id: idTemp });
 
         return { statusCode: 200 };

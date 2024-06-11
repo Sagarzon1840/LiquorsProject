@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { BadRequestException, HttpStatus, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Subscription } from '../../entities/Subscription.entity';
@@ -8,6 +8,9 @@ import { MercadoPagoConfig, Payment, Preference } from 'mercadopago';
 import { SubDto } from 'src/dtos/sub.dto';
 import { PaymentSearchData } from 'mercadopago/dist/clients/payment/search/types';
 import { UserRole } from 'src/enums/roles.enum';
+import { v4 as uuidv4 } from 'uuid';
+import { title } from 'process';
+import { TempStorage } from 'src/entities/tempStorage';
 // import * as mercadopago from 'mercadopago';
 
 @Injectable()
@@ -21,6 +24,8 @@ export class SubscriptionService {
     private subscriptionRepository: Repository<Subscription>,
     @InjectRepository(Users)
     private usersRepository: Repository<Users>,
+    @InjectRepository(TempStorage)
+    private tempStorage: Repository<TempStorage>
   ) {
     this.client = new MercadoPagoConfig({
       accessToken: 'TEST-720609286863999-060501-d1863148fd64d41481d5501518cd9b73-1842406931', // Reemplaza con tu access token real
@@ -63,64 +68,86 @@ export class SubscriptionService {
   }
 
   async createFactura(userId: string, subscriptionDto: SubscriptionDto) {
-    
     try {
-      const user = await this.usersRepository.findOne({ where: { id: userId } });
+      const user = await this.usersRepository.findOne({ where: { id: userId }, relations: ['subscription'] });
   
       if (!user) {
         throw new Error('User not found');
       }
-
-      const preferenceData = {
-        items: [
-          {
-            id: '1',
-            type: subscriptionDto.type,
-            status: "inactive",
-            title: 'Subscription',
-            quantity: 1,
-            unit_price: subscriptionDto.amount,
+  
+      let preferenceData;
+  
+      // Verificar si el usuario tiene una suscripción existente
+      if (user.subscription) {
+        if (user.subscription.type === "premium" && subscriptionDto.type === "seller") {
+          // Actualizar suscripción de premium a seller
+          preferenceData = {
+            items: [
+              {
+                id: '1',
+                type: subscriptionDto.type,
+                status: "inactive",
+                title: 'Subscription Update',
+                quantity: 1,
+                unit_price: subscriptionDto.amountDif, // Usar amountDif para la actualización
+              },
+            ],
+            back_urls: {
+              success: 'http://localhost:3000/login',
+              failure: 'http://localhost:3000/login'
+            },
+            auto_return: 'approved',
+            // para local
+            notification_url: "https://3778-2803-9800-b8ca-80aa-58-7638-269c-f8df.ngrok-free.app/subscription"
+            // notification_url: "https://liquors-project.onrender.com/subscription"
+          };
+        } else {
+          throw new BadRequestException('User already has a subscription of type Premium');
+        }
+      } else {
+        // Crear una nueva suscripción
+        preferenceData = {
+          items: [
+            {
+              id: '1',
+              type: subscriptionDto.type,
+              status: "inactive",
+              title: 'Subscription',
+              quantity: 1,
+              unit_price: subscriptionDto.amount,
+            },
+          ],
+          back_urls: {
+            success: 'http://localhost:3000/login',
+            failure: 'http://localhost:3000/login'
           },
-        ],
-        back_urls: {
-          success: 'http://localhost:3000/home', 
-          failure: 'http://localhost:3000/home',
-          pending: 'http://localhost:3000/home'
-        },
-        notification_url: "https://liquors-project.onrender.com/subscription"
-      };
-      
+          auto_return: 'approved',
+          // para local
+          notification_url: "https://3778-2803-9800-b8ca-80aa-58-7638-269c-f8df.ngrok-free.app/subscription"
+          // notification_url: "https://liquors-project.onrender.com/subscription"
+        };
+      }
+  
       const preferenceResponse = await this.preference.create({
         body: preferenceData,
       });
-      if (!userId) {
-        throw new BadRequestException('User ID is required for creating subscription');
-      }
-
-      
-      const dateInit = new Date();
-      const dateFin = new Date(dateInit.getTime());
-      dateFin.setDate(dateFin.getDate() + 30);
-
-      const subscription = this.subscriptionRepository.create({
-        ...subscriptionDto,
-        user,
-        dateFin,
-        dateInit,
-        status: 'inactive',
-        collector_Id: preferenceResponse.collector_id
-      });
-
-      await this.subscriptionRepository.save(subscription);
-      user.subscription = subscription;
-      await this.usersRepository.save(user);
-
+  
+      // Almacena la información temporalmente (puedes usar una base de datos o Redis)
+      const tempData = new TempStorage();
+      tempData.userId = userId;
+      tempData.type = subscriptionDto.type;
+      tempData.amount = subscriptionDto.amount;
+      tempData.amountDif = subscriptionDto.amountDif;
+  
+      await this.tempStorage.save(tempData);
+  
       return preferenceResponse;
     } catch (error) {
       console.error(error);
       throw error;
     }
   }
+  
 
   async updateSubscriptionType(id: string, type: string, status: string) {
     status = status.toLowerCase();
@@ -149,35 +176,94 @@ export class SubscriptionService {
     }
   }
   
-  async handlePaymentSuccess(dataId: PaymentSearchData, type: string) {
-    if (type === 'payment') {
+  async handlePaymentSuccess(dataId: PaymentSearchData, type1: string) {
+    if (type1 === 'payment') {
       try {
-        console.log('Payment Success - Data ID:', dataId);
-        console.log('Payment Success - Type:', type);
+        // console.log('Payment Success - Data ID:', dataId);
+        // console.log('Payment Success - Type:', type1);
 
         const payment = new Payment(this.client);
-        const response : SubDto = await payment.search(dataId);
+        const response: SubDto = await payment.search(dataId);
 
-        if (!response) {
+        if (!response || !response.results || response.results.length === 0) {
           throw new NotFoundException('Payment not found');
         }
 
-        // Accedemos al objeto del pago
-        const paymentData = Number(response.results[0].collector_id);
-        const subscription = await this.subscriptionRepository.findOneBy({collector_Id:paymentData})
-        subscription.status = "active"
-        await this.subscriptionRepository.update(subscription.id,subscription)
-        const user = await this.usersRepository.findOneBy(subscription.user)
-        switch (subscription.type) {
-          case "premium":
-            user.role = UserRole.Premium
-            break;
-          case "seller":
-            user.role = UserRole.Seller
-            break;
+        // Recupera la información temporal
+        const tempData = await this.tempStorage.find();
+        if (!tempData || tempData.length === 0) {
+          throw new NotFoundException('Temp data not found');
         }
-        await this.usersRepository.update(user.id, user)
- 
+
+        const userId = tempData[0].userId;
+        const amount = tempData[0].amount;
+        const amountDif = tempData[0].amountDif;
+        const type = tempData[0].type;
+        const idTemp = tempData[0].id;
+
+        if (!userId || !amount || !type || !idTemp) {
+          throw new BadRequestException('Invalid temp data');
+        }
+
+        // console.log(userId);
+        // console.log(amount);
+        // console.log(type);
+        // console.log(idTemp);
+
+        const user = await this.usersRepository.findOne({ where: { id: userId }, relations: ['subscription'] });
+        if (!user) {
+          throw new NotFoundException('User not found');
+        }
+
+        let subscription = user.subscription;
+
+        if (subscription && subscription.type === 'premium' && type === 'seller') {
+          // El usuario tiene una suscripción premium y quiere actualizar a seller
+          if (amount < amountDif) {
+            throw new BadRequestException('Insufficient amount for subscription upgrade');
+          }
+
+          subscription.type = 'seller';
+          subscription.amount = amount;
+          subscription.status = 'active';
+
+          await this.subscriptionRepository.save(subscription);
+
+          user.role = UserRole.Seller;
+          await this.usersRepository.save(user);
+        } else {
+          const dateInit = new Date();
+          const dateFin = new Date(dateInit.getTime());
+          dateFin.setDate(dateFin.getDate() + 30);
+
+          subscription = this.subscriptionRepository.create({
+            amount,
+            type,
+            user,
+            dateFin,
+            dateInit,
+            status: 'active',
+            });
+            
+            await this.subscriptionRepository.save(subscription);
+            user.subscription = subscription;
+        
+            switch (subscription.type) {
+              case "premium":
+                user.role = UserRole.Premium
+                break;
+              case "seller":
+                user.role = UserRole.Seller
+                break;
+            }
+            await this.usersRepository.update(user.id, user)
+            await this.usersRepository.save(user);
+        }
+
+        // Elimina la información temporal
+        await this.tempStorage.delete({ id: idTemp });
+
+        return { statusCode: 200 };
       } catch (error) {
         this.logger.error(`Failed to retrieve payment for ID ${dataId}`, error.stack);
         if (error.response && error.response.status === 404) {

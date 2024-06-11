@@ -21,9 +21,6 @@ export class Subscription {
   @Column()
   dateFin: Date;
 
-  @Column({nullable:true})
-  collector_Id:number;
-
   @ManyToOne(() => Users, user => user.subscription)
   user: Users;
 }

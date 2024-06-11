@@ -18,7 +18,6 @@ import {
   import { PayPalService } from './paypal.service';
   import { SubscriptionDto } from 'src/dtos/subscription.dto';
   import { UpdateSubscriptionDto } from 'src/dtos/updateSubscription.dto';
-  import { Response } from 'express';
   import { ApiTags } from '@nestjs/swagger';
   
   @ApiTags('PayPal')

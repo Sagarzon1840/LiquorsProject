@@ -12,16 +12,16 @@ import {
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { ProductDto } from 'src/dtos/product.dto';
-import { ApiBody, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { RolesGuard } from 'src/guards/roles.guard';
+import { Roles } from 'src/decorators/roles.decorator';
+import { UserRole } from 'src/enums/roles.enum';
 
 @ApiTags('Productos')
 @Controller('products')
 export class ProductController {
   constructor(private readonly productsService: ProductService) {}
-
-  //@ApiBearerAuth()
 
   @ApiQuery({ name: 'page', description: 'Pagina a mostrar', required: false })
   @ApiQuery({
@@ -31,14 +31,14 @@ export class ProductController {
   })
   @ApiQuery({ name: 'category', description: 'Categoria', required: false })
   @ApiQuery({
-    name: 'adv',
+    name: 'abv',
     description: 'Nivel de alcohol medido en volumen',
     required: false,
   })
   @ApiQuery({ name: 'brand', description: 'Empresa', required: false })
   @ApiQuery({ name: 'country', description: 'Ciudad', required: false })
   @ApiQuery({
-    name: 'Size',
+    name: 'size',
     description: 'Tamaño de la botella',
     required: false,
   })
@@ -68,18 +68,24 @@ export class ProductController {
     return this.productsService.getProduct(id);
   }
 
+  @ApiBearerAuth()
+  @Roles(UserRole.Seller, UserRole.Admin)
   @UseGuards(AuthGuard)
   @Post(':id')
   createProduct(@Body() product: ProductDto, @Param('id') id: string) {
     return this.productsService.createProduct(product, id);
   }
 
+  @ApiBearerAuth()
+  @Roles(UserRole.Seller, UserRole.Admin)
   @UseGuards(AuthGuard, RolesGuard)
   @Put(':id')
   updateProduct(@Param('id') id: string, @Body() product: ProductDto) {
     return this.productsService.updateProduct(id, product);
   }
 
+  @ApiBearerAuth()
+  @Roles(UserRole.Seller, UserRole.Admin)
   @UseGuards(AuthGuard, RolesGuard)
   @Delete(':id')
   deleteProduct(@Param('id') id: string) {

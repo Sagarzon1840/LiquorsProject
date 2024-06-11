@@ -42,6 +42,7 @@ export class Product {
   @Column()
   size: string;
 
+  @JoinColumn({ name: 'user_id' })
   @ManyToOne(() => Users, (user) => user.products_id)
   seller: Users;
 

@@ -75,10 +75,7 @@ export class Users {
   @JoinTable({
     name: 'favorites_products',
     joinColumn: { name: 'product_id', referencedColumnName: 'id' },
-    inverseJoinColumn: {
-      name: 'user_id',
-      referencedColumnName: 'id',
-    },
+    inverseJoinColumn: { name: 'user_id', referencedColumnName: 'id' },
   })
   favorites: Product[];
 

@@ -49,7 +49,7 @@ export class UserController {
   }
   //DELETE for UserID
   @Delete(':id')
-  remove(@Param('id') id: string): Promise<void> {
+  remove(@Param('id') id: string): Promise<string> {
     return this.userService.removeUser(id);
   }
   //POST signin

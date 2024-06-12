@@ -21,6 +21,12 @@ export class Reviews {
   @Column()
   comment: string;
 
+  @Column()
+  active: boolean;
+
+  @Column()
+  approbed: boolean;
+
   @JoinColumn({ name: 'user_id' })
   @ManyToOne(() => Users, (user) => user.reviews)
   userId: Users;

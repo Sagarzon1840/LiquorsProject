@@ -35,6 +35,8 @@ export class ReviewsService {
       newReview.rate = parseFloat(review.rate.toString());
       newReview.userId = user;
       newReview.productId = product;
+      newReview.active = true;
+      newReview.approbed = false;
     } catch (error) {
       throw new BadRequestException(`Review creation error: ${error.message}`);
     }
@@ -49,7 +51,7 @@ export class ReviewsService {
     if (!product) throw new NotFoundException(`Product with id ${productId}`);
 
     let reviews = await this.reviewRepository.find({
-      where: { productId: { id: productId } },
+      where: { productId: { id: productId }, approbed: true, active: true },
       relations: ['userId'],
     });
     const startIndex = (page - 1) * limit;
@@ -66,7 +68,7 @@ export class ReviewsService {
     if (!user) throw new NotFoundException(`User with id ${userId}`);
 
     let reviews = await this.reviewRepository.find({
-      where: { userId: { id: userId } },
+      where: { userId: { id: userId }, approbed: true, active: true },
       relations: ['productId'],
     });
     const startIndex = (page - 1) * limit;
@@ -104,7 +106,7 @@ export class ReviewsService {
   async deleteReview(id: string) {
     const foundReview = this.reviewRepository.findOneBy({ id });
     if (foundReview) {
-      await this.reviewRepository.delete({ id });
+      (await foundReview).active = false;
       return `Review with ${id} deleted`;
     }
     throw new NotFoundException(`Review with id ${id} not found`);

@@ -9,15 +9,28 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ReviewsService } from './reviews.service';
 import { CreateReviewDto } from 'src/dtos/review.dto';
-import { ApiBody, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiParam,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
+import { RolesGuard } from 'src/guards/roles.guard';
+import { Roles } from 'src/decorators/roles.decorator';
+import { UserRole } from 'src/enums/roles.enum';
+import { AuthGuard } from 'src/guards/auth.guard';
 
 @ApiTags('Reviews')
 @Controller('reviews')
 export class ReviewsController {
   constructor(private readonly reviewsService: ReviewsService) {}
+
+  //Un administrador tiene que aprobar la review para ser publicada totalmente
 
   @ApiQuery({ name: 'page', description: 'Página a mostrar', required: false })
   @ApiQuery({
@@ -57,6 +70,8 @@ export class ReviewsController {
     required: true,
   })
   @Get('user/:id')
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard)
   getUserReviews(
     @Query('page') page: string,
     @Query('limit') limit: string,
@@ -73,6 +88,9 @@ export class ReviewsController {
     description: 'Límite de productos por página',
     required: false,
   })
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(UserRole.Admin)
   @Get()
   getAllReviews(@Query('page') page: string, @Query('limit') limit: string) {
     const pageNumber = page ? Number(page) : 1;
@@ -80,7 +98,11 @@ export class ReviewsController {
     return this.reviewsService.getAllReviews(pageNumber, limitNumber);
   }
 
+  //Solo user y premium pueden crear reviews
   @ApiBody({ required: false })
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(UserRole.User, UserRole.Premium)
   @Post()
   createReview(
     @Query('userId', ParseUUIDPipe) userId: string,
@@ -96,6 +118,9 @@ export class ReviewsController {
     description: 'Id de la review a actualizar',
     required: true,
   })
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(UserRole.User, UserRole.Premium)
   @Put(':id')
   updateReview(
     @Param('id', ParseUUIDPipe) id: string,
@@ -112,6 +137,9 @@ export class ReviewsController {
     description: 'Id de la review a eliminar',
     required: true,
   })
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(UserRole.User, UserRole.Premium, UserRole.Admin)
   @Delete(':id')
   deleteReview(@Param('id', ParseUUIDPipe) id: string) {
     const foundReview = this.reviewsService.deleteReview(id);

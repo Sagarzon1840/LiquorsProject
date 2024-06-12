@@ -1,4 +1,4 @@
-import { BadRequestException, HttpStatus, Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Subscription } from '../../entities/Subscription.entity';
@@ -8,10 +8,7 @@ import { MercadoPagoConfig, Payment, Preference } from 'mercadopago';
 import { SubDto } from 'src/dtos/sub.dto';
 import { PaymentSearchData } from 'mercadopago/dist/clients/payment/search/types';
 import { UserRole } from 'src/enums/roles.enum';
-import { v4 as uuidv4 } from 'uuid';
-import { title } from 'process';
 import { TempStorage } from 'src/entities/tempStorage';
-// import * as mercadopago from 'mercadopago';
 
 @Injectable()
 export class SubscriptionService {
@@ -28,7 +25,7 @@ export class SubscriptionService {
     private tempStorage: Repository<TempStorage>
   ) {
     this.client = new MercadoPagoConfig({
-      accessToken: 'TEST-720609286863999-060501-d1863148fd64d41481d5501518cd9b73-1842406931', // Reemplaza con tu access token real
+      accessToken: 'TEST-720609286863999-060501-d1863148fd64d41481d5501518cd9b73-1842406931',
       options: { timeout: 5000, idempotencyKey: 'abc' },
     });
     this.preference = new Preference(this.client);
@@ -77,10 +74,8 @@ export class SubscriptionService {
   
       let preferenceData;
   
-      // Verificar si el usuario tiene una suscripción existente
       if (user.subscription) {
         if (user.subscription.type === "premium" && subscriptionDto.type === "seller") {
-          // Actualizar suscripción de premium a seller
           preferenceData = {
             items: [
               {
@@ -89,7 +84,7 @@ export class SubscriptionService {
                 status: "inactive",
                 title: 'Subscription Update',
                 quantity: 1,
-                unit_price: subscriptionDto.amountDif, // Usar amountDif para la actualización
+                unit_price: subscriptionDto.amountDif,
               },
             ],
             back_urls: {
@@ -98,14 +93,13 @@ export class SubscriptionService {
             },
             auto_return: 'approved',
             // para local
-            notification_url: "https://3778-2803-9800-b8ca-80aa-58-7638-269c-f8df.ngrok-free.app/subscription"
-            // notification_url: "https://liquors-project.onrender.com/subscription"
+            // notification_url: "https://3778-2803-9800-b8ca-80aa-58-7638-269c-f8df.ngrok-free.app/subscription"
+            notification_url: "https://liquors-project.onrender.com/subscription"
           };
         } else {
           throw new BadRequestException('User already has a subscription of type Premium');
         }
       } else {
-        // Crear una nueva suscripción
         preferenceData = {
           items: [
             {
@@ -123,8 +117,8 @@ export class SubscriptionService {
           },
           auto_return: 'approved',
           // para local
-          notification_url: "https://3778-2803-9800-b8ca-80aa-58-7638-269c-f8df.ngrok-free.app/subscription"
-          // notification_url: "https://liquors-project.onrender.com/subscription"
+          // notification_url: "https://3778-2803-9800-b8ca-80aa-58-7638-269c-f8df.ngrok-free.app/subscription"
+          notification_url: "https://liquors-project.onrender.com/subscription"
         };
       }
   
@@ -132,7 +126,6 @@ export class SubscriptionService {
         body: preferenceData,
       });
   
-      // Almacena la información temporalmente (puedes usar una base de datos o Redis)
       const tempData = new TempStorage();
       tempData.userId = userId;
       tempData.type = subscriptionDto.type;
@@ -189,7 +182,6 @@ export class SubscriptionService {
           throw new NotFoundException('Payment not found');
         }
 
-        // Recupera la información temporal
         const tempData = await this.tempStorage.find();
         if (!tempData || tempData.length === 0) {
           throw new NotFoundException('Temp data not found');
@@ -218,7 +210,6 @@ export class SubscriptionService {
         let subscription = user.subscription;
 
         if (subscription && subscription.type === 'premium' && type === 'seller') {
-          // El usuario tiene una suscripción premium y quiere actualizar a seller
           if (amount < amountDif) {
             throw new BadRequestException('Insufficient amount for subscription upgrade');
           }
@@ -260,7 +251,6 @@ export class SubscriptionService {
             await this.usersRepository.save(user);
         }
 
-        // Elimina la información temporal
         await this.tempStorage.delete({ id: idTemp });
 
         return { statusCode: 200 };

@@ -14,12 +14,17 @@ import {
   Put,
   Query,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { SubscriptionService } from './subcription.service';
 import { SubscriptionDto } from 'src/dtos/subscription.dto';
 import { UpdateSubscriptionDto } from 'src/dtos/updateSubscription.dto';
 import { Response } from 'express';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from 'src/guards/auth.guard';
+import { Roles } from 'src/decorators/roles.decorator';
+import { UserRole } from 'src/enums/roles.enum';
+import { RolesGuard } from 'src/guards/roles.guard';
 
 @ApiTags('Subscription')
 @Controller('subscription')
@@ -27,16 +32,25 @@ export class SubcriptionController {
   constructor(private readonly subscriptionService: SubscriptionService) {}
 
   @Get()
+  @ApiBearerAuth()
+  @Roles(UserRole.Admin)
+  @UseGuards(RolesGuard, AuthGuard)
   getSubcription() {
     return this.subscriptionService.getSubcription();
   }
 
   @Put(':id')
+  @ApiBearerAuth()
+  @Roles(UserRole.Admin)
+  @UseGuards(RolesGuard, AuthGuard)
   updateSubcriptionType(@Param('id') id: string, @Body() updateSubscriptionDto: UpdateSubscriptionDto) {
     return this.subscriptionService.updateSubscriptionType(id, updateSubscriptionDto.type, updateSubscriptionDto.status);
   }
 
   @Post(':id')
+  @ApiBearerAuth()
+  @Roles(UserRole.User, UserRole.Premium)
+  @UseGuards(RolesGuard, AuthGuard)
   createSubcriptionType(
     @Param("id", ParseUUIDPipe) id: string,
     @Body() subscription: SubscriptionDto
@@ -46,6 +60,9 @@ export class SubcriptionController {
   }
 
   @Delete(':id')
+  @ApiBearerAuth()
+  @Roles(UserRole.Admin)
+  @UseGuards(RolesGuard, AuthGuard)
   async deleteSubscription(@Param('id', ParseUUIDPipe) id: string) {
     try {
       return await this.subscriptionService.deleteSubscription(id);

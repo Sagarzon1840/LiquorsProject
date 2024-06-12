@@ -10,6 +10,8 @@ async function bootstrap() {
       'https://front-next-eta.vercel.app',
       'http://localhost:3000',
     ],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: 'Content-Type, Authorization',
   });
 
   const swaggerConfig = new DocumentBuilder()

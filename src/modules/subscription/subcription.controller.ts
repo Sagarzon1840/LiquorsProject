@@ -34,7 +34,7 @@ export class SubcriptionController {
   @Get()
   @ApiBearerAuth()
   @Roles(UserRole.Admin)
-  @UseGuards(RolesGuard, AuthGuard)
+  @UseGuards(AuthGuard, RolesGuard)
   getSubcription() {
     return this.subscriptionService.getSubcription();
   }
@@ -42,7 +42,7 @@ export class SubcriptionController {
   @Put(':id')
   @ApiBearerAuth()
   @Roles(UserRole.Admin)
-  @UseGuards(RolesGuard, AuthGuard)
+  @UseGuards(AuthGuard, RolesGuard)
   updateSubcriptionType(@Param('id') id: string, @Body() updateSubscriptionDto: UpdateSubscriptionDto) {
     return this.subscriptionService.updateSubscriptionType(id, updateSubscriptionDto.type, updateSubscriptionDto.status);
   }
@@ -50,7 +50,7 @@ export class SubcriptionController {
   @Post(':id')
   @ApiBearerAuth()
   @Roles(UserRole.User, UserRole.Premium)
-  @UseGuards(RolesGuard, AuthGuard)
+  @UseGuards(AuthGuard, RolesGuard)
   createSubcriptionType(
     @Param("id", ParseUUIDPipe) id: string,
     @Body() subscription: SubscriptionDto
@@ -62,7 +62,7 @@ export class SubcriptionController {
   @Delete(':id')
   @ApiBearerAuth()
   @Roles(UserRole.Admin)
-  @UseGuards(RolesGuard, AuthGuard)
+  @UseGuards(AuthGuard, RolesGuard)
   async deleteSubscription(@Param('id', ParseUUIDPipe) id: string) {
     try {
       return await this.subscriptionService.deleteSubscription(id);

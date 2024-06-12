@@ -67,7 +67,7 @@ export class SubscriptionService {
   async createFactura(userId: string, subscriptionDto: SubscriptionDto) {
     try {
       const user = await this.usersRepository.findOne({ where: { id: userId }, relations: ['subscription'] });
-  
+
       if (!user) {
         throw new Error('User not found');
       }
@@ -93,8 +93,8 @@ export class SubscriptionService {
             },
             auto_return: 'approved',
             // para local
-            // notification_url: "https://3778-2803-9800-b8ca-80aa-58-7638-269c-f8df.ngrok-free.app/subscription"
-            notification_url: "https://liquors-project.onrender.com/subscription"
+            notification_url: "https://abac-2803-9800-b8ca-80aa-3d14-c3ea-3243-c7df.ngrok-free.app/subscription"
+            // notification_url: "https://liquors-project.onrender.com/subscription"
           };
         } else {
           throw new BadRequestException('User already has a subscription of type Premium');
@@ -117,8 +117,8 @@ export class SubscriptionService {
           },
           auto_return: 'approved',
           // para local
-          // notification_url: "https://3778-2803-9800-b8ca-80aa-58-7638-269c-f8df.ngrok-free.app/subscription"
-          notification_url: "https://liquors-project.onrender.com/subscription"
+          notification_url: "https://abac-2803-9800-b8ca-80aa-3d14-c3ea-3243-c7df.ngrok-free.app/subscription"
+          // notification_url: "https://liquors-project.onrender.com/subscription"
         };
       }
   

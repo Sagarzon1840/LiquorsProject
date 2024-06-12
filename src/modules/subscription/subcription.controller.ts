@@ -21,10 +21,10 @@ import { SubscriptionDto } from 'src/dtos/subscription.dto';
 import { UpdateSubscriptionDto } from 'src/dtos/updateSubscription.dto';
 import { Response } from 'express';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-// import { AuthGuard } from 'src/guards/auth.guard';
-// import { Roles } from 'src/decorators/roles.decorator';
-// import { UserRole } from 'src/enums/roles.enum';
-// import { RolesGuard } from 'src/guards/roles.guard';
+import { AuthGuard } from 'src/guards/auth.guard';
+import { Roles } from 'src/decorators/roles.decorator';
+import { UserRole } from 'src/enums/roles.enum';
+import { RolesGuard } from 'src/guards/roles.guard';
 
 @ApiTags('Subscription')
 @Controller('subscription')

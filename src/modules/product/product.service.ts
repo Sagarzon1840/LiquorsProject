@@ -15,7 +15,7 @@ export class ProductService {
 
   async getAllProducts(filters: FilterDto, page: number, limit: number) {
     let products = await this.productRepository.find();
-    const { category, abv, brand, country, size } = filters;
+    const { category, abv, brand, country, size, rate } = filters;
     if (category)
       products = products.filter((product) => product.category === category);
     if (abv) products = products.filter((product) => product.abv === abv);
@@ -23,6 +23,7 @@ export class ProductService {
     if (country)
       products = products.filter((product) => product.country === country);
     if (size) products = products.filter((product) => product.size === size);
+    if (rate) products = products.filter((product) => product.rate === rate);
     const start = (page - 1) * limit;
     const end = start + limit;
     const productsSlice = products.slice(start, end);

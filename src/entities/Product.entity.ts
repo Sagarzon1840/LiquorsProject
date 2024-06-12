@@ -26,6 +26,9 @@ export class Product {
   @Column({ type: 'text', nullable: true })
   imgUrl: string;
 
+  @Column({ type: 'decimal', nullable: false, default: 0 })
+  rate: number;
+
   @Column({ type: 'varchar', length: 30, nullable: false })
   category: string;
 
@@ -42,6 +45,7 @@ export class Product {
   @Column()
   size: string;
 
+  @JoinColumn({ name: 'user_id' })
   @ManyToOne(() => Users, (user) => user.products_id)
   seller: Users;
 

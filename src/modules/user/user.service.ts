@@ -66,11 +66,11 @@ export class UserService {
   }
 
   //--------------------Remove a user by ID----------------
-  async removeUser(id: string): Promise<void> {
+  async removeUser(id: string): Promise<string> {
     try {
       // Actualizar las referencias en la tabla products
       await this.usersRepository.query(
-        'UPDATE products SET userId = NULL WHERE userId = $1',
+        'UPDATE products SET user_id = NULL WHERE user_id = $1',
         [id],
       );
 
@@ -79,11 +79,14 @@ export class UserService {
       if (result.affected === 0) {
         throw new NotFoundException(`Usuario con ID ${id} no fue encontrado`);
       }
+
+      return `Usuario con ID ${id} ha sido eliminado`;
     } catch (error) {
       console.error(error);
       throw new Error('Ha ocurrido un error al eliminar el usuario.');
     }
   }
+  
   //********************LoginUsers***************************
   //--------------------User sign in-------------------------
   //email, uuidfirebase
@@ -110,7 +113,9 @@ export class UserService {
       return {
         message: 'Usuario exitosamente logueado!',
         id: user.id,
-        role:user.role,
+        name:user.name,
+        email:user.email,
+        role: user.role,
         token,
       };
     } catch (error) {
@@ -124,54 +129,75 @@ export class UserService {
     }
   }
   //--------------------User sign up--------------------------
-  
-// loguear usuario 
-//usuario con o sin provider 
-//si existe el mail y quiere registrar con provider(google)
-//si ya esta registrado loguearse
+
+  // loguear usuario
+  //usuario con o sin provider
+  //si existe el mail y quiere registrar con provider(google)
+  //si ya esta registrado loguearse
 
   async signUp(user: CreateUserDTO) {
     const { name, email, firebaseUid, provider } = user;
     try {
-      // find User.email
+      // Buscar usuario por email
       const foundUser = await this.usersRepository.findOne({
         where: { email },
       });
+  
       if (foundUser) {
-
-        if (foundUser.email === email) {
-          if (foundUser.provider === provider) {
-
-            const payload = {
-              id: foundUser.id,
-              email: foundUser.email,
-              role: foundUser.role,
-            };
-            const token = this.jwtService.sign(payload);
-            return {
-              message: `Usuario logueado correctamente!`,
-              token,
-            };
-
-          }
-          throw new BadRequestException('El email ya está registrado.');
+        // Si el usuario existe y el proveedor es null, actualizar con el nuevo proveedor
+        if (!foundUser.provider && provider) {
+          foundUser.firebaseUid = firebaseUid;
+          foundUser.provider = provider;
+          await this.usersRepository.save(foundUser);
+  
+          const payload = {
+            id: foundUser.id,
+            email: foundUser.email,
+            role: foundUser.role,
+          };
+          const token = this.jwtService.sign(payload);
+          return {
+            message: 'Proveedor agregado y usuario logueado correctamente!',
+            id: foundUser.id,
+            name: foundUser.name,
+            email: foundUser.email,
+            role: foundUser.role,
+            token,
+          };
         }
-        // if (foundUser.provider === provider) {
-        //   throw new BadRequestException(
-        //     `El email ${email} ya está registrado con el proveedor ${provider}.`,
-        //   );
-        // }
+  
+        // Si el usuario ya tiene el mismo proveedor, loguearlo
+        if (foundUser.provider === provider) {
+          const payload = {
+            id: foundUser.id,
+            email: foundUser.email,
+            role: foundUser.role,
+          };
+          const token = this.jwtService.sign(payload);
+          return {
+            message: 'Usuario logueado correctamente!',
+            id: foundUser.id,
+            name: foundUser.name,
+            email: foundUser.email,
+            role: foundUser.role,
+            token,
+          };
+        }
+  
+        // Si el usuario ya está registrado
+        throw new BadRequestException('El email ya está registrado.');
       }
-      //usuario se registre en varios provider pero no dos veces en alguno de los proveedores
-      const newUser = await this.usersRepository.create({
+  
+      // Crear nuevo usuario si no existe
+      const newUser = this.usersRepository.create({
         name,
         email,
         firebaseUid,
         provider: provider || null,
       });
-
+  
       const savedUser = await this.usersRepository.save(newUser);
-
+  
       const payload = {
         id: savedUser.id,
         email: savedUser.email,
@@ -179,7 +205,11 @@ export class UserService {
       };
       const token = this.jwtService.sign(payload);
       return {
-        message: `Usuario registrado correctamente!`,
+        message: 'Usuario registrado correctamente!',
+        id: savedUser.id,
+        name: savedUser.name,
+        email: savedUser.email,
+        role: savedUser.role,
         token,
       };
     } catch (error) {
@@ -190,4 +220,7 @@ export class UserService {
       throw new Error('Ha ocurrido un error al registrar el usuario.');
     }
   }
+  
+  
+  
 }

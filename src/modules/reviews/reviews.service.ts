@@ -8,6 +8,7 @@ import { Users } from 'src/entities/User.entity';
 import { Product } from 'src/entities/Product.entity';
 import { Reviews } from 'src/entities/Review.entity';
 import { Repository } from 'typeorm';
+import { CreateReviewDto } from 'src/dtos/review.dto';
 
 @Injectable()
 export class ReviewsService {
@@ -20,7 +21,7 @@ export class ReviewsService {
   async createReview(
     idUser: string,
     idProduct: string,
-    review: Partial<Reviews>,
+    review: CreateReviewDto,
   ) {
     const user = await this.usersRepository.findOneBy({ id: idUser });
     if (!user) throw new NotFoundException(`User with id ${idUser} not found`);

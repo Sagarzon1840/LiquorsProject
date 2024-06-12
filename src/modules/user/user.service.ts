@@ -3,6 +3,7 @@ import {
   ConflictException,
   Injectable,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -64,17 +65,30 @@ export class UserService {
     }
     return updateUser;
   }
+  //---------------------addFavoriteProduct for userId
+  // async addFavoriteProduct(userId: string, productId: string): Promise<string> {
+    // const user = await this.usersRepository.findOne({
+    //   where: { id: userId },
+    //   relations: ['favorites'],
+    // });
+    // if (!user) {
+    //   throw new NotFoundException(`Usuario con ID ${userId} no fue encontrado`);
+    // }
+    // //falta terminar
+
+    // await this.usersRepository.save(user);
+
+    // return `Producto con ID ${productId} agregado a favoritos del usuario con ID ${userId}`;
+  // }
 
   //--------------------Remove a user by ID----------------
   async removeUser(id: string): Promise<string> {
     try {
-      // Actualizar las referencias en la tabla products
       await this.usersRepository.query(
         'UPDATE products SET user_id = NULL WHERE user_id = $1',
         [id],
       );
 
-      // Luego eliminar el usuario en la tabla users
       const result = await this.usersRepository.delete(id);
       if (result.affected === 0) {
         throw new NotFoundException(`Usuario con ID ${id} no fue encontrado`);
@@ -86,7 +100,7 @@ export class UserService {
       throw new Error('Ha ocurrido un error al eliminar el usuario.');
     }
   }
-  
+
   //********************LoginUsers***************************
   //--------------------User sign in-------------------------
   //email, uuidfirebase
@@ -109,22 +123,26 @@ export class UserService {
         email: user.email,
         role: user.role,
       };
-      const token = this.jwtService.sign(payload);
+      const secret = process.env.JWT_SECRET;
+      console.log(secret);
+      
+      if (!secret) {
+        throw new UnauthorizedException('JWT_SECRET not found in environment variables');
+      }
+      const token = this.jwtService.sign(payload, { secret });
+      
       return {
         message: 'Usuario exitosamente logueado!',
         id: user.id,
-        name:user.name,
-        email:user.email,
+        name: user.name,
+        email: user.email,
         role: user.role,
         token,
       };
     } catch (error) {
-      // Solo captura NotFoundException y lanza un error personalizado
       if (error instanceof NotFoundException) {
         throw new BadRequestException('Usuario no registrado');
       }
-
-      // Deja que otros tipos de errores se propaguen sin alterarlos
       throw error;
     }
   }
@@ -142,19 +160,25 @@ export class UserService {
       const foundUser = await this.usersRepository.findOne({
         where: { email },
       });
-  
+
       if (foundUser) {
-        // Si el usuario existe y el proveedor es null, actualizar con el nuevo proveedor
         if (!foundUser.provider && provider) {
           foundUser.firebaseUid = firebaseUid;
           foundUser.provider = provider;
           await this.usersRepository.save(foundUser);
-  
+
           const payload = {
             id: foundUser.id,
             email: foundUser.email,
             role: foundUser.role,
           };
+          const secret = process.env.JWT_SECRET;
+          console.log(secret);
+          if (!secret) {
+            throw new UnauthorizedException(
+              'JWT_SECRET not found in enviroment variables',
+            );
+          }
           const token = this.jwtService.sign(payload);
           return {
             message: 'Proveedor agregado y usuario logueado correctamente!',
@@ -165,15 +189,20 @@ export class UserService {
             token,
           };
         }
-  
-        // Si el usuario ya tiene el mismo proveedor, loguearlo
+
         if (foundUser.provider === provider) {
           const payload = {
             id: foundUser.id,
             email: foundUser.email,
             role: foundUser.role,
           };
-          const token = this.jwtService.sign(payload);
+          const secret = process.env.JWT_SECRET;
+          console.log(secret);
+          if (!secret) {
+            throw new UnauthorizedException('JWT_SECRET not found in environment variables');
+          }
+          const token = this.jwtService.sign(payload, { secret });    
+          
           return {
             message: 'Usuario logueado correctamente!',
             id: foundUser.id,
@@ -183,11 +212,10 @@ export class UserService {
             token,
           };
         }
-  
-        // Si el usuario ya está registrado
+
         throw new BadRequestException('El email ya está registrado.');
       }
-  
+
       // Crear nuevo usuario si no existe
       const newUser = this.usersRepository.create({
         name,
@@ -195,15 +223,21 @@ export class UserService {
         firebaseUid,
         provider: provider || null,
       });
-  
+
       const savedUser = await this.usersRepository.save(newUser);
-  
+
       const payload = {
         id: savedUser.id,
         email: savedUser.email,
         role: savedUser.role,
       };
-      const token = this.jwtService.sign(payload);
+      const secret = process.env.JWT_SECRET;
+      console.log(secret);
+      if (!secret) {
+        throw new UnauthorizedException('JWT_SECRET not found in environment variables');
+      }
+      const token = this.jwtService.sign(payload, { secret });
+      
       return {
         message: 'Usuario registrado correctamente!',
         id: savedUser.id,
@@ -220,7 +254,4 @@ export class UserService {
       throw new Error('Ha ocurrido un error al registrar el usuario.');
     }
   }
-  
-  
-  
 }

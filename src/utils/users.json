@@ -1,5 +1,8 @@
-   {
+
+  {
     "name": "Lionel Andrés Messi Cuccittini",
-    "email": "l10nel@example.com",
-    "role": 2
-   }
+    "email": "lionel@gmail.com",
+    "role": 2,
+    "firebaseUid": "firebaseUid12345678",
+    "provider": "google.com"
+  }

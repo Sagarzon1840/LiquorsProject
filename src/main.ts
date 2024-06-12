@@ -7,6 +7,7 @@ async function bootstrap() {
   app.enableCors({
     origin: [
       'https://front-deploy-sage.vercel.app',
+      'https://front-deploy-git-main-tomysykess-projects.vercel.app',
       'https://front-next-eta.vercel.app',
       'http://localhost:3000',
     ],

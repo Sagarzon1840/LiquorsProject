@@ -54,10 +54,8 @@ export class ProductController {
     @Query('page') page: string = '1',
     @Query('limit') limit: string = '5',
   ) {
-    abv = Number(abv);
-    rate = Number(rate);
     return this.productsService.getAllProducts(
-      { category, abv, brand, country, size, rate },
+      { category, abv: Number(abv), brand, country, size, rate: Number(rate) },
       Number(page),
       Number(limit),
     );

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FilterDto } from 'src/dtos/filter.dto';
 import { ProductDto } from 'src/dtos/product.dto';
@@ -67,10 +67,18 @@ export class ProductService {
       where: { id },
       relations: { seller: true },
     });
+    if (!product)
+      throw new BadRequestException(`Product with id ${id} not found`);
     const user = await this.userRepository.findOne({
       where: { id: product.seller.id },
       relations: { products_id: true },
     });
+
+    if (!user)
+      throw new BadRequestException(
+        `User with id ${product.seller.id} not found`,
+      );
+
     user.products_id = user.products_id.filter(
       (element) => element !== product,
     );
@@ -78,5 +86,12 @@ export class ProductService {
     await this.userRepository.update(user.id, user);
     await this.productRepository.delete(product.id);
     return { message: `el producto ha sido eliminado` };
+  }
+  async deleteProductLogical(id: string) {
+    const foundProduct = this.productRepository.findOneBy({ id });
+    if (foundProduct) {
+      (await foundProduct).active = false;
+      return `Review with ${id} deleted`;
+    }
   }
 }

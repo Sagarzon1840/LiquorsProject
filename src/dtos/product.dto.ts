@@ -23,7 +23,6 @@ export class ProductDto {
    * @example "Whisky"
    */
   @IsNotEmpty()
-  @ApiHideProperty()
   category: string;
 
   /**

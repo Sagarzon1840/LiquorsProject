@@ -16,4 +16,7 @@ export class TempStorage {
 
   @Column({nullable:true})
   amountDif: number;
+
+  @Column({ nullable: true })
+  orderId: string; 
 }

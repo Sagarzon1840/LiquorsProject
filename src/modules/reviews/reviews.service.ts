@@ -113,11 +113,13 @@ export class ReviewsService {
   }
 
   async deleteReview(id: string) {
-    const foundReview = this.reviewRepository.findOneBy({ id });
-    if (foundReview) {
-      (await foundReview).active = false;
-      return `Review with ${id} deleted`;
+    const foundReview = await this.reviewRepository.findOneBy({ id });
+    if (!foundReview) {
+      throw new NotFoundException(`Review with id ${id} not found`);
     }
-    throw new NotFoundException(`Review with id ${id} not found`);
+    foundReview.active = false;
+
+    await this.reviewRepository.update(id, foundReview);
+    return `Review with ${id} deleted`;
   }
 }

@@ -66,12 +66,7 @@ export class SubscriptionService {
 
   async createFactura(userId: string, subscriptionDto: SubscriptionDto) {
     try {
-      // Verificar si ya existe una entrada en TempStorage para el usuario
-      const existingTempData = await this.tempStorage.findOne({ where: { userId: userId } });
-  
-      if (existingTempData) {
-        throw new BadRequestException('User already has a pending subscription');
-      }
+      await this.tempStorage.delete({ userId: userId });
   
       const user = await this.usersRepository.findOne({ where: { id: userId }, relations: ['subscription'] });
   
@@ -143,6 +138,7 @@ export class SubscriptionService {
       throw error;
     }
   }
+  
   
 
   async updateSubscriptionType(id: string, type: string, status: string) {

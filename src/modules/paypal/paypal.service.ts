@@ -38,8 +38,8 @@ export class PayPalService {
                     brand_name: 'Liqours',
                     landing_page: 'NO_PREFERENCE',
                     user_action: 'PAY_NOW',
-                    return_url: `http://localhost:3001/paypal/capture-order`,
-                    cancel_url: `http://localhost:3001/paypal/cancel-order`
+                    return_url: `https://front-deploy-sage.vercel.app/paypal/capture-order`,
+                    cancel_url: `https://front-deploy-sage.vercel.app/paypal/cancel-order`
                 }
             };
 

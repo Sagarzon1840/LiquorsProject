@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { ProductDto } from 'src/dtos/product.dto';
-import { ApiBearerAuth, ApiBody, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { Roles } from 'src/decorators/roles.decorator';
@@ -69,26 +69,26 @@ export class ProductController {
   }
 
   @ApiBearerAuth()
-  // @Roles(UserRole.Seller, UserRole.Admin)
-  // @UseGuards(AuthGuard)
+  @Roles(UserRole.Seller, UserRole.Admin)
+  @UseGuards(AuthGuard)
   @Post(':id')
   createProduct(@Body() product: ProductDto, @Param('id') id: string) {
     return this.productsService.createProduct(product, id);
   }
 
   @ApiBearerAuth()
-  // @Roles(UserRole.Seller, UserRole.Admin)
-  // @UseGuards(AuthGuard, RolesGuard)
+  @Roles(UserRole.Seller, UserRole.Admin)
+  @UseGuards(AuthGuard, RolesGuard)
   @Put(':id')
   updateProduct(@Param('id') id: string, @Body() product: ProductDto) {
     return this.productsService.updateProduct(id, product);
   }
 
   @ApiBearerAuth()
-  // @Roles(UserRole.Seller, UserRole.Admin)
-  // @UseGuards(AuthGuard, RolesGuard)
+  @Roles(UserRole.Seller, UserRole.Admin)
+  @UseGuards(AuthGuard, RolesGuard)
   @Delete(':id')
   deleteProduct(@Param('id') id: string) {
-    return this.productsService.deleteProduct(id);
+    return this.productsService.deleteProductLogical(id);
   }
 }

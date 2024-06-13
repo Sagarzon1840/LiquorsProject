@@ -66,10 +66,17 @@ export class SubscriptionService {
 
   async createFactura(userId: string, subscriptionDto: SubscriptionDto) {
     try {
+      // Verificar si ya existe una entrada en TempStorage para el usuario
+      const existingTempData = await this.tempStorage.findOne({ where: { userId: userId } });
+  
+      if (existingTempData) {
+        throw new BadRequestException('User already has a pending subscription');
+      }
+  
       const user = await this.usersRepository.findOne({ where: { id: userId }, relations: ['subscription'] });
-
+  
       if (!user) {
-        throw new Error('User not found');
+        throw new NotFoundException('User not found');
       }
   
       let preferenceData;
@@ -88,12 +95,10 @@ export class SubscriptionService {
               },
             ],
             back_urls: {
-              success: 'http://localhost:3000/login',
-              failure: 'http://localhost:3000/login'
+              success: 'https://front-deploy-sage.vercel.app',
+              failure: 'https://front-deploy-sage.vercel.app'
             },
             auto_return: 'approved',
-            // para local
-            // notification_url: "https://abac-2803-9800-b8ca-80aa-3d14-c3ea-3243-c7df.ngrok-free.app/subscription"
             notification_url: "https://liquors-project.onrender.com/subscription"
           };
         } else {
@@ -112,12 +117,10 @@ export class SubscriptionService {
             },
           ],
           back_urls: {
-            success: 'http://localhost:3000/login',
-            failure: 'http://localhost:3000/login'
+            success: 'https://front-deploy-sage.vercel.app',
+            failure: 'https://front-deploy-sage.vercel.app'
           },
           auto_return: 'approved',
-          // para local
-          // notification_url: "https://abac-2803-9800-b8ca-80aa-3d14-c3ea-3243-c7df.ngrok-free.app/subscription"
           notification_url: "https://liquors-project.onrender.com/subscription"
         };
       }

@@ -13,6 +13,7 @@ import { QueryFailedExceptionFilter } from './interceptors/globalExceptions.inte
 import { Product } from './entities/Product.entity';
 import { ProductModule } from './modules/product/product.module';
 import { Users } from './entities/User.entity';
+import { PayPalModule } from './modules/paypal/paypal.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { Users } from './entities/User.entity';
     UserModule,
     ReviewsModule,
     SubscriptionModule,
+    PayPalModule,
     JwtModule.register({
       global: true,
       signOptions: { expiresIn: '1h' },

@@ -23,6 +23,7 @@ export class ProductDto {
    * @example "Whisky"
    */
   @IsNotEmpty()
+  @IsString()
   category: string;
 
   /**

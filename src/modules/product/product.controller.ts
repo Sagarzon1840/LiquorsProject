@@ -46,11 +46,11 @@ export class ProductController {
   @Get()
   getAllProducts(
     @Query('category') category: string = '',
-    @Query('abv') abv: number = 0,
+    @Query('abv') abv: string = '0',
     @Query('brand') brand: string = '',
     @Query('country') country: string = '',
     @Query('size') size: string = '',
-    @Query('rate') rate: number = 0,
+    @Query('rate') rate: string = '0',
     @Query('page') page: string = '1',
     @Query('limit') limit: string = '5',
   ) {

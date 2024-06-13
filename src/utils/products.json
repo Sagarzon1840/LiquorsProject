@@ -8,7 +8,8 @@
     "brand": "Bacardí",
     "country": "Puerto Rico",
     "size": "1L",
-    "abv": 37.5
+    "abv": 37.5,
+    "active": true
   },
   {
     "name": "Ron Havana Club 7 Años",
@@ -19,7 +20,8 @@
     "brand": "Havana Club",
     "country": "Cuba",
     "size": "750ml",
-    "abv": 40
+    "abv": 40,
+    "active": true
   },
   {
     "name": "Ron Zacapa 23",
@@ -30,7 +32,8 @@
     "brand": "Zacapa",
     "country": "Guatemala",
     "size": "750ml",
-    "abv": 40
+    "abv": 40,
+    "active": true
   },
   {
     "name": "Ron Brugal Extra Viejo",
@@ -41,7 +44,8 @@
     "brand": "Brugal",
     "country": "República Dominicana",
     "size": "700ml",
-    "abv": 38
+    "abv": 38,
+    "active": true
   },
   {
     "name": "Ron Mount Gay Eclipse",
@@ -52,7 +56,8 @@
     "brand": "Mount Gay",
     "country": "Barbados",
     "size": "700ml",
-    "abv": 40
+    "abv": 40,
+    "active": true
   },
   {
     "name": "Ron Appleton Estate Reserve",
@@ -63,7 +68,8 @@
     "brand": "Appleton Estate",
     "country": "Jamaica",
     "size": "700ml",
-    "abv": 43
+    "abv": 43,
+    "active": true
   },
   {
     "name": "Ron Diplomatico Reserva Exclusiva",
@@ -74,7 +80,8 @@
     "brand": "Diplomatico",
     "country": "Venezuela",
     "size": "750ml",
-    "abv": 40
+    "abv": 40,
+    "active": true
   },
   {
     "name": "Ron Flor de Caña 12 Años",
@@ -85,7 +92,8 @@
     "brand": "Flor de Caña",
     "country": "Nicaragua",
     "size": "700ml",
-    "abv": 40
+    "abv": 40,
+    "active": true
   },
   {
     "name": "Ron El Dorado 12 Años",
@@ -96,7 +104,8 @@
     "brand": "El Dorado",
     "country": "Guyana",
     "size": "700ml",
-    "abv": 40
+    "abv": 40,
+    "active": true
   },
   {
     "name": "Ron Santa Teresa 1796",
@@ -107,7 +116,8 @@
     "brand": "Santa Teresa",
     "country": "Venezuela",
     "size": "700ml",
-    "abv": 40
+    "abv": 40,
+    "active": true
   },
   {
     "name": "Gin Tanqueray",
@@ -118,7 +128,8 @@
     "brand": "Tanqueray",
     "country": "Inglaterra",
     "size": "700ml",
-    "abv": 43.1
+    "abv": 43.1,
+    "active": true
   },
   {
     "name": "Gin Hendrick's",
@@ -129,7 +140,8 @@
     "brand": "Hendrick's",
     "country": "Escocia",
     "size": "700ml",
-    "abv": 41.4
+    "abv": 41.4,
+    "active": true
   },
   {
     "name": "Gin Bombay Sapphire",
@@ -140,7 +152,8 @@
     "brand": "Bombay Sapphire",
     "country": "Inglaterra",
     "size": "750ml",
-    "abv": 40
+    "abv": 40,
+    "active": true
   },
   {
     "name": "Gin Beefeater",
@@ -151,7 +164,8 @@
     "brand": "Beefeater",
     "country": "Inglaterra",
     "size": "700ml",
-    "abv": 40
+    "abv": 40,
+    "active": true
   },
   {
     "name": "Gin The Botanist",
@@ -162,7 +176,8 @@
     "brand": "The Botanist",
     "country": "Escocia",
     "size": "700ml",
-    "abv": 46
+    "abv": 46,
+    "active": true
   },
   {
     "name": "Gin Monkey 47",
@@ -173,7 +188,8 @@
     "brand": "Monkey 47",
     "country": "Alemania",
     "size": "500ml",
-    "abv": 47
+    "abv": 47,
+    "active": true
   },
   {
     "name": "Gin Plymouth",
@@ -184,7 +200,8 @@
     "brand": "Plymouth",
     "country": "Inglaterra",
     "size": "700ml",
-    "abv": 41.2
+    "abv": 41.2,
+    "active": true
   },
   {
     "name": "Gin Sipsmith",
@@ -195,7 +212,8 @@
     "brand": "Sipsmith",
     "country": "Inglaterra",
     "size": "700ml",
-    "abv": 41.6
+    "abv": 41.6,
+    "active": true
   },
   {
     "name": "Gin Tanqueray No. Ten",
@@ -206,7 +224,8 @@
     "brand": "Tanqueray",
     "country": "Inglaterra",
     "size": "700ml",
-    "abv": 47.3
+    "abv": 47.3,
+    "active": true
   },
   {
     "name": "Gin Aviation",
@@ -217,7 +236,8 @@
     "brand": "Aviation",
     "country": "Estados Unidos",
     "size": "700ml",
-    "abv": 42
+    "abv": 42,
+    "active": true
   },
   {
     "name": "Whisky Glenfiddich 12 Years",
@@ -228,7 +248,8 @@
     "brand": "Glenfiddich",
     "country": "Escocia",
     "size": "700ml",
-    "abv": 40
+    "abv": 40,
+    "active": true
   },
   {
     "name": "Whisky Johnnie Walker Black Label",
@@ -239,7 +260,8 @@
     "brand": "Johnnie Walker",
     "country": "Escocia",
     "size": "750ml",
-    "abv": 40
+    "abv": 40,
+    "active": true
   },
   {
     "name": "Whisky Macallan 18 Years",
@@ -250,7 +272,8 @@
     "brand": "Macallan",
     "country": "Escocia",
     "size": "700ml",
-    "abv": 43
+    "abv": 43,
+    "active": true
   },
   {
     "name": "Whisky Chivas Regal 12 Years",
@@ -261,7 +284,8 @@
     "brand": "Chivas Regal",
     "country": "Escocia",
     "size": "700ml",
-    "abv": 40
+    "abv": 40,
+    "active": true
   },
   {
     "name": "Whisky Glenlivet 12 Years",
@@ -272,7 +296,8 @@
     "brand": "Glenlivet",
     "country": "Escocia",
     "size": "700ml",
-    "abv": 40
+    "abv": 40,
+    "active": true
   },
   {
     "name": "Whisky Ardbeg 10 Years",
@@ -283,7 +308,8 @@
     "brand": "Ardbeg",
     "country": "Escocia",
     "size": "700ml",
-    "abv": 46
+    "abv": 46,
+    "active": true
   },
   {
     "name": "Whisky Laphroaig 10 Years",
@@ -294,7 +320,8 @@
     "brand": "Laphroaig",
     "country": "Escocia",
     "size": "700ml",
-    "abv": 40
+    "abv": 40,
+    "active": true
   },
   {
     "name": "Whisky Bowmore 12 Years",
@@ -305,7 +332,8 @@
     "brand": "Bowmore",
     "country": "Escocia",
     "size": "700ml",
-    "abv": 40
+    "abv": 40,
+    "active": true
   },
   {
     "name": "Whisky Lagavulin 16 Years",
@@ -316,7 +344,8 @@
     "brand": "Lagavulin",
     "country": "Escocia",
     "size": "700ml",
-    "abv": 43
+    "abv": 43,
+    "active": true
   },
   {
     "name": "Whisky Talisker 10 Years",
@@ -327,7 +356,8 @@
     "brand": "Talisker",
     "country": "Escocia",
     "size": "700ml",
-    "abv": 45.8
+    "abv": 45.8,
+    "active": true
   },
   {
     "name": "Vodka Grey Goose",
@@ -338,7 +368,8 @@
     "brand": "Grey Goose",
     "country": "Francia",
     "size": "750ml",
-    "abv": 40
+    "abv": 40,
+    "active": true
   },
   {
     "name": "Vodka Absolut",
@@ -349,7 +380,8 @@
     "brand": "Absolut",
     "country": "Suecia",
     "size": "1L",
-    "abv": 40
+    "abv": 40,
+    "active": true
   },
   {
     "name": "Vodka Belvedere",
@@ -360,7 +392,8 @@
     "brand": "Belvedere",
     "country": "Polonia",
     "size": "700ml",
-    "abv": 40
+    "abv": 40,
+    "active": true
   },
   {
     "name": "Vodka Ciroc",
@@ -371,7 +404,8 @@
     "brand": "Ciroc",
     "country": "Francia",
     "size": "700ml",
-    "abv": 40
+    "abv": 40,
+    "active": true
   },
   {
     "name": "Vodka Smirnoff No. 21",
@@ -382,7 +416,8 @@
     "brand": "Smirnoff",
     "country": "Rusia",
     "size": "1L",
-    "abv": 37.5
+    "abv": 37.5,
+    "active": true
   },
   {
     "name": "Vodka Ketel One",
@@ -393,7 +428,8 @@
     "brand": "Ketel One",
     "country": "Países Bajos",
     "size": "700ml",
-    "abv": 40
+    "abv": 40,
+    "active": true
   },
   {
     "name": "Vodka Stolichnaya",
@@ -404,7 +440,8 @@
     "brand": "Stolichnaya",
     "country": "Rusia",
     "size": "700ml",
-    "abv": 40
+    "abv": 40,
+    "active": true
   },
   {
     "name": "Vodka Crystal Head",
@@ -415,7 +452,8 @@
     "brand": "Crystal Head",
     "country": "Canadá",
     "size": "750ml",
-    "abv": 40
+    "abv": 40,
+    "active": true
   },
   {
     "name": "Vodka Reyka",
@@ -426,7 +464,8 @@
     "brand": "Reyka",
     "country": "Islandia",
     "size": "700ml",
-    "abv": 40
+    "abv": 40,
+    "active": true
   },
   {
     "name": "Vodka Titos Handmade",
@@ -437,7 +476,8 @@
     "brand": "Titos",
     "country": "Estados Unidos",
     "size": "700ml",
-    "abv": 40
+    "abv": 40,
+    "active": true
   },
   {
     "name": "Wine Château Margaux",
@@ -448,7 +488,8 @@
     "brand": "Château Margaux",
     "country": "Francia",
     "size": "750ml",
-    "abv": 13
+    "abv": 13,
+    "active": true
   },
   {
     "name": "Wine Vega Sicilia Único",
@@ -459,7 +500,8 @@
     "brand": "Vega Sicilia",
     "country": "España",
     "size": "750ml",
-    "abv": 14
+    "abv": 14,
+    "active": true
   },
   {
     "name": "Wine Opus One",
@@ -470,7 +512,8 @@
     "brand": "Opus One",
     "country": "Estados Unidos",
     "size": "750ml",
-    "abv": 14.5
+    "abv": 14.5,
+    "active": true
   },
   {
     "name": "Wine Sassicaia",
@@ -481,7 +524,8 @@
     "brand": "Sassicaia",
     "country": "Italia",
     "size": "750ml",
-    "abv": 13.5
+    "abv": 13.5,
+    "active": true
   },
   {
     "name": "Wine Château d'Yquem",
@@ -492,7 +536,8 @@
     "brand": "Château d'Yquem",
     "country": "Francia",
     "size": "750ml",
-    "abv": 14
+    "abv": 14,
+    "active": true
   },
   {
     "name": "Wine Barolo",
@@ -503,7 +548,8 @@
     "brand": "Barolo",
     "country": "Italia",
     "size": "750ml",
-    "abv": 14
+    "abv": 14,
+    "active": true
   },
   {
     "name": "Wine Brunello di Montalcino",
@@ -514,7 +560,8 @@
     "brand": "Brunello di Montalcino",
     "country": "Italia",
     "size": "750ml",
-    "abv": 14
+    "abv": 14,
+    "active": true
   },
   {
     "name": "Wine Châteauneuf-du-Pape",
@@ -525,7 +572,8 @@
     "brand": "Châteauneuf-du-Pape",
     "country": "Francia",
     "size": "750ml",
-    "abv": 14.5
+    "abv": 14.5,
+    "active": true
   },
   {
     "name": "Wine Malbec",
@@ -536,7 +584,8 @@
     "brand": "Malbec",
     "country": "Argentina",
     "size": "750ml",
-    "abv": 13.5
+    "abv": 13.5,
+    "active": true
   },
   {
     "name": "Wine Rioja Reserva",
@@ -547,7 +596,7 @@
     "brand": "Rioja Reserva",
     "country": "España",
     "size": "750ml",
-    "abv": 14
+    "abv": 14,
+    "active": true
   }
 ]
-

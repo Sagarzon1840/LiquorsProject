@@ -59,9 +59,15 @@ export class ReviewsService {
     const startIndex = (page - 1) * limit;
     const endIndex = startIndex + limit;
 
+    const totalRate = reviews.reduce(
+      (sum, review) => sum + Number(review.rate),
+      0,
+    );
+    const promRate = reviews.length !== 0 ? totalRate / reviews.length : 0;
+
     reviews = reviews.slice(startIndex, endIndex);
 
-    return reviews;
+    return { promRate, reviews };
   }
 
   async getUserReviews(userId: string, page: number, limit: number) {

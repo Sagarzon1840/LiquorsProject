@@ -5,7 +5,14 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors({
-    origin: 'http://localhost:3000', //Permitir solo solicitudes desde este origen
+    origin: [
+      'https://front-deploy-sage.vercel.app',
+      'https://front-deploy-git-main-tomysykess-projects.vercel.app',
+      'https://front-next-eta.vercel.app',
+      'http://localhost:3000',
+    ],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: 'Content-Type, Authorization',
   });
 
   const swaggerConfig = new DocumentBuilder()

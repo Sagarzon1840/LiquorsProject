@@ -16,19 +16,27 @@ export class RolesGuard implements CanActivate {
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
     const requiredRoles = this.reflector.getAllAndOverride<UserRole[]>(
-      'roles',
+      'role',
       [context.getHandler(), context.getClass()],
     );
+
+    if (!requiredRoles) {
+      return true; // Si no hay roles requeridos, permite el acceso
+    }
 
     const request = context.switchToHttp().getRequest();
     const user = request.user;
 
-    const hasRole = () =>
-      requiredRoles.some((role) => user?.roles?.includes(role));
+    // Convert user.role to an array if it's not already (in case you use multiple roles in future)
+    const userRoles = Array.isArray(user.role) ? user.role : [user.role];
 
-    const valid = user && user.roles && hasRole();
+    const hasRole = () =>
+      requiredRoles.some((role) => userRoles.includes(role));
+
+    const valid = user && user.role && hasRole();
 
     if (!valid) {
+      console.error('Access denied: User does not have required roles');
       throw new ForbiddenException('No access to this route');
     }
     return true;

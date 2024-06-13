@@ -31,16 +31,15 @@ export class Users {
     type: 'varchar',
     length: 50,
     nullable: false,
-    unique: true,
   })
   email: string;
 
-  @Column({
-    type: 'varchar',
-    length: 128, //bcript
-    nullable: true,
-  })
-  password?: string;
+  // @Column({
+  //   type: 'varchar',
+  //   length: 128, //bcript
+  //   nullable: true,
+  // })
+  // password?: string;
 
   @Column({
     type: 'enum',
@@ -54,9 +53,15 @@ export class Users {
     type: 'varchar',
     length: 128,
     nullable: true,
-    unique: true,
   })
   firebaseUid: string;
+
+  @Column({
+    type: 'varchar',
+    length: 50,
+    nullable: true,
+  })
+  provider: string;
 
   @JoinColumn({ name: 'subscriptionId' })
   @OneToOne(() => Subscription, (subscription) => subscription.user)
@@ -70,10 +75,7 @@ export class Users {
   @JoinTable({
     name: 'favorites_products',
     joinColumn: { name: 'product_id', referencedColumnName: 'id' },
-    inverseJoinColumn: {
-      name: 'user_id',
-      referencedColumnName: 'id',
-    },
+    inverseJoinColumn: { name: 'user_id', referencedColumnName: 'id' },
   })
   favorites: Product[];
 

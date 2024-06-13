@@ -10,7 +10,6 @@ import { JwtService } from '@nestjs/jwt';
 export class AuthGuard implements CanActivate {
   constructor(private readonly jwtService: JwtService) {}
 
-  //Guard del Proyecto Individual M4
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     const token = request.headers['authorization']?.split(' ')[1] ?? '';
@@ -25,9 +24,12 @@ export class AuthGuard implements CanActivate {
 
       payload.iat = new Date(payload.iat * 1000);
       payload.exp = new Date(payload.exp * 1000);
+
       request.user = payload;
+
       return true;
     } catch (error) {
+      console.error('Token verification error:', error.message); // Log the error
       throw new UnauthorizedException('Invalid token');
     }
   }

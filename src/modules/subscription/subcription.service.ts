@@ -4,7 +4,11 @@ import { Repository } from 'typeorm';
 import { Subscription } from '../../entities/Subscription.entity';
 import { Users } from 'src/entities/User.entity';
 import { SubscriptionDto } from 'src/dtos/subscription.dto';
-import { MercadoPagoConfig, Preference } from 'mercadopago';
+import { MercadoPagoConfig, Payment, Preference } from 'mercadopago';
+import { SubDto } from 'src/dtos/sub.dto';
+import { PaymentSearchData } from 'mercadopago/dist/clients/payment/search/types';
+import { UserRole } from 'src/enums/roles.enum';
+import { TempStorage } from 'src/entities/tempStorage';
 
 @Injectable()
 export class SubscriptionService {
@@ -17,9 +21,11 @@ export class SubscriptionService {
     private subscriptionRepository: Repository<Subscription>,
     @InjectRepository(Users)
     private usersRepository: Repository<Users>,
+    @InjectRepository(TempStorage)
+    private tempStorage: Repository<TempStorage>
   ) {
     this.client = new MercadoPagoConfig({
-      accessToken: 'TEST-8579480717945015-060511-c10487fc986c430016b3b663064f7104-1845423782',
+      accessToken: 'TEST-720609286863999-060501-d1863148fd64d41481d5501518cd9b73-1842406931',
       options: { timeout: 5000, idempotencyKey: 'abc' },
     });
     this.preference = new Preference(this.client);
@@ -58,49 +64,75 @@ export class SubscriptionService {
     }
   }
 
-
-  async createSubscription(userId: string, subscriptionDto: SubscriptionDto) {
+  async createFactura(userId: string, subscriptionDto: SubscriptionDto) {
     try {
-      const user = await this.usersRepository.findOne({ where: { id: userId } });
-  
+      const user = await this.usersRepository.findOne({ where: { id: userId }, relations: ['subscription'] });
+
       if (!user) {
         throw new Error('User not found');
       }
   
-      const dateInit = new Date();
-      const dateFin = new Date(dateInit.getTime());
-      dateFin.setDate(dateFin.getDate() + 30);
+      let preferenceData;
   
-      const subscription = this.subscriptionRepository.create({
-        ...subscriptionDto,
-        user,
-        dateFin,
-        dateInit
-      });
-  
-      const preferenceData = {
-        items: [
-          {
-            id: '1',
-            type: subscriptionDto.type,
-            status: subscriptionDto.status,
-            title: 'Subscription', // Valor por defecto
-            quantity: 1, // Valor por defecto
-            unit_price: subscriptionDto.amount,
+      if (user.subscription) {
+        if (user.subscription.type === "premium" && subscriptionDto.type === "seller") {
+          preferenceData = {
+            items: [
+              {
+                id: '1',
+                type: subscriptionDto.type,
+                status: "inactive",
+                title: 'Subscription Update',
+                quantity: 1,
+                unit_price: subscriptionDto.amountDif,
+              },
+            ],
+            back_urls: {
+              success: 'http://localhost:3000/login',
+              failure: 'http://localhost:3000/login'
+            },
+            auto_return: 'approved',
+            // para local
+            // notification_url: "https://abac-2803-9800-b8ca-80aa-3d14-c3ea-3243-c7df.ngrok-free.app/subscription"
+            notification_url: "https://liquors-project.onrender.com/subscription"
+          };
+        } else {
+          throw new BadRequestException('User already has a subscription of type Premium');
+        }
+      } else {
+        preferenceData = {
+          items: [
+            {
+              id: '1',
+              type: subscriptionDto.type,
+              status: "inactive",
+              title: 'Subscription',
+              quantity: 1,
+              unit_price: subscriptionDto.amount,
+            },
+          ],
+          back_urls: {
+            success: 'http://localhost:3000/login',
+            failure: 'http://localhost:3000/login'
           },
-        ],
-        back_urls: {
-          success: 'http://localhost:3001/',
-        },
-      };
+          auto_return: 'approved',
+          // para local
+          // notification_url: "https://abac-2803-9800-b8ca-80aa-3d14-c3ea-3243-c7df.ngrok-free.app/subscription"
+          notification_url: "https://liquors-project.onrender.com/subscription"
+        };
+      }
   
       const preferenceResponse = await this.preference.create({
         body: preferenceData,
       });
   
-      await this.subscriptionRepository.save(subscription);
-      user.subscription = subscription;
-      await this.usersRepository.save(user);
+      const tempData = new TempStorage();
+      tempData.userId = userId;
+      tempData.type = subscriptionDto.type;
+      tempData.amount = subscriptionDto.amount;
+      tempData.amountDif = subscriptionDto.amountDif;
+  
+      await this.tempStorage.save(tempData);
   
       return preferenceResponse;
     } catch (error) {
@@ -109,8 +141,8 @@ export class SubscriptionService {
     }
   }
   
+
   async updateSubscriptionType(id: string, type: string, status: string) {
-    // Convertir el status a minúsculas para comparación
     status = status.toLowerCase();
   
     if (status === 'active' || status === 'inactive') {
@@ -136,8 +168,103 @@ export class SubscriptionService {
       throw new BadRequestException('El status es Incorrecto');
     }
   }
+  
+  async handlePaymentSuccess(dataId: PaymentSearchData, type1: string) {
+    if (type1 === 'payment') {
+      try {
+        // console.log('Payment Success - Data ID:', dataId);
+        // console.log('Payment Success - Type:', type1);
 
-  async paymentSuccess() {
-    return 'success';
+        const payment = new Payment(this.client);
+        const response: SubDto = await payment.search(dataId);
+
+        if (!response || !response.results || response.results.length === 0) {
+          throw new NotFoundException('Payment not found');
+        }
+
+        const tempData = await this.tempStorage.find();
+        if (!tempData || tempData.length === 0) {
+          throw new NotFoundException('Temp data not found');
+        }
+
+        const userId = tempData[0].userId;
+        const amount = tempData[0].amount;
+        const amountDif = tempData[0].amountDif;
+        const type = tempData[0].type;
+        const idTemp = tempData[0].id;
+
+        if (!userId || !amount || !type || !idTemp) {
+          throw new BadRequestException('Invalid temp data');
+        }
+
+        // console.log(userId);
+        // console.log(amount);
+        // console.log(type);
+        // console.log(idTemp);
+
+        const user = await this.usersRepository.findOne({ where: { id: userId }, relations: ['subscription'] });
+        if (!user) {
+          throw new NotFoundException('User not found');
+        }
+
+        let subscription = user.subscription;
+
+        if (subscription && subscription.type === 'premium' && type === 'seller') {
+          if (amount < amountDif) {
+            throw new BadRequestException('Insufficient amount for subscription upgrade');
+          }
+
+          subscription.type = 'seller';
+          subscription.amount = amount;
+          subscription.status = 'active';
+
+          await this.subscriptionRepository.save(subscription);
+
+          user.role = UserRole.Seller;
+          await this.usersRepository.save(user);
+        } else {
+          const dateInit = new Date();
+          const dateFin = new Date(dateInit.getTime());
+          dateFin.setDate(dateFin.getDate() + 30);
+
+          subscription = this.subscriptionRepository.create({
+            amount,
+            type,
+            user,
+            dateFin,
+            dateInit,
+            status: 'active',
+            });
+            
+            await this.subscriptionRepository.save(subscription);
+            user.subscription = subscription;
+        
+            switch (subscription.type) {
+              case "premium":
+                user.role = UserRole.Premium
+                break;
+              case "seller":
+                user.role = UserRole.Seller
+                break;
+            }
+            await this.usersRepository.update(user.id, user)
+            await this.usersRepository.save(user);
+        }
+
+        await this.tempStorage.delete({ id: idTemp });
+
+        return { statusCode: 200 };
+      } catch (error) {
+        this.logger.error(`Failed to retrieve payment for ID ${dataId}`, error.stack);
+        if (error.response && error.response.status === 404) {
+          console.error('Error during payment success processing:', error.response.data);
+        } else {
+          console.error('Error during payment success processing:', error);
+        }
+        throw error;
+      }
+    } else {
+      throw new BadRequestException('Invalid type');
+    }
   }
 }

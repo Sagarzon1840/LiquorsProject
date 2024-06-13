@@ -40,4 +40,12 @@ export class FilterDto {
   @IsOptional()
   @IsString()
   size: string = '';
+
+  /**
+   * Valoracion del producto
+   * @example "8"
+   */
+  @IsOptional()
+  @IsNumber()
+  rate: number = 0;
 }

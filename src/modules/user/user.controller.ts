@@ -1,5 +1,4 @@
 import {
-  // BadRequestException,
   Body,
   Controller,
   Delete,
@@ -10,11 +9,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import {
-  CreateUserDTO,
-  LoginUsersDTO,
-  UpdateUserDTO,
-} from 'src/dtos/user.dto';
+import { CreateUserDTO, LoginUsersDTO, UpdateUserDTO } from 'src/dtos/user.dto';
 import { Users } from 'src/entities/User.entity';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
 
@@ -29,6 +24,16 @@ export class UserController {
   create(@Body() user: CreateUserDTO): Promise<Users> {
     return this.userService.createUser(user);
   }
+  //Post user/favorites
+  // @Post(':userId/favorites')
+  // addFavoriteProduct(
+  //   @Param('userId') userId: string,
+  //   @Body('productId') productId: string,
+  //   //array products
+  // ) {
+  //   return this.userService.addFavoriteProduct(userId, productId);
+  // }
+
   //GET UserID
   @Get(':id')
   findOne(@Param('id') id: string): Promise<Users> {
@@ -49,12 +54,13 @@ export class UserController {
   }
   //DELETE for UserID
   @Delete(':id')
-  remove(@Param('id') id: string): Promise<void> {
+  remove(@Param('id') id: string): Promise<string> {
     return this.userService.removeUser(id);
   }
+
   //POST signin
   @Post('signin')
-  @ApiBody({ type:LoginUsersDTO })
+  @ApiBody({ type: LoginUsersDTO })
   signIn(@Body() login: LoginUsersDTO) {
     return this.userService.signIn(login);
   }
@@ -65,6 +71,4 @@ export class UserController {
   signUp(@Body() user: CreateUserDTO) {
     return this.userService.signUp(user);
   }
-
- 
 }

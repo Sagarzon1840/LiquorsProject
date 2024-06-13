@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class SubscriptionDto {
   /**
@@ -10,19 +10,18 @@ export class SubscriptionDto {
   type: string;
 
   /**
-   * Estatus de la subscripcion, puede ser active o inactive
-   * @example active
-   */ 
-
-  @IsString()
-  @IsNotEmpty()
-  status: string;
-
-  /**
    * El precio de la subcripcion
    * @example 200
    */
   @IsNumber()
   @IsNotEmpty()
   amount: number;
+
+   /**
+   * Diferencia de precio entre tipo de subscripcion a updatear
+   * @example 100
+   */
+   @IsNumber()
+   @IsOptional()
+   amountDif?: number;
 }

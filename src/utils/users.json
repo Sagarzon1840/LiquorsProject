@@ -1,5 +1,8 @@
-   {
-    "name": "Jane Doe",
-    "email": "jane.doe@example.com",
-    "password": "securepasswordhash"
-   }
+
+  {
+    "name": "Lionel Andrés Messi Cuccittini",
+    "email": "lionel@gmail.com",
+    "role": 2,
+    "firebaseUid": "firebaseUid12345678",
+    "provider": "google.com"
+  }

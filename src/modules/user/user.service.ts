@@ -8,15 +8,18 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDTO, LoginUsersDTO, UpdateUserDTO } from 'src/dtos/user.dto';
+import { Product } from 'src/entities/Product.entity';
 import { Users } from 'src/entities/User.entity';
-import { Repository } from 'typeorm';
-// import { User } from 'mercadopago';
+import { In, Repository } from 'typeorm';
+
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(Users)
     private usersRepository: Repository<Users>,
+    @InjectRepository(Product)
+    private productRepository: Repository<Product>,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -47,6 +50,53 @@ export class UserService {
   async findAllUser(): Promise<Users[]> {
     return await this.usersRepository.find();
   }
+  async getUserProducts(userId: string): Promise<Product[]> {
+    const user = await this.usersRepository.findOne({
+      where: { id: userId },
+      relations: ['products_id'],
+    });
+
+    if (!user) {
+      throw new NotFoundException(`Usuario con ID ${userId} no fue encontrado`);
+    }
+
+    return user.products_id;
+  }
+
+async getUserReviews(id: string): Promise<Users> {
+  const user = await this.usersRepository.findOne({
+    where: { id },
+    relations: ['reviews'],
+  });
+  if (!user) {
+    throw new NotFoundException(`Usuario con ID ${id} no fue encontrado`);
+  }
+  return user;
+}
+
+async getUserSubscription(id: string): Promise<Users> {
+  const user = await this.usersRepository.findOne({
+    where: { id },
+    relations: ['subscription'],
+  });
+  if (!user) {
+    throw new NotFoundException(`Usuario con ID ${id} no fue encontrado`);
+  }
+  return user;
+}
+//get userfavorites
+async getUserFavorites(userId: string): Promise<Product[]> {
+  const user = await this.usersRepository.findOne({
+    where: { id: userId },
+    relations: ['favorites'],
+  });
+
+  if (!user) {
+    throw new NotFoundException(`Usuario con ID ${userId} no fue encontrado`);
+  }
+
+  return user.favorites;
+}
   //---------------------Update a user by ID---------------------
   async updateUser(id: string, updateUserDto: UpdateUserDTO): Promise<Users> {
     const { email } = updateUserDto;
@@ -66,38 +116,86 @@ export class UserService {
     return updateUser;
   }
   //---------------------addFavoriteProduct for userId
-  // async addFavoriteProduct(userId: string, productId: string): Promise<string> {
-    // const user = await this.usersRepository.findOne({
-    //   where: { id: userId },
-    //   relations: ['favorites'],
-    // });
-    // if (!user) {
-    //   throw new NotFoundException(`Usuario con ID ${userId} no fue encontrado`);
-    // }
-    // //falta terminar
+  async addFavoriteProduct(userId: string, productIds: string[]): Promise<string> {
+    const user = await this.usersRepository.findOne({
+      where: { id: userId },
+      relations: ['favorites'],
+    });
+  
+    if (!user) {
+      throw new NotFoundException(`Usuario con ID ${userId} no fue encontrado`);
+    }
 
-    // await this.usersRepository.save(user);
+    user.favorites = user.favorites || [];
+  
+    const existingFavorites = user.favorites.map(favorite => favorite.id);
+  
+    const newProductIds = productIds.filter(productId => !existingFavorites.includes(productId));
+  
+    const newProducts = await this.productRepository.find({
+      where: { id: In(newProductIds) },
+    });
+  
+    user.favorites.push(...newProducts);
+  
+    await this.usersRepository.save(user);
+  
+    return `Productos agregados como favoritos para el usuario con ID ${userId}`;
+}
+//----------------------Remove favorites
+async removeFavoriteProduct(userId: string, productId: string): Promise<string> {
+  const user = await this.usersRepository.findOne({
+    where: { id: userId },
+    relations: ['favorites'],
+  });
 
-    // return `Producto con ID ${productId} agregado a favoritos del usuario con ID ${userId}`;
-  // }
+  if (!user) {
+    throw new NotFoundException(`Usuario con ID ${userId} no fue encontrado`);
+  }
 
+  const index = user.favorites.findIndex(favorite => favorite.id === productId);
+
+  if (index === -1) {
+    throw new NotFoundException(`Producto con ID ${productId} no es un favorito del usuario`);
+  }
+
+  user.favorites.splice(index, 1);
+
+  await this.usersRepository.save(user);
+
+  return `Producto con ID ${productId} eliminado de los favoritos del usuario con ID ${userId}`;
+}
   //--------------------Remove a user by ID----------------
   async removeUser(id: string): Promise<string> {
+    const predefinedEmail = 'lionel@gmail.com';
     try {
-      await this.usersRepository.query(
-        'UPDATE products SET user_id = NULL WHERE user_id = $1',
-        [id],
-      );
+      const userToDelete = await this.usersRepository.findOne({ where: { id } });
 
-      const result = await this.usersRepository.delete(id);
-      if (result.affected === 0) {
+      if (!userToDelete) {
         throw new NotFoundException(`Usuario con ID ${id} no fue encontrado`);
       }
 
-      return `Usuario con ID ${id} ha sido eliminado`;
+      const preloadedUser = await this.usersRepository.findOne({ where: { email: predefinedEmail } });
+
+      if (!preloadedUser) {
+        throw new NotFoundException(`Usuario de prueba con email ${predefinedEmail} no fue encontrado`);
+      }
+
+      // Reasignar productos
+      await this.productRepository
+        .createQueryBuilder()
+        .update(Product)
+        .set({ seller: preloadedUser })
+        .where('seller.id = :userId', { userId: id })
+        .execute();
+
+      // Eliminar usuario
+      await this.usersRepository.delete(id);
+
+      return `Usuario con ID ${id} ha sido eliminado y sus productos han sido reasignados al usuario con email ${predefinedEmail}`;
     } catch (error) {
       console.error(error);
-      throw new Error('Ha ocurrido un error al eliminar el usuario.');
+      throw new Error('Ha ocurrido un error al eliminar el usuario y reasignar sus productos.');
     }
   }
 
@@ -124,7 +222,6 @@ export class UserService {
         role: user.role,
       };
       const secret = process.env.JWT_SECRET;
-      console.log(secret);
       
       if (!secret) {
         throw new UnauthorizedException('JWT_SECRET not found in environment variables');
@@ -197,7 +294,6 @@ export class UserService {
             role: foundUser.role,
           };
           const secret = process.env.JWT_SECRET;
-          console.log(secret);
           if (!secret) {
             throw new UnauthorizedException('JWT_SECRET not found in environment variables');
           }
@@ -232,7 +328,6 @@ export class UserService {
         role: savedUser.role,
       };
       const secret = process.env.JWT_SECRET;
-      console.log(secret);
       if (!secret) {
         throw new UnauthorizedException('JWT_SECRET not found in environment variables');
       }

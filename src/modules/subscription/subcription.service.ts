@@ -66,7 +66,6 @@ export class SubscriptionService {
 
   async createFactura(userId: string, subscriptionDto: SubscriptionDto) {
     try {
-      // Limpiar cualquier entrada existente en TempStorage para el usuario
       await this.tempStorage.delete({ userId: userId });
   
       const user = await this.usersRepository.findOne({ where: { id: userId }, relations: ['subscription'] });

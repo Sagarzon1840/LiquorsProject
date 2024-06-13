@@ -8,6 +8,7 @@ import { Users } from 'src/entities/User.entity';
 import { Product } from 'src/entities/Product.entity';
 import { Reviews } from 'src/entities/Review.entity';
 import { Repository } from 'typeorm';
+import { CreateReviewDto } from 'src/dtos/review.dto';
 
 @Injectable()
 export class ReviewsService {
@@ -20,7 +21,7 @@ export class ReviewsService {
   async createReview(
     idUser: string,
     idProduct: string,
-    review: Partial<Reviews>,
+    review: CreateReviewDto,
   ) {
     const user = await this.usersRepository.findOneBy({ id: idUser });
     if (!user) throw new NotFoundException(`User with id ${idUser} not found`);
@@ -35,6 +36,8 @@ export class ReviewsService {
       newReview.rate = parseFloat(review.rate.toString());
       newReview.userId = user;
       newReview.productId = product;
+      newReview.active = true;
+      newReview.approbed = false;
     } catch (error) {
       throw new BadRequestException(`Review creation error: ${error.message}`);
     }
@@ -49,7 +52,8 @@ export class ReviewsService {
     if (!product) throw new NotFoundException(`Product with id ${productId}`);
 
     let reviews = await this.reviewRepository.find({
-      where: { productId: { id: productId } },
+      //AGREGAR APPROBED UNA VEZ HECHA LA LÓGICA EN ADMIN
+      where: { productId: { id: productId }, active: true },
       relations: ['userId'],
     });
     const startIndex = (page - 1) * limit;
@@ -66,7 +70,8 @@ export class ReviewsService {
     if (!user) throw new NotFoundException(`User with id ${userId}`);
 
     let reviews = await this.reviewRepository.find({
-      where: { userId: { id: userId } },
+      //AGREGAR APPROBED UNA VEZ HECHA LA LÓGICA EN ADMIN
+      where: { userId: { id: userId }, active: true },
       relations: ['productId'],
     });
     const startIndex = (page - 1) * limit;
@@ -104,7 +109,7 @@ export class ReviewsService {
   async deleteReview(id: string) {
     const foundReview = this.reviewRepository.findOneBy({ id });
     if (foundReview) {
-      await this.reviewRepository.delete({ id });
+      (await foundReview).active = false;
       return `Review with ${id} deleted`;
     }
     throw new NotFoundException(`Review with id ${id} not found`);

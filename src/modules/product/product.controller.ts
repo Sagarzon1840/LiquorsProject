@@ -69,24 +69,24 @@ export class ProductController {
   }
 
   @ApiBearerAuth()
-  // @Roles(UserRole.Seller, UserRole.Admin)
-  // @UseGuards(AuthGuard)
+  @Roles(UserRole.Seller, UserRole.Admin)
+  @UseGuards(AuthGuard)
   @Post(':id')
   createProduct(@Body() product: ProductDto, @Param('id') id: string) {
     return this.productsService.createProduct(product, id);
   }
 
   @ApiBearerAuth()
-  // @Roles(UserRole.Seller, UserRole.Admin)
-  // @UseGuards(AuthGuard, RolesGuard)
+  @Roles(UserRole.Seller, UserRole.Admin)
+  @UseGuards(AuthGuard, RolesGuard)
   @Put(':id')
   updateProduct(@Param('id') id: string, @Body() product: ProductDto) {
     return this.productsService.updateProduct(id, product);
   }
 
   @ApiBearerAuth()
-  // @Roles(UserRole.Seller, UserRole.Admin)
-  // @UseGuards(AuthGuard, RolesGuard)
+  @Roles(UserRole.Seller, UserRole.Admin)
+  @UseGuards(AuthGuard, RolesGuard)
   @Delete(':id')
   deleteProduct(@Param('id') id: string) {
     return this.productsService.deleteProduct(id);

@@ -34,13 +34,6 @@ export class Users {
   })
   email: string;
 
-  // @Column({
-  //   type: 'varchar',
-  //   length: 128, //bcript
-  //   nullable: true,
-  // })
-  // password?: string;
-
   @Column({
     type: 'enum',
     enum: UserRole,
@@ -48,6 +41,13 @@ export class Users {
     nullable: false,
   })
   role: UserRole;
+
+  @Column({
+    type: 'varchar',
+    length: 255,
+    nullable: true,
+  })
+  profileImage: string;
 
   @Column({
     type: 'varchar',

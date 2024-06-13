@@ -3,47 +3,68 @@ import {
   Controller,
   Delete,
   Get,
+  NotFoundException,
   // NotFoundException,
   Param,
   Post,
   Put,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDTO, LoginUsersDTO, UpdateUserDTO } from 'src/dtos/user.dto';
+import { AddFavoriteProductDTO, CreateUserDTO, LoginUsersDTO, RemoveFavoriteProductDTO, UpdateUserDTO } from 'src/dtos/user.dto';
 import { Users } from 'src/entities/User.entity';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { Reviews } from 'src/entities/Review.entity';
+import { Subscription } from 'src/entities/Subscription.entity';
 
 @ApiTags('users')
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  //POST User
-  @Post()
-  @ApiBody({ type: CreateUserDTO })
-  create(@Body() user: CreateUserDTO): Promise<Users> {
-    return this.userService.createUser(user);
-  }
-  //Post user/favorites
-  // @Post(':userId/favorites')
-  // addFavoriteProduct(
-  //   @Param('userId') userId: string,
-  //   @Body('productId') productId: string,
-  //   //array products
-  // ) {
-  //   return this.userService.addFavoriteProduct(userId, productId);
-  // }
-
-  //GET UserID
-  @Get(':id')
-  findOne(@Param('id') id: string): Promise<Users> {
-    return this.userService.findOneUser(id);
-  }
   //GET AllUser
   @Get()
   findAll(): Promise<Users[]> {
     return this.userService.findAllUser();
   }
+  //GET UserID
+  @Get(':id')
+  findOne(@Param('id') id: string): Promise<Users> {
+    return this.userService.findOneUser(id);
+  }
+  //GET UserID find products
+  @Get(':id/products')
+  async getUserProducts(@Param('id') userId: string) {
+    const products = await this.userService.getUserProducts(userId);
+    if (!products || products.length === 0) {
+      throw new NotFoundException(
+        `No se encontraron productos para el usuario con ID ${userId}`,
+      );
+    }
+    return products;
+  }
+  //GET UserID find reviews
+  @Get(':id/reviews')
+  async getUserReviews(@Param('id') id: string): Promise<Reviews[]> {
+    const user = await this.userService.getUserReviews(id);
+    if (!user) {
+      throw new NotFoundException(`Usuario con ID ${id} no fue encontrado`);
+    }
+    return user.reviews;
+  }
+  //GET UserID find subscription
+  @Get(':id/subscription')
+  async getUserSubscription(@Param('id') id: string): Promise<Subscription> {
+    const user = await this.userService.getUserSubscription(id);
+    if (!user) {
+      throw new NotFoundException(`Usuario con ID ${id} no fue encontrado`);
+    }
+    return user.subscription;
+  }
+ // GET user/:id/favorites
+ @Get(':id/favorites')
+ async getUserFavorites(@Param('id') userId: string) {
+   return this.userService.getUserFavorites(userId);
+ }
   //PUT User
   @Put(':id')
   update(
@@ -52,12 +73,35 @@ export class UserController {
   ): Promise<Users> {
     return this.userService.updateUser(id, updateUser);
   }
+// DELETE user/:id/favorites
+// DELETE user/:id/favorites
+@Delete(':id/favorites')
+@ApiBody({ type: RemoveFavoriteProductDTO })
+async removeFavoriteProducts(@Param('id') userId: string, @Body() body: RemoveFavoriteProductDTO) {
+  const { productIds } = body;
+  const results = await Promise.all(productIds.map(productId => this.userService.removeFavoriteProduct(userId, productId)));
+  return results.join('\n');
+}
+
   //DELETE for UserID
   @Delete(':id')
   remove(@Param('id') id: string): Promise<string> {
     return this.userService.removeUser(id);
   }
 
+  //POST User
+  @Post()
+  @ApiBody({ type: CreateUserDTO })
+  create(@Body() user: CreateUserDTO): Promise<Users> {
+    return this.userService.createUser(user);
+  }
+  // POST user/:id/favorites
+  @Post(':id/favorites')
+  @ApiBody({ type: AddFavoriteProductDTO })
+  async addFavoriteProduct(@Param('id') userId: string, @Body() body: AddFavoriteProductDTO) {
+    const { products } = body;
+    return this.userService.addFavoriteProduct(userId, products);
+  }
   //POST signin
   @Post('signin')
   @ApiBody({ type: LoginUsersDTO })

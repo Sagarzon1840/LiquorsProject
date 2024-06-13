@@ -31,7 +31,7 @@ export class ProductService {
   }
 
   async getProduct(id: string) {
-    return await this.productRepository.findOneBy({ id });
+    return await this.productRepository.find({ where: { id } });
   }
 
   async createProduct(product: ProductDto, id: string) {
@@ -48,6 +48,7 @@ export class ProductService {
     newProduct.abv = product.abv;
     newProduct.brand = product.brand;
     newProduct.size = product.size;
+    newProduct.active = true;
 
     await this.productRepository.save(newProduct);
 
@@ -57,7 +58,7 @@ export class ProductService {
   async updateProduct(id: string, product: ProductDto) {
     await this.productRepository.update(id, product);
     const updateProduct = await this.productRepository.findOne({
-      where: { id },
+      where: { id, active: true },
     });
     return updateProduct;
   }
@@ -87,11 +88,18 @@ export class ProductService {
     await this.productRepository.delete(product.id);
     return { message: `el producto ha sido eliminado` };
   }
+
   async deleteProductLogical(id: string) {
-    const foundProduct = this.productRepository.findOneBy({ id });
+    const foundProduct = await this.productRepository.findOneBy({
+      id,
+    });
+
     if (foundProduct) {
-      (await foundProduct).active = false;
-      return `Review with ${id} deleted`;
+      foundProduct.active = false;
     }
+
+    await this.productRepository.update(id, foundProduct);
+
+    return `Review with ${id} deleted`;
   }
 }

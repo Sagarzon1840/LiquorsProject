@@ -52,7 +52,8 @@ export class ReviewsService {
     if (!product) throw new NotFoundException(`Product with id ${productId}`);
 
     let reviews = await this.reviewRepository.find({
-      where: { productId: { id: productId }, approbed: true, active: true },
+      //AGREGAR APPROBED UNA VEZ HECHA LA LÓGICA EN ADMIN
+      where: { productId: { id: productId }, active: true },
       relations: ['userId'],
     });
     const startIndex = (page - 1) * limit;
@@ -69,7 +70,8 @@ export class ReviewsService {
     if (!user) throw new NotFoundException(`User with id ${userId}`);
 
     let reviews = await this.reviewRepository.find({
-      where: { userId: { id: userId }, approbed: true, active: true },
+      //AGREGAR APPROBED UNA VEZ HECHA LA LÓGICA EN ADMIN
+      where: { userId: { id: userId }, active: true },
       relations: ['productId'],
     });
     const startIndex = (page - 1) * limit;

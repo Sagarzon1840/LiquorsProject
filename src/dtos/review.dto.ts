@@ -7,14 +7,14 @@ export class CreateReviewDto {
   @Max(5, { message: 'Rate must be at most 5' })
   @IsNotEmpty({ message: 'Rate is required' })
   @ApiProperty({
-    example: '4.5'
+    example: '4.5',
   })
   rate: number;
 
   @IsString({ message: 'Comment must be a string' })
   @IsNotEmpty({ message: 'Comment is required' })
   @ApiProperty({
-    example: 'Muy rico y saborizado'
+    example: 'Delicious :D',
   })
   comment: string;
 }

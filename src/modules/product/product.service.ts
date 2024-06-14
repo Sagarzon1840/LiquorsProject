@@ -1,8 +1,4 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FilterDto } from 'src/dtos/filter.dto';
 import { ProductDto } from 'src/dtos/product.dto';
@@ -37,10 +33,12 @@ export class ProductService {
   async getProduct(id: string) {
     const product = await this.productRepository.findOne({
       where: { id },
-      relations: { seller: true, reviewId: true, users: true },
+      relations: { seller: true, reviewId: true /*, users: true */ },
     });
-    if (!product)
+
+    if (!product) {
       throw new NotFoundException(`Product with id:${id} not found`);
+    }
     return product;
   }
 
@@ -107,11 +105,15 @@ export class ProductService {
     if (!foundProduct) {
       throw new NotFoundException(`Product with id:${id} not found`);
     } else {
-      foundProduct.active = false;
+      if (foundProduct.active === false) {
+        foundProduct.active = true;
+        await this.productRepository.update(id, foundProduct);
+        return `Product with ${id} activated`;
+      } else {
+        foundProduct.active = false;
+        await this.productRepository.update(id, foundProduct);
+        return `Product with ${id} deleted`;
+      }
     }
-
-    await this.productRepository.update(id, foundProduct);
-
-    return `Review with id:${id} deleted`;
   }
 }

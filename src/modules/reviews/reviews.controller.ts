@@ -1,7 +1,6 @@
 import {
   Body,
   Controller,
-  Delete,
   Get,
   NotFoundException,
   Param,
@@ -133,7 +132,7 @@ export class ReviewsController {
   @ApiBearerAuth()
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(UserRole.User, UserRole.Premium, UserRole.Admin)
-  @Delete(':id')
+  @Put('delete/:id')
   deleteReview(@Param('id', ParseUUIDPipe) id: string) {
     const foundReview = this.reviewsService.deleteReview(id);
     if (!foundReview)

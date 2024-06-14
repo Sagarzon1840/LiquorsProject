@@ -117,9 +117,14 @@ export class ReviewsService {
     if (!foundReview) {
       throw new NotFoundException(`Review with id ${id} not found`);
     }
-    foundReview.active = false;
-
-    await this.reviewRepository.update(id, foundReview);
-    return `Review with ${id} deleted`;
+    if (foundReview.active === false) {
+      foundReview.active = true;
+      await this.reviewRepository.update(id, foundReview);
+      return `Review with ${id} activated`;
+    } else {
+      foundReview.active = false;
+      await this.reviewRepository.update(id, foundReview);
+      return `Review with ${id} deleted`;
+    }
   }
 }

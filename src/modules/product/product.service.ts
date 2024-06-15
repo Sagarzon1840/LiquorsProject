@@ -5,16 +5,20 @@ import { ProductDto } from 'src/dtos/product.dto';
 import { Users } from 'src/entities/User.entity';
 import { Product } from 'src/entities/Product.entity';
 import { Repository } from 'typeorm';
+import { Reviews } from 'src/entities/Review.entity';
 
 @Injectable()
 export class ProductService {
   constructor(
     @InjectRepository(Product) private productRepository: Repository<Product>,
     @InjectRepository(Users) private userRepository: Repository<Users>,
+    @InjectRepository(Reviews) private reviewRepository: Repository<Reviews>,
   ) {}
 
   async getAllProducts(filters: FilterDto, page: number, limit: number) {
-    let products = await this.productRepository.find();
+    let products = await this.productRepository.find({
+      relations: ['reviewId'],
+    });
     const { category, abv, brand, country, size, rate } = filters;
     if (category)
       products = products.filter((product) => product.category === category);
@@ -27,6 +31,20 @@ export class ProductService {
     const start = (page - 1) * limit;
     const end = start + limit;
     const productsSlice = products.slice(start, end);
+
+    //Promedio los rates de cada producto
+    for (const product of productsSlice) {
+      const reviews = await this.reviewRepository.find({
+        where: { productId: { id: product.id } },
+      });
+      const totalRate = reviews.reduce(
+        (sum, review) => sum + Number(review.rate),
+        0,
+      );
+      const promRate = reviews.length !== 0 ? totalRate / reviews.length : 0;
+      (product as any).averageRate = parseFloat(promRate.toFixed(1));
+    }
+
     return productsSlice;
   }
 

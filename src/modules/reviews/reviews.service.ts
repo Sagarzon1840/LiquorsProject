@@ -63,7 +63,9 @@ export class ReviewsService {
       (sum, review) => sum + Number(review.rate),
       0,
     );
-    const promRate = reviews.length !== 0 ? totalRate / reviews.length : 0;
+    let promRate = reviews.length !== 0 ? totalRate / reviews.length : 0;
+
+    promRate = parseFloat(promRate.toFixed(1));
 
     reviews = reviews.slice(startIndex, endIndex);
 

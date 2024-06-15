@@ -64,9 +64,9 @@ export class SubscriptionService {
     }
   }
 
-  async createFactura(userId: string, subscriptionDto: SubscriptionDto) {
+   async createFactura(userId: string, subscriptionDto: SubscriptionDto) {
     try {
-      await this.tempStorage.delete({ userId: userId });
+      await this.tempStorage.clear();
   
       const user = await this.usersRepository.findOne({ where: { id: userId }, relations: ['subscription'] });
   

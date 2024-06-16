@@ -1,4 +1,9 @@
-import { BadRequestException, Injectable, Logger, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Subscription } from '../../entities/Subscription.entity';
@@ -22,10 +27,11 @@ export class SubscriptionService {
     @InjectRepository(Users)
     private usersRepository: Repository<Users>,
     @InjectRepository(TempStorage)
-    private tempStorage: Repository<TempStorage>
+    private tempStorage: Repository<TempStorage>,
   ) {
     this.client = new MercadoPagoConfig({
-      accessToken: 'TEST-720609286863999-060501-d1863148fd64d41481d5501518cd9b73-1842406931',
+      accessToken:
+        'TEST-720609286863999-060501-d1863148fd64d41481d5501518cd9b73-1842406931',
       options: { timeout: 5000, idempotencyKey: 'abc' },
     });
     this.preference = new Preference(this.client);
@@ -41,25 +47,28 @@ export class SubscriptionService {
         where: { id: userId },
         relations: { subscription: true },
       });
-  
+
       if (!user) {
         throw new NotFoundException('User not found');
       }
-  
+
       if (!user.subscription) {
         throw new BadRequestException('User does not have a subscription');
       }
-  
+
       const { id } = user.subscription;
       user.subscription = null;
-  
+
       await this.usersRepository.save(user);
       await this.subscriptionRepository.delete(id);
-  
+
       this.logger.log(`Subscription with id ${id} deleted for user ${userId}`);
       return { message: 'Subscription deleted successfully' };
     } catch (error) {
-      this.logger.error(`Failed to delete subscription for user ${userId}`, error.stack);
+      this.logger.error(
+        `Failed to delete subscription for user ${userId}`,
+        error.stack,
+      );
       throw error;
     }
   }
@@ -67,23 +76,29 @@ export class SubscriptionService {
   async createFactura(userId: string, subscriptionDto: SubscriptionDto) {
     try {
       await this.tempStorage.clear();
-  
-      const user = await this.usersRepository.findOne({ where: { id: userId }, relations: ['subscription'] });
-  
+
+      const user = await this.usersRepository.findOne({
+        where: { id: userId },
+        relations: ['subscription'],
+      });
+
       if (!user) {
         throw new NotFoundException('User not found');
       }
-  
+
       let preferenceData;
-  
+
       if (user.subscription) {
-        if (user.subscription.type === "premium" && subscriptionDto.type === "seller") {
+        if (
+          user.subscription.type === 'premium' &&
+          subscriptionDto.type === 'seller'
+        ) {
           preferenceData = {
             items: [
               {
                 id: '1',
                 type: subscriptionDto.type,
-                status: "inactive",
+                status: 'inactive',
                 title: 'Subscription Update',
                 quantity: 1,
                 unit_price: subscriptionDto.amountDif,
@@ -91,13 +106,16 @@ export class SubscriptionService {
             ],
             back_urls: {
               success: 'https://front-deploy-sage.vercel.app',
-              failure: 'https://front-deploy-sage.vercel.app'
+              failure: 'https://front-deploy-sage.vercel.app',
             },
             auto_return: 'approved',
-            notification_url: "https://liquors-project.onrender.com/subscription"
+            notification_url:
+              'https://liquors-project.onrender.com/subscription',
           };
         } else {
-          throw new BadRequestException('User already has a subscription of type Premium');
+          throw new BadRequestException(
+            'User already has a subscription of type Premium',
+          );
         }
       } else {
         preferenceData = {
@@ -105,7 +123,7 @@ export class SubscriptionService {
             {
               id: '1',
               type: subscriptionDto.type,
-              status: "inactive",
+              status: 'inactive',
               title: 'Subscription',
               quantity: 1,
               unit_price: subscriptionDto.amount,
@@ -113,62 +131,59 @@ export class SubscriptionService {
           ],
           back_urls: {
             success: 'https://front-deploy-sage.vercel.app',
-            failure: 'https://front-deploy-sage.vercel.app'
+            failure: 'https://front-deploy-sage.vercel.app',
           },
           auto_return: 'approved',
-          notification_url: "https://liquors-project.onrender.com/subscription"
+          notification_url: 'https://liquors-project.onrender.com/subscription',
         };
       }
-  
+
       const preferenceResponse = await this.preference.create({
         body: preferenceData,
       });
-  
+
       const tempData = new TempStorage();
       tempData.userId = userId;
       tempData.type = subscriptionDto.type;
       tempData.amount = subscriptionDto.amount;
       tempData.amountDif = subscriptionDto.amountDif;
-  
+
       await this.tempStorage.save(tempData);
-  
+
       return preferenceResponse;
     } catch (error) {
       console.error(error);
       throw error;
     }
   }
-  
-  
-  
 
   async updateSubscriptionType(id: string, type: string, status: string) {
     status = status.toLowerCase();
-  
+
     if (status === 'active' || status === 'inactive') {
       const subcription = await this.subscriptionRepository.findOne({
         where: { id },
       });
-  
+
       if (!subcription) {
         throw new NotFoundException('Subcription not found');
       }
-  
+
       const dateInit = new Date();
       const dateFin = new Date(dateInit.getTime());
       dateFin.setDate(dateFin.getDate() + 30);
-  
+
       subcription.type = type;
       subcription.status = status;
       subcription.dateInit = dateInit;
       subcription.dateFin = dateFin;
-  
+
       return await this.subscriptionRepository.save(subcription);
     } else {
       throw new BadRequestException('El status es Incorrecto');
     }
   }
-  
+
   async handlePaymentSuccess(dataId: PaymentSearchData, type1: string) {
     if (type1 === 'payment') {
       try {
@@ -202,16 +217,25 @@ export class SubscriptionService {
         // console.log(type);
         // console.log(idTemp);
 
-        const user = await this.usersRepository.findOne({ where: { id: userId }, relations: ['subscription'] });
+        const user = await this.usersRepository.findOne({
+          where: { id: userId },
+          relations: ['subscription'],
+        });
         if (!user) {
           throw new NotFoundException('User not found');
         }
 
         let subscription = user.subscription;
 
-        if (subscription && subscription.type === 'premium' && type === 'seller') {
+        if (
+          subscription &&
+          subscription.type === 'premium' &&
+          type === 'seller'
+        ) {
           if (amount < amountDif) {
-            throw new BadRequestException('Insufficient amount for subscription upgrade');
+            throw new BadRequestException(
+              'Insufficient amount for subscription upgrade',
+            );
           }
 
           subscription.type = 'seller';
@@ -234,30 +258,36 @@ export class SubscriptionService {
             dateFin,
             dateInit,
             status: 'active',
-            });
-            
-            await this.subscriptionRepository.save(subscription);
-            user.subscription = subscription;
-        
-            switch (subscription.type) {
-              case "premium":
-                user.role = UserRole.Premium
-                break;
-              case "seller":
-                user.role = UserRole.Seller
-                break;
-            }
-            await this.usersRepository.update(user.id, user)
-            await this.usersRepository.save(user);
+          });
+
+          await this.subscriptionRepository.save(subscription);
+          user.subscription = subscription;
+
+          switch (subscription.type) {
+            case 'premium':
+              user.role = UserRole.Premium;
+              break;
+            case 'seller':
+              user.role = UserRole.Seller;
+              break;
+          }
+          await this.usersRepository.update(user.id, user);
+          await this.usersRepository.save(user);
         }
 
         await this.tempStorage.delete({ id: idTemp });
 
         return { statusCode: 200 };
       } catch (error) {
-        this.logger.error(`Failed to retrieve payment for ID ${dataId}`, error.stack);
+        this.logger.error(
+          `Failed to retrieve payment for ID ${dataId}`,
+          error.stack,
+        );
         if (error.response && error.response.status === 404) {
-          console.error('Error during payment success processing:', error.response.data);
+          console.error(
+            'Error during payment success processing:',
+            error.response.data,
+          );
         } else {
           console.error('Error during payment success processing:', error);
         }

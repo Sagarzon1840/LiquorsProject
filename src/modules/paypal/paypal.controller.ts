@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Query, Body, HttpException, HttpStatus, Res } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Query,
+  Body,
+  HttpException,
+  HttpStatus,
+  Res,
+} from '@nestjs/common';
 import { PayPalService } from './paypal.service';
 import { SubscriptionDto } from 'src/dtos/subscription.dto';
 import { ApiTags } from '@nestjs/swagger';
@@ -9,7 +18,10 @@ export class PayPalController {
   constructor(private readonly paypalService: PayPalService) {}
 
   @Post('create-order')
-  async createOrder(@Body() subscription: SubscriptionDto, @Query('userId') userId: string) {
+  async createOrder(
+    @Body() subscription: SubscriptionDto,
+    @Query('userId') userId: string,
+  ) {
     try {
       const order = await this.paypalService.createOrder(subscription, userId);
       return order;

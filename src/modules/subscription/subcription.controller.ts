@@ -35,64 +35,79 @@ export class SubcriptionController {
   @ApiBearerAuth()
   @Roles(UserRole.Admin)
   @UseGuards(AuthGuard, RolesGuard)
-
-
   getSubcription() {
     return this.subscriptionService.getSubcription();
   }
 
   @Put(':id')
   @ApiBearerAuth()
-
   @Roles(UserRole.Admin)
   @UseGuards(AuthGuard, RolesGuard)
-
-  updateSubcriptionType(@Param('id') id: string, @Body() updateSubscriptionDto: UpdateSubscriptionDto) {
-    return this.subscriptionService.updateSubscriptionType(id, updateSubscriptionDto.type, updateSubscriptionDto.status);
+  updateSubcriptionType(
+    @Param('id') id: string,
+    @Body() updateSubscriptionDto: UpdateSubscriptionDto,
+  ) {
+    return this.subscriptionService.updateSubscriptionType(
+      id,
+      updateSubscriptionDto.type,
+      updateSubscriptionDto.status,
+    );
   }
 
   @Post(':id')
   @ApiBearerAuth()
-
   @Roles(UserRole.User, UserRole.Premium)
   @UseGuards(AuthGuard, RolesGuard)
-
   createSubcriptionType(
-    @Param("id", ParseUUIDPipe) id: string,
-    @Body() subscription: SubscriptionDto
-    ) 
-  {
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() subscription: SubscriptionDto,
+  ) {
     return this.subscriptionService.createFactura(id, subscription);
   }
 
   @Delete(':id')
   @ApiBearerAuth()
-
   @Roles(UserRole.Admin)
   @UseGuards(AuthGuard, RolesGuard)
-
   async deleteSubscription(@Param('id', ParseUUIDPipe) id: string) {
     try {
       return await this.subscriptionService.deleteSubscription(id);
     } catch (error) {
-      if (error instanceof NotFoundException || error instanceof BadRequestException) {
+      if (
+        error instanceof NotFoundException ||
+        error instanceof BadRequestException
+      ) {
         throw new HttpException(error.message, error.getStatus());
       }
-      throw new HttpException('Internal server error', HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new HttpException(
+        'Internal server error',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
   @HttpCode(200)
   @Post()
-  async paymentSuccess(@Query('data.id') dataId, @Query('type') type1,@Res() res: Response) {
+  async paymentSuccess(
+    @Query('data.id') dataId,
+    @Query('type') type1,
+    @Res() res: Response,
+  ) {
     try {
-      const result = await this.subscriptionService.handlePaymentSuccess(dataId, type1);
-      return res.status(result.statusCode).json({ message: 'Subscription created successfully' });
+      const result = await this.subscriptionService.handlePaymentSuccess(
+        dataId,
+        type1,
+      );
+      return res
+        .status(result.statusCode)
+        .json({ message: 'Subscription created successfully' });
     } catch (error) {
       if (error instanceof HttpException) {
         return res.status(error.getStatus()).json(error.getResponse());
       }
-      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: 'Internal server error' });
+      return res
+        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .json({ message: 'Internal server error' });
     }
   }
 }

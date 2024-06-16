@@ -24,7 +24,7 @@ export class PayPalController {
   }
 
   @Get('cancel-order')
-  cancelOrder() {
-    return this.paypalService.cancelOrder();
+  cancelOrder(@Res() res) {
+    return this.paypalService.cancelOrder(res);
   }
 }

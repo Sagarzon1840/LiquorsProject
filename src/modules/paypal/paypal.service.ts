@@ -49,10 +49,8 @@ export class PayPalService {
                     brand_name: 'Liqours',
                     landing_page: 'NO_PREFERENCE',
                     user_action: 'PAY_NOW',
-                    // return_url: `https://liquors-project.onrender.com/paypal/capture-order`,
-                    // cancel_url: `https://liquors-project.onrender.com/paypal/cancel-order`
-                    return_url: `http://localhost:3001/paypal/capture-order`,
-                    cancel_url: `http://localhost:3001/paypal/cancel-order`
+                    return_url: `https://liquors-project.onrender.com/paypal/capture-order`,
+                    cancel_url: `https://liquors-project.onrender.com/paypal/cancel-order`
                 }
             };
 
@@ -187,7 +185,7 @@ export class PayPalService {
           throw error;
         }
       }
-    cancelOrder() {
-        return { message: 'Order cancelled' };
+    cancelOrder(res) {
+        res.redirect('https://front-deploy-sage.vercel.app');
     }
 }

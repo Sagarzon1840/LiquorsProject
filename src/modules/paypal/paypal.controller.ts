@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Query, Body, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Query, Body, HttpException, HttpStatus, Res } from '@nestjs/common';
 import { PayPalService } from './paypal.service';
 import { SubscriptionDto } from 'src/dtos/subscription.dto';
 import { ApiTags } from '@nestjs/swagger';
@@ -19,13 +19,8 @@ export class PayPalController {
   }
 
   @Get('capture-order')
-  async captureOrder(@Query('token') token: string) {
-    try {
-      const capture = await this.paypalService.captureOrder(token);
-      return capture;
-    } catch (error) {
-      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
-    }
+  async captureOrder(@Query('token') token: string, @Res() res) {
+    await this.paypalService.captureOrder(token, res);
   }
 
   @Get('cancel-order')

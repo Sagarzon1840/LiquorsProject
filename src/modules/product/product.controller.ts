@@ -1,7 +1,6 @@
 import {
   Body,
   Controller,
-  Delete,
   Get,
   Param,
   ParseUUIDPipe,
@@ -85,7 +84,7 @@ export class ProductController {
   @ApiBearerAuth()
   @Roles(UserRole.Seller, UserRole.Admin)
   @UseGuards(AuthGuard, RolesGuard)
-  @Delete(':id')
+  @Put('delete/:id')
   deleteProduct(@Param('id') id: string) {
     return this.productsService.deleteProductLogical(id);
   }

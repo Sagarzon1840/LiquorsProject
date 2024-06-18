@@ -480,10 +480,10 @@
     "active": true
   },
   {
-    "name": "Wine Château Margaux",
+    "name": "Vino Château Margaux",
     "description": "Vino tinto francés, uno de los más prestigiosos de Burdeos.",
-    "category": "Wine",
-    "imgUrl": "https://firebasestorage.googleapis.com/v0/b/liquors-12b23.appspot.com/o/Wines%2FWine_Ch%C3%A2teau_Margaux-removebg-preview.webp?alt=media&token=4d180952-72c1-4d72-aaeb-34318bf0a63d",
+    "category": "Vino",
+    "imgUrl": "https://firebasestorage.googleapis.com/v0/b/liquors-12b23.appspot.com/o/Vinos%2FVino_Ch%C3%A2teau_Margaux-removebg-preview.webp?alt=media&token=4d180952-72c1-4d72-aaeb-34318bf0a63d",
     "id": "7c9b5d7d-fb1d-4a2e-8d3d-5e0f95887d44",
     "brand": "Château Margaux",
     "country": "Francia",
@@ -492,10 +492,10 @@
     "active": true
   },
   {
-    "name": "Wine Vega Sicilia Único",
+    "name": "Vino Vega Sicilia Único",
     "description": "Vino tinto español, emblemático de la Ribera del Duero.",
-    "category": "Wine",
-    "imgUrl": "https://firebasestorage.googleapis.com/v0/b/liquors-12b23.appspot.com/o/Wines%2FWine_Vega_Sicilia_%C3%9Anico-removebg-preview.webp?alt=media&token=2280b3d9-fe53-4f89-8a4c-67f9752ae6ec",
+    "category": "Vino",
+    "imgUrl": "https://firebasestorage.googleapis.com/v0/b/liquors-12b23.appspot.com/o/Vinos%2FVino_Vega_Sicilia_%C3%9Anico-removebg-preview.webp?alt=media&token=2280b3d9-fe53-4f89-8a4c-67f9752ae6ec",
     "id": "8d0b6e8e-gc2e-5b3f-9e4e-6f1g06998e55",
     "brand": "Vega Sicilia",
     "country": "España",
@@ -504,10 +504,10 @@
     "active": true
   },
   {
-    "name": "Wine Opus One",
+    "name": "Vino Opus One",
     "description": "Vino tinto californiano, una colaboración entre Mondavi y Rothschild.",
-    "category": "Wine",
-    "imgUrl": "https://firebasestorage.googleapis.com/v0/b/liquors-12b23.appspot.com/o/Wines%2FWine_Opus_One-removebg-preview.webp?alt=media&token=3745b9f2-6364-4aa1-a145-f888f99a356a",
+    "category": "Vino",
+    "imgUrl": "https://firebasestorage.googleapis.com/v0/b/liquors-12b23.appspot.com/o/Vinos%2FVino_Opus_One-removebg-preview.webp?alt=media&token=3745b9f2-6364-4aa1-a145-f888f99a356a",
     "id": "9e1c7f9f-hd3f-6c4g-0f5f-7g2h170a9f66",
     "brand": "Opus One",
     "country": "Estados Unidos",
@@ -516,10 +516,10 @@
     "active": true
   },
   {
-    "name": "Wine Sassicaia",
+    "name": "Vino Sassicaia",
     "description": "Vino tinto italiano, considerado uno de los mejores de la Toscana.",
-    "category": "Wine",
-    "imgUrl": "https://firebasestorage.googleapis.com/v0/b/liquors-12b23.appspot.com/o/Wines%2FWine_Sassicaia-removebg-preview.webp?alt=media&token=cd3d09be-24c8-400d-a937-2392a28c5669",
+    "category": "Vino",
+    "imgUrl": "https://firebasestorage.googleapis.com/v0/b/liquors-12b23.appspot.com/o/Vinos%2FVino_Sassicaia-removebg-preview.webp?alt=media&token=cd3d09be-24c8-400d-a937-2392a28c5669",
     "id": "0f2d8g0g-ie4g-7d5h-1g6g-8h3i281b0g77",
     "brand": "Sassicaia",
     "country": "Italia",
@@ -528,10 +528,10 @@
     "active": true
   },
   {
-    "name": "Wine Château d'Yquem",
+    "name": "Vino Château d'Yquem",
     "description": "Vino blanco francés, uno de los mejores Sauternes.",
-    "category": "Wine",
-    "imgUrl": "https://firebasestorage.googleapis.com/v0/b/liquors-12b23.appspot.com/o/Wines%2FWine_Ch%C3%A2teau_d_Yquem-removebg-preview.webp?alt=media&token=8312931e-ffe5-49fe-b4ea-98e54b20783b",
+    "category": "Vino",
+    "imgUrl": "https://firebasestorage.googleapis.com/v0/b/liquors-12b23.appspot.com/o/Vinos%2FVino_Ch%C3%A2teau_d_Yquem-removebg-preview.webp?alt=media&token=8312931e-ffe5-49fe-b4ea-98e54b20783b",
     "id": "1g3e9h1h-jf5h-8e6i-2h7h-9i4j392c1h88",
     "brand": "Château d'Yquem",
     "country": "Francia",
@@ -540,10 +540,10 @@
     "active": true
   },
   {
-    "name": "Wine Barolo",
+    "name": "Vino Barolo",
     "description": "Vino tinto italiano, conocido como el 'Rey de los Vinos' de la región de Piamonte.",
-    "category": "Wine",
-    "imgUrl": "https://firebasestorage.googleapis.com/v0/b/liquors-12b23.appspot.com/o/Wines%2FWine_Barolo-removebg-preview.webp?alt=media&token=ad5ba625-c272-4222-b6ea-9472e104f0ce",
+    "category": "Vino",
+    "imgUrl": "https://firebasestorage.googleapis.com/v0/b/liquors-12b23.appspot.com/o/Vinos%2FVino_Barolo-removebg-preview.webp?alt=media&token=ad5ba625-c272-4222-b6ea-9472e104f0ce",
     "id": "a1b2c3d4-e5f6-7g8h-9i0j-k1l2m3n4o5p6",
     "brand": "Barolo",
     "country": "Italia",
@@ -552,10 +552,10 @@
     "active": true
   },
   {
-    "name": "Wine Brunello di Montalcino",
+    "name": "Vino Brunello di Montalcino",
     "description": "Vino tinto italiano de la región de Toscana, famoso por su longevidad.",
-    "category": "Wine",
-    "imgUrl": "https://firebasestorage.googleapis.com/v0/b/liquors-12b23.appspot.com/o/Wines%2FWine_Brunello_di_Montalcino-removebg-preview.webp?alt=media&token=76e9ad39-efde-4b0d-8eb2-d01d5458f409",
+    "category": "Vino",
+    "imgUrl": "https://firebasestorage.googleapis.com/v0/b/liquors-12b23.appspot.com/o/Vinos%2FVino_Brunello_di_Montalcino-removebg-preview.webp?alt=media&token=76e9ad39-efde-4b0d-8eb2-d01d5458f409",
     "id": "p6o5n4m3-l2k1-j0i9-h8g7-f6e5-d4c3b2a1",
     "brand": "Brunello di Montalcino",
     "country": "Italia",
@@ -564,10 +564,10 @@
     "active": true
   },
   {
-    "name": "Wine Châteauneuf-du-Pape",
+    "name": "Vino Châteauneuf-du-Pape",
     "description": "Vino tinto francés de la región del Ródano, conocido por su cuerpo y riqueza.",
-    "category": "Wine",
-    "imgUrl": "https://firebasestorage.googleapis.com/v0/b/liquors-12b23.appspot.com/o/Wines%2FWine_Ch%C3%A2teauneuf-du-Pape-removebg-preview.webp?alt=media&token=0ecccea3-04b1-44e1-a9f8-b7066aa5f591",
+    "category": "Vino",
+    "imgUrl": "https://firebasestorage.googleapis.com/v0/b/liquors-12b23.appspot.com/o/Vinos%2FVino_Ch%C3%A2teauneuf-du-Pape-removebg-preview.webp?alt=media&token=0ecccea3-04b1-44e1-a9f8-b7066aa5f591",
     "id": "m3n4o5p6-k1l2-j0i9-h8g7-f6e5-d4c3b2a1",
     "brand": "Châteauneuf-du-Pape",
     "country": "Francia",
@@ -576,10 +576,10 @@
     "active": true
   },
   {
-    "name": "Wine Malbec",
+    "name": "Vino Malbec",
     "description": "Vino tinto argentino, destacado por su sabor afrutado y suave.",
-    "category": "Wine",
-    "imgUrl": "https://firebasestorage.googleapis.com/v0/b/liquors-12b23.appspot.com/o/Wines%2FWine_Ch%C3%A2teau_Margaux-removebg-preview.webp?alt=media&token=4d180952-72c1-4d72-aaeb-34318bf0a63d",
+    "category": "Vino",
+    "imgUrl": "https://firebasestorage.googleapis.com/v0/b/liquors-12b23.appspot.com/o/Vinos%2FVino_Ch%C3%A2teau_Margaux-removebg-preview.webp?alt=media&token=4d180952-72c1-4d72-aaeb-34318bf0a63d",
     "id": "n4m3b2c1-a5d6-f7g8-h9i0-j1k2-l3m4n5o6",
     "brand": "Malbec",
     "country": "Argentina",
@@ -588,10 +588,10 @@
     "active": true
   },
   {
-    "name": "Wine Rioja Reserva",
+    "name": "Vino Rioja Reserva",
     "description": "Vino tinto español de la región de Rioja, envejecido durante varios años.",
-    "category": "Wine",
-    "imgUrl": "https://firebasestorage.googleapis.com/v0/b/liquors-12b23.appspot.com/o/Wines%2FWine_Rioja_Vega-removebg-preview.webp?alt=media&token=8eaf1e75-2eee-442d-b82d-caafe997aa14",
+    "category": "Vino",
+    "imgUrl": "https://firebasestorage.googleapis.com/v0/b/liquors-12b23.appspot.com/o/Vinos%2FVino_Rioja_Vega-removebg-preview.webp?alt=media&token=8eaf1e75-2eee-442d-b82d-caafe997aa14",
     "id": "o5n4m3-l2k1-j0i9-h8g7-f6e5-d4c3b2a1",
     "brand": "Rioja Reserva",
     "country": "España",

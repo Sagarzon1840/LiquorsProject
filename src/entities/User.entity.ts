@@ -44,7 +44,6 @@ export class Users {
 
   @Column({
     type: 'text',
-    length: 255,
     default:
       'https://firebasestorage.googleapis.com/v0/b/liquors-12b23.appspot.com/o/files%2FWindows_10_Default_Profile_Picture.svg.png?alt=media&token=836d210f-f0e8-4cef-8869-c0603ea315c1',
   })

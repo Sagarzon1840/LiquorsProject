@@ -324,6 +324,90 @@ export class UserService {
       );
     }
   }
+  //product Box
+
+  async addProductToBox(userId: string, productIds: string[]): Promise<string> {
+    const user = await this.usersRepository.findOne({
+      where: { id: userId },
+      relations: ['box'],
+    });
+
+    if (!user) {
+      throw new NotFoundException(`User with ID ${userId} not found`);
+    }
+
+    user.box = user.box || [];
+    const existingProductIds = user.box.map((product) => product.id);
+    const newProductIds = productIds.filter(
+      (productId) => !existingProductIds.includes(productId),
+    );
+    const newProducts = await this.productRepository.find({
+      where: { id: In(newProductIds) },
+    });
+
+    user.box.push(...newProducts);
+    await this.usersRepository.save(user);
+
+    return `Products added to user's box with ID ${userId}`;
+  }
+
+  async getUserBox(userId: string): Promise<Product[]> {
+    const user = await this.usersRepository.findOne({
+      where: { id: userId },
+      relations: ['box'],
+    });
+
+    if (!user) {
+      throw new NotFoundException(`User with ID ${userId} not found`);
+    }
+
+    return user.box;
+  }
+
+  async updateBox(userId: string, productIds: string[]): Promise<string> {
+    const user = await this.usersRepository.findOne({
+      where: { id: userId },
+      relations: ['box'],
+    });
+
+    if (!user) {
+      throw new NotFoundException(`User with ID ${userId} not found`);
+    }
+
+    user.box = [];
+    const newProducts = await this.productRepository.find({
+      where: { id: In(productIds) },
+    });
+
+    user.box.push(...newProducts);
+    await this.usersRepository.save(user);
+
+    return `User's box with ID ${userId} updated`;
+  }
+  async removeProductFromBox(
+    userId: string,
+    productIds: string[],
+  ): Promise<string> {
+    const user = await this.usersRepository.findOne({
+      where: { id: userId },
+      relations: ['box'],
+    });
+
+    if (!user) {
+      throw new NotFoundException(`User with ID ${userId} not found`);
+    }
+
+    productIds.forEach((productId) => {
+      const index = user.box.findIndex((product) => product.id === productId);
+      if (index !== -1) {
+        user.box.splice(index, 1);
+      }
+    });
+
+    await this.usersRepository.save(user);
+
+    return `Products removed from user's box with ID ${userId}`;
+  }
 
   //********************LoginUsers***************************
   //--------------------User sign in-------------------------

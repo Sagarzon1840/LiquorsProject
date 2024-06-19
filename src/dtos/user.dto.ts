@@ -173,3 +173,31 @@ export class RemoveFavoriteProductDTO {
   @IsString({ each: true })
   productIds: string[];
 }
+export class AddBoxProductDTO {
+  @IsArray()
+  @ArrayNotEmpty()
+  @IsNotEmpty()
+  @ApiProperty({
+    type: [String],
+    example: [
+      '0a890c84-02fe-41e2-82a0-a4ce8a04fed5',
+      '0a890c84-02fe-41e2-82a0-a4ce8a04fed5',
+    ],
+    description: 'Array de IDs de productos a agregar a la caja',
+  })
+  products: string[];
+}
+
+export class RemoveBoxProductDTO {
+  @IsArray()
+  @IsNotEmpty()
+  @IsString({ each: true })
+  @ApiProperty({
+    description: 'Array de IDs de productos a eliminar de la caja',
+    example: [
+      '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+      '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+    ],
+  })
+  productIds: string[];
+}

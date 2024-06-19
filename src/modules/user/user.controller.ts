@@ -10,9 +10,11 @@ import {
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import {
+  AddBoxProductDTO,
   AddFavoriteProductDTO,
   CreateUserDTO,
   LoginUsersDTO,
+  RemoveBoxProductDTO,
   RemoveFavoriteProductDTO,
   UpdateUserDTO,
 } from 'src/dtos/user.dto';
@@ -76,6 +78,43 @@ export class UserController {
   async getUserFavorites(@Param('id') userId: string) {
     return this.userService.getUserFavorites(userId);
   }
+  // GET user/:id/box
+  @Get(':id/box')
+  async getUserBox(@Param('id') userId: string) {
+    return this.userService.getUserBox(userId);
+  }
+
+  // PUT user/:id/box
+  @Put(':id/box')
+  async updateUserBox(
+    @Param('id') userId: string,
+    @Body() body: AddBoxProductDTO,
+  ) {
+    const { products } = body;
+    return this.userService.updateBox(userId, products);
+  }
+
+  // DELETE user/:id/box
+  @Delete(':id/box')
+  async removeProductsFromBox(
+    @Param('id') userId: string,
+    @Body() body: RemoveBoxProductDTO,
+  ) {
+    const { productIds } = body;
+    return this.userService.removeProductFromBox(userId, productIds);
+  }
+
+  // POST user/:id/box
+  @Post(':id/box')
+  async addProductsToBox(
+    @Param('id') userId: string,
+    @Body() body: AddBoxProductDTO,
+  ) {
+    const { products } = body;
+    return this.userService.addProductToBox(userId, products);
+  }
+
+  //
   //PUT User
   @Put(':id')
   update(
@@ -84,7 +123,6 @@ export class UserController {
   ): Promise<Users> {
     return this.userService.updateUser(id, updateUser);
   }
-  // DELETE user/:id/favorites
   // DELETE user/:id/favorites
   @Delete(':id/favorites')
   @ApiBody({ type: RemoveFavoriteProductDTO })

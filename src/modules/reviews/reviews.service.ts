@@ -43,6 +43,23 @@ export class ReviewsService {
     }
     const uploadReview = await this.reviewRepository.save(newReview);
 
+    const productAndReviews = await this.productRepository.findOne({
+      where: { id: idProduct },
+      relations: { reviewId: true },
+    });
+
+    const reviews: Reviews[] = productAndReviews.reviewId;
+
+    const totalRate = reviews.reduce(
+      (sum, review) => sum + Number(review.rate),
+      0,
+    );
+    const promRate = reviews.length !== 0 ? totalRate / reviews.length : 5;
+
+    product.rate = parseFloat(promRate.toFixed(1));
+
+    await this.productRepository.update(product.id, product);
+
     return uploadReview;
   }
 

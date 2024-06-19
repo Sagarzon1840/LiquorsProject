@@ -3,25 +3,134 @@ import {
   ConflictException,
   Injectable,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDTO, LoginUsersDTO, UpdateUserDTO } from 'src/dtos/user.dto';
+import { Product } from 'src/entities/Product.entity';
 import { Users } from 'src/entities/User.entity';
-import { Repository } from 'typeorm';
-// import { User } from 'mercadopago';
+import { In, Repository } from 'typeorm';
+import * as nodemailer from 'nodemailer';
+import * as cron from 'node-cron';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(Users)
     private usersRepository: Repository<Users>,
+    @InjectRepository(Product)
+    private productRepository: Repository<Product>,
     private readonly jwtService: JwtService,
-  ) {}
+  ) {
+    //Programación del newsletter a las 8 AM
+    cron.schedule('0 */5 * * *', () => {
+      this.sendDailyNewsletter();
+    });
+  }
+
+  //---------------------Nodemailer-------------------------
+  async newsletterBienvenida(id: string) {
+    const user = await this.usersRepository.findOneBy({ id });
+    if (!user) throw new NotFoundException(`User with ${id} not found`);
+    if (user.role !== 3)
+      throw new BadRequestException(`User with ${id} has to be Premium`);
+
+    user.newsletter = true;
+    await this.usersRepository.update(id, user);
+
+    const templateParams = {
+      user_name: user.name,
+      user_email: user.email,
+    };
+
+    // Configuración del transporte de nodemailer
+    const transporter = nodemailer.createTransport({
+      service: 'Gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: templateParams.user_email,
+      subject: 'Bienvenida al Boletín de Liquors',
+      text: `Hola, ${templateParams.user_name}, bienvenido a nuestro Boletín Informativo.
+      Att: Liquors Team`,
+    };
+
+    try {
+      const info = await transporter.sendMail(mailOptions);
+      return `Correo enviado con éxito: ${info.response}`;
+    } catch (error) {
+      console.log(error);
+      throw new BadRequestException(`${error.message}`);
+    }
+  }
+
+  async newsletterAuto(id: string) {
+    const user = await this.usersRepository.findOneBy({ id });
+    if (!user) throw new NotFoundException(`User with ${id} not found`);
+
+    const templateParams = {
+      user_name: user.name,
+      user_email: user.email,
+    };
+
+    // Configuración del transporte de nodemailer
+    const transporter = nodemailer.createTransport({
+      service: 'Gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: templateParams.user_email,
+      subject: 'Boletín Periódico de Liquors',
+      text: `Hola, ${templateParams.user_name}, este es tu boletín periódico.
+      Att: Liquors Team`,
+    };
+
+    try {
+      const info = await transporter.sendMail(mailOptions);
+      return `Correo enviado con éxito y usuario suscrito al boletín: ${info.response}`;
+    } catch (error) {
+      console.log(error);
+      throw new BadRequestException(`${error.message}`);
+    }
+  }
+
+  async sendDailyNewsletter() {
+    const users = await this.usersRepository.find();
+
+    for (const user of users) {
+      console.log(user);
+      if (user.newsletter === true) {
+        console.log(user.newsletter);
+        if (user.email) {
+          try {
+            await this.newsletterAuto(user.id);
+            console.log(`Correo enviado a ${user.email}`);
+          } catch (error) {
+            console.error(
+              `Error al enviar correo a ${user.email}: ${error.message}`,
+            );
+          }
+        }
+      } else {
+        console.log(user.newsletter);
+      }
+    }
+  }
 
   //---------------------Create a new user-------------------------
   async createUser(user: CreateUserDTO): Promise<Users> {
-    const { email, firebaseUid } = user;
+    const { email, firebaseUid, profileImage } = user;
     const existingUser = await this.usersRepository.findOne({
       where: { email },
     });
@@ -31,6 +140,7 @@ export class UserService {
     const newUser = this.usersRepository.create({
       ...user,
       firebaseUid,
+      profileImage,
     });
     return await this.usersRepository.save(newUser);
   }
@@ -45,6 +155,53 @@ export class UserService {
   //--------------------Find all users----------------------------
   async findAllUser(): Promise<Users[]> {
     return await this.usersRepository.find();
+  }
+  async getUserProducts(userId: string): Promise<Product[]> {
+    const user = await this.usersRepository.findOne({
+      where: { id: userId },
+      relations: ['products_id'],
+    });
+
+    if (!user) {
+      throw new NotFoundException(`Usuario con ID ${userId} no fue encontrado`);
+    }
+
+    return user.products_id;
+  }
+
+  async getUserReviews(id: string): Promise<Users> {
+    const user = await this.usersRepository.findOne({
+      where: { id },
+      relations: ['reviews'],
+    });
+    if (!user) {
+      throw new NotFoundException(`Usuario con ID ${id} no fue encontrado`);
+    }
+    return user;
+  }
+
+  async getUserSubscription(id: string): Promise<Users> {
+    const user = await this.usersRepository.findOne({
+      where: { id },
+      relations: ['subscription'],
+    });
+    if (!user) {
+      throw new NotFoundException(`Usuario con ID ${id} no fue encontrado`);
+    }
+    return user;
+  }
+  //get userfavorites
+  async getUserFavorites(userId: string): Promise<Product[]> {
+    const user = await this.usersRepository.findOne({
+      where: { id: userId },
+      relations: ['favorites'],
+    });
+
+    if (!user) {
+      throw new NotFoundException(`Usuario con ID ${userId} no fue encontrado`);
+    }
+
+    return user.favorites;
   }
   //---------------------Update a user by ID---------------------
   async updateUser(id: string, updateUserDto: UpdateUserDTO): Promise<Users> {
@@ -64,29 +221,110 @@ export class UserService {
     }
     return updateUser;
   }
+  //---------------------addFavoriteProduct for userId
+  async addFavoriteProduct(
+    userId: string,
+    productIds: string[],
+  ): Promise<string> {
+    const user = await this.usersRepository.findOne({
+      where: { id: userId },
+      relations: ['favorites'],
+    });
 
+    if (!user) {
+      throw new NotFoundException(`Usuario con ID ${userId} no fue encontrado`);
+    }
+
+    user.favorites = user.favorites || [];
+
+    const existingFavorites = user.favorites.map((favorite) => favorite.id);
+
+    const newProductIds = productIds.filter(
+      (productId) => !existingFavorites.includes(productId),
+    );
+
+    const newProducts = await this.productRepository.find({
+      where: { id: In(newProductIds) },
+    });
+
+    user.favorites.push(...newProducts);
+
+    await this.usersRepository.save(user);
+
+    return `Productos agregados como favoritos para el usuario con ID ${userId}`;
+  }
+  //----------------------Remove favorites
+  async removeFavoriteProduct(
+    userId: string,
+    productId: string,
+  ): Promise<string> {
+    const user = await this.usersRepository.findOne({
+      where: { id: userId },
+      relations: ['favorites'],
+    });
+
+    if (!user) {
+      throw new NotFoundException(`Usuario con ID ${userId} no fue encontrado`);
+    }
+
+    const index = user.favorites.findIndex(
+      (favorite) => favorite.id === productId,
+    );
+
+    if (index === -1) {
+      throw new NotFoundException(
+        `Producto con ID ${productId} no es un favorito del usuario`,
+      );
+    }
+
+    user.favorites.splice(index, 1);
+
+    await this.usersRepository.save(user);
+
+    return `Producto con ID ${productId} eliminado de los favoritos del usuario con ID ${userId}`;
+  }
   //--------------------Remove a user by ID----------------
   async removeUser(id: string): Promise<string> {
+    const predefinedEmail = 'lionel@gmail.com';
     try {
-      // Actualizar las referencias en la tabla products
-      await this.usersRepository.query(
-        'UPDATE products SET user_id = NULL WHERE user_id = $1',
-        [id],
-      );
+      const userToDelete = await this.usersRepository.findOne({
+        where: { id },
+      });
 
-      // Luego eliminar el usuario en la tabla users
-      const result = await this.usersRepository.delete(id);
-      if (result.affected === 0) {
+      if (!userToDelete) {
         throw new NotFoundException(`Usuario con ID ${id} no fue encontrado`);
       }
 
-      return `Usuario con ID ${id} ha sido eliminado`;
+      const preloadedUser = await this.usersRepository.findOne({
+        where: { email: predefinedEmail },
+      });
+
+      if (!preloadedUser) {
+        throw new NotFoundException(
+          `Usuario de prueba con email ${predefinedEmail} no fue encontrado`,
+        );
+      }
+
+      // Reasignar productos
+      await this.productRepository
+        .createQueryBuilder()
+        .update(Product)
+        .set({ seller: preloadedUser })
+        .where('seller.id = :userId', { userId: id })
+        .execute();
+
+      // Eliminar usuario
+      await this.usersRepository.delete(id);
+
+      return `Usuario con ID ${id} ha sido eliminado y sus productos han sido reasignados al usuario con email ${predefinedEmail}`;
     } catch (error) {
       console.error(error);
-      throw new Error('Ha ocurrido un error al eliminar el usuario.');
+      throw new Error(
+        'Ha ocurrido un error al eliminar el usuario y reasignar sus productos.',
+      );
     }
   }
-  
+
   //********************LoginUsers***************************
   //--------------------User sign in-------------------------
   //email, uuidfirebase
@@ -109,22 +347,28 @@ export class UserService {
         email: user.email,
         role: user.role,
       };
-      const token = this.jwtService.sign(payload);
+      const secret = process.env.JWT_SECRET;
+
+      if (!secret) {
+        throw new UnauthorizedException(
+          'JWT_SECRET not found in environment variables',
+        );
+      }
+      const token = this.jwtService.sign(payload, { secret });
+
       return {
         message: 'Usuario exitosamente logueado!',
         id: user.id,
-        name:user.name,
-        email:user.email,
+        name: user.name,
+        email: user.email,
+        profileImage: user.profileImage,
         role: user.role,
         token,
       };
     } catch (error) {
-      // Solo captura NotFoundException y lanza un error personalizado
       if (error instanceof NotFoundException) {
         throw new BadRequestException('Usuario no registrado');
       }
-
-      // Deja que otros tipos de errores se propaguen sin alterarlos
       throw error;
     }
   }
@@ -136,79 +380,102 @@ export class UserService {
   //si ya esta registrado loguearse
 
   async signUp(user: CreateUserDTO) {
-    const { name, email, firebaseUid, provider } = user;
+    const { name, email, firebaseUid, provider, profileImage } = user;
     try {
       // Buscar usuario por email
       const foundUser = await this.usersRepository.findOne({
         where: { email },
       });
-  
+
       if (foundUser) {
-        // Si el usuario existe y el proveedor es null, actualizar con el nuevo proveedor
         if (!foundUser.provider && provider) {
           foundUser.firebaseUid = firebaseUid;
           foundUser.provider = provider;
+          foundUser.profileImage = profileImage;
           await this.usersRepository.save(foundUser);
-  
+
           const payload = {
             id: foundUser.id,
             email: foundUser.email,
             role: foundUser.role,
           };
+          const secret = process.env.JWT_SECRET;
+          console.log(secret);
+          if (!secret) {
+            throw new UnauthorizedException(
+              'JWT_SECRET not found in enviroment variables',
+            );
+          }
           const token = this.jwtService.sign(payload);
           return {
             message: 'Proveedor agregado y usuario logueado correctamente!',
             id: foundUser.id,
             name: foundUser.name,
             email: foundUser.email,
+            profileImage: foundUser.profileImage,
             role: foundUser.role,
             token,
           };
         }
-  
-        // Si el usuario ya tiene el mismo proveedor, loguearlo
+
         if (foundUser.provider === provider) {
           const payload = {
             id: foundUser.id,
             email: foundUser.email,
             role: foundUser.role,
           };
-          const token = this.jwtService.sign(payload);
+          const secret = process.env.JWT_SECRET;
+          if (!secret) {
+            throw new UnauthorizedException(
+              'JWT_SECRET not found in environment variables',
+            );
+          }
+          const token = this.jwtService.sign(payload, { secret });
+
           return {
             message: 'Usuario logueado correctamente!',
             id: foundUser.id,
             name: foundUser.name,
             email: foundUser.email,
+            profileImage: foundUser.profileImage,
             role: foundUser.role,
             token,
           };
         }
-  
-        // Si el usuario ya está registrado
+
         throw new BadRequestException('El email ya está registrado.');
       }
-  
+
       // Crear nuevo usuario si no existe
       const newUser = this.usersRepository.create({
         name,
         email,
         firebaseUid,
         provider: provider || null,
+        profileImage: profileImage || null,
       });
-  
+
       const savedUser = await this.usersRepository.save(newUser);
-  
+
       const payload = {
         id: savedUser.id,
         email: savedUser.email,
         role: savedUser.role,
       };
-      const token = this.jwtService.sign(payload);
+      const secret = process.env.JWT_SECRET;
+      if (!secret) {
+        throw new UnauthorizedException(
+          'JWT_SECRET not found in environment variables',
+        );
+      }
+      const token = this.jwtService.sign(payload, { secret });
+
       return {
         message: 'Usuario registrado correctamente!',
         id: savedUser.id,
         name: savedUser.name,
         email: savedUser.email,
+        profileImage: savedUser.profileImage,
         role: savedUser.role,
         token,
       };
@@ -220,7 +487,4 @@ export class UserService {
       throw new Error('Ha ocurrido un error al registrar el usuario.');
     }
   }
-  
-  
-  
 }

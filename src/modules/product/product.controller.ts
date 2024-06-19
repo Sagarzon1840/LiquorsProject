@@ -1,7 +1,6 @@
 import {
   Body,
   Controller,
-  Delete,
   Get,
   Param,
   ParseUUIDPipe,
@@ -12,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { ProductDto } from 'src/dtos/product.dto';
-import { ApiBearerAuth, ApiBody, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { Roles } from 'src/decorators/roles.decorator';
@@ -46,18 +45,16 @@ export class ProductController {
   @Get()
   getAllProducts(
     @Query('category') category: string = '',
-    @Query('abv') abv: number = 0,
+    @Query('abv') abv: string = '0',
     @Query('brand') brand: string = '',
     @Query('country') country: string = '',
     @Query('size') size: string = '',
-    @Query('rate') rate: number = 0,
+    @Query('rate') rate: string = '0',
     @Query('page') page: string = '1',
     @Query('limit') limit: string = '5',
   ) {
-    abv = Number(abv);
-    rate = Number(rate);
     return this.productsService.getAllProducts(
-      { category, abv, brand, country, size, rate },
+      { category, abv: Number(abv), brand, country, size, rate: Number(rate) },
       Number(page),
       Number(limit),
     );
@@ -87,8 +84,8 @@ export class ProductController {
   @ApiBearerAuth()
   @Roles(UserRole.Seller, UserRole.Admin)
   @UseGuards(AuthGuard, RolesGuard)
-  @Delete(':id')
+  @Put('delete/:id')
   deleteProduct(@Param('id') id: string) {
-    return this.productsService.deleteProduct(id);
+    return this.productsService.deleteProductLogical(id);
   }
 }

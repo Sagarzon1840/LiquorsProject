@@ -8,6 +8,7 @@ import { Users } from 'src/entities/User.entity';
 import { Product } from 'src/entities/Product.entity';
 import { Reviews } from 'src/entities/Review.entity';
 import { Repository } from 'typeorm';
+import { CreateReviewDto } from 'src/dtos/review.dto';
 
 @Injectable()
 export class ReviewsService {
@@ -20,7 +21,7 @@ export class ReviewsService {
   async createReview(
     idUser: string,
     idProduct: string,
-    review: Partial<Reviews>,
+    review: CreateReviewDto,
   ) {
     const user = await this.usersRepository.findOneBy({ id: idUser });
     if (!user) throw new NotFoundException(`User with id ${idUser} not found`);
@@ -51,15 +52,24 @@ export class ReviewsService {
     if (!product) throw new NotFoundException(`Product with id ${productId}`);
 
     let reviews = await this.reviewRepository.find({
-      where: { productId: { id: productId }, approbed: true, active: true },
+      //AGREGAR APPROBED UNA VEZ HECHA LA LÓGICA EN ADMIN
+      where: { productId: { id: productId }, active: true },
       relations: ['userId'],
     });
     const startIndex = (page - 1) * limit;
     const endIndex = startIndex + limit;
 
+    const totalRate = reviews.reduce(
+      (sum, review) => sum + Number(review.rate),
+      0,
+    );
+    let promRate = reviews.length !== 0 ? totalRate / reviews.length : 0;
+
+    promRate = parseFloat(promRate.toFixed(1));
+
     reviews = reviews.slice(startIndex, endIndex);
 
-    return reviews;
+    return { promRate, reviews };
   }
 
   async getUserReviews(userId: string, page: number, limit: number) {
@@ -68,7 +78,8 @@ export class ReviewsService {
     if (!user) throw new NotFoundException(`User with id ${userId}`);
 
     let reviews = await this.reviewRepository.find({
-      where: { userId: { id: userId }, approbed: true, active: true },
+      //AGREGAR APPROBED UNA VEZ HECHA LA LÓGICA EN ADMIN
+      where: { userId: { id: userId }, active: true },
       relations: ['productId'],
     });
     const startIndex = (page - 1) * limit;
@@ -104,11 +115,18 @@ export class ReviewsService {
   }
 
   async deleteReview(id: string) {
-    const foundReview = this.reviewRepository.findOneBy({ id });
-    if (foundReview) {
-      (await foundReview).active = false;
+    const foundReview = await this.reviewRepository.findOneBy({ id });
+    if (!foundReview) {
+      throw new NotFoundException(`Review with id ${id} not found`);
+    }
+    if (foundReview.active === false) {
+      foundReview.active = true;
+      await this.reviewRepository.update(id, foundReview);
+      return `Review with ${id} activated`;
+    } else {
+      foundReview.active = false;
+      await this.reviewRepository.update(id, foundReview);
       return `Review with ${id} deleted`;
     }
-    throw new NotFoundException(`Review with id ${id} not found`);
   }
 }

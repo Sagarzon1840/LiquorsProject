@@ -33,12 +33,12 @@ export class AppService implements OnModuleInit {
   }
 
   async addUserSeeder() {
-    await this.usersRepository.save({ ...user});
+    await this.usersRepository.save({ ...user });
   }
 
   async addProductSeeder() {
     const user = await this.usersRepository.findOne({
-      where: { email: "l10nel@example.com" },
+      where: { email: 'l10nel@example.com' },
     });
 
     for (const product of data) {
@@ -52,6 +52,7 @@ export class AppService implements OnModuleInit {
       newProduct.country = product.country;
       newProduct.size = product.size;
       newProduct.seller = user;
+      newProduct.active = true;
 
       await this.productRepository
         .createQueryBuilder()

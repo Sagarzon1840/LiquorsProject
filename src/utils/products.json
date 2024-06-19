@@ -8,7 +8,8 @@
     "brand": "Bacardí",
     "country": "Puerto Rico",
     "size": "1L",
-    "abv": 37.5
+    "abv": 37.5,
+    "active": true
   },
   {
     "name": "Ron Havana Club 7 Años",
@@ -19,7 +20,8 @@
     "brand": "Havana Club",
     "country": "Cuba",
     "size": "750ml",
-    "abv": 40
+    "abv": 40,
+    "active": true
   },
   {
     "name": "Ron Zacapa 23",
@@ -30,7 +32,8 @@
     "brand": "Zacapa",
     "country": "Guatemala",
     "size": "750ml",
-    "abv": 40
+    "abv": 40,
+    "active": true
   },
   {
     "name": "Ron Brugal Extra Viejo",
@@ -41,7 +44,8 @@
     "brand": "Brugal",
     "country": "República Dominicana",
     "size": "700ml",
-    "abv": 38
+    "abv": 38,
+    "active": true
   },
   {
     "name": "Ron Mount Gay Eclipse",
@@ -52,7 +56,8 @@
     "brand": "Mount Gay",
     "country": "Barbados",
     "size": "700ml",
-    "abv": 40
+    "abv": 40,
+    "active": true
   },
   {
     "name": "Ron Appleton Estate Reserve",
@@ -63,7 +68,8 @@
     "brand": "Appleton Estate",
     "country": "Jamaica",
     "size": "700ml",
-    "abv": 43
+    "abv": 43,
+    "active": true
   },
   {
     "name": "Ron Diplomatico Reserva Exclusiva",
@@ -74,7 +80,8 @@
     "brand": "Diplomatico",
     "country": "Venezuela",
     "size": "750ml",
-    "abv": 40
+    "abv": 40,
+    "active": true
   },
   {
     "name": "Ron Flor de Caña 12 Años",
@@ -85,7 +92,8 @@
     "brand": "Flor de Caña",
     "country": "Nicaragua",
     "size": "700ml",
-    "abv": 40
+    "abv": 40,
+    "active": true
   },
   {
     "name": "Ron El Dorado 12 Años",
@@ -96,7 +104,8 @@
     "brand": "El Dorado",
     "country": "Guyana",
     "size": "700ml",
-    "abv": 40
+    "abv": 40,
+    "active": true
   },
   {
     "name": "Ron Santa Teresa 1796",
@@ -107,7 +116,8 @@
     "brand": "Santa Teresa",
     "country": "Venezuela",
     "size": "700ml",
-    "abv": 40
+    "abv": 40,
+    "active": true
   },
   {
     "name": "Gin Tanqueray",
@@ -118,7 +128,8 @@
     "brand": "Tanqueray",
     "country": "Inglaterra",
     "size": "700ml",
-    "abv": 43.1
+    "abv": 43.1,
+    "active": true
   },
   {
     "name": "Gin Hendrick's",
@@ -129,7 +140,8 @@
     "brand": "Hendrick's",
     "country": "Escocia",
     "size": "700ml",
-    "abv": 41.4
+    "abv": 41.4,
+    "active": true
   },
   {
     "name": "Gin Bombay Sapphire",
@@ -140,7 +152,8 @@
     "brand": "Bombay Sapphire",
     "country": "Inglaterra",
     "size": "750ml",
-    "abv": 40
+    "abv": 40,
+    "active": true
   },
   {
     "name": "Gin Beefeater",
@@ -151,7 +164,8 @@
     "brand": "Beefeater",
     "country": "Inglaterra",
     "size": "700ml",
-    "abv": 40
+    "abv": 40,
+    "active": true
   },
   {
     "name": "Gin The Botanist",
@@ -162,7 +176,8 @@
     "brand": "The Botanist",
     "country": "Escocia",
     "size": "700ml",
-    "abv": 46
+    "abv": 46,
+    "active": true
   },
   {
     "name": "Gin Monkey 47",
@@ -173,7 +188,8 @@
     "brand": "Monkey 47",
     "country": "Alemania",
     "size": "500ml",
-    "abv": 47
+    "abv": 47,
+    "active": true
   },
   {
     "name": "Gin Plymouth",
@@ -184,7 +200,8 @@
     "brand": "Plymouth",
     "country": "Inglaterra",
     "size": "700ml",
-    "abv": 41.2
+    "abv": 41.2,
+    "active": true
   },
   {
     "name": "Gin Sipsmith",
@@ -195,7 +212,8 @@
     "brand": "Sipsmith",
     "country": "Inglaterra",
     "size": "700ml",
-    "abv": 41.6
+    "abv": 41.6,
+    "active": true
   },
   {
     "name": "Gin Tanqueray No. Ten",
@@ -206,7 +224,8 @@
     "brand": "Tanqueray",
     "country": "Inglaterra",
     "size": "700ml",
-    "abv": 47.3
+    "abv": 47.3,
+    "active": true
   },
   {
     "name": "Gin Aviation",
@@ -217,7 +236,8 @@
     "brand": "Aviation",
     "country": "Estados Unidos",
     "size": "700ml",
-    "abv": 42
+    "abv": 42,
+    "active": true
   },
   {
     "name": "Whisky Glenfiddich 12 Years",
@@ -228,7 +248,8 @@
     "brand": "Glenfiddich",
     "country": "Escocia",
     "size": "700ml",
-    "abv": 40
+    "abv": 40,
+    "active": true
   },
   {
     "name": "Whisky Johnnie Walker Black Label",
@@ -239,7 +260,8 @@
     "brand": "Johnnie Walker",
     "country": "Escocia",
     "size": "750ml",
-    "abv": 40
+    "abv": 40,
+    "active": true
   },
   {
     "name": "Whisky Macallan 18 Years",
@@ -250,7 +272,8 @@
     "brand": "Macallan",
     "country": "Escocia",
     "size": "700ml",
-    "abv": 43
+    "abv": 43,
+    "active": true
   },
   {
     "name": "Whisky Chivas Regal 12 Years",
@@ -261,7 +284,8 @@
     "brand": "Chivas Regal",
     "country": "Escocia",
     "size": "700ml",
-    "abv": 40
+    "abv": 40,
+    "active": true
   },
   {
     "name": "Whisky Glenlivet 12 Years",
@@ -272,7 +296,8 @@
     "brand": "Glenlivet",
     "country": "Escocia",
     "size": "700ml",
-    "abv": 40
+    "abv": 40,
+    "active": true
   },
   {
     "name": "Whisky Ardbeg 10 Years",
@@ -283,7 +308,8 @@
     "brand": "Ardbeg",
     "country": "Escocia",
     "size": "700ml",
-    "abv": 46
+    "abv": 46,
+    "active": true
   },
   {
     "name": "Whisky Laphroaig 10 Years",
@@ -294,7 +320,8 @@
     "brand": "Laphroaig",
     "country": "Escocia",
     "size": "700ml",
-    "abv": 40
+    "abv": 40,
+    "active": true
   },
   {
     "name": "Whisky Bowmore 12 Years",
@@ -305,7 +332,8 @@
     "brand": "Bowmore",
     "country": "Escocia",
     "size": "700ml",
-    "abv": 40
+    "abv": 40,
+    "active": true
   },
   {
     "name": "Whisky Lagavulin 16 Years",
@@ -316,7 +344,8 @@
     "brand": "Lagavulin",
     "country": "Escocia",
     "size": "700ml",
-    "abv": 43
+    "abv": 43,
+    "active": true
   },
   {
     "name": "Whisky Talisker 10 Years",
@@ -327,7 +356,8 @@
     "brand": "Talisker",
     "country": "Escocia",
     "size": "700ml",
-    "abv": 45.8
+    "abv": 45.8,
+    "active": true
   },
   {
     "name": "Vodka Grey Goose",
@@ -338,7 +368,8 @@
     "brand": "Grey Goose",
     "country": "Francia",
     "size": "750ml",
-    "abv": 40
+    "abv": 40,
+    "active": true
   },
   {
     "name": "Vodka Absolut",
@@ -349,7 +380,8 @@
     "brand": "Absolut",
     "country": "Suecia",
     "size": "1L",
-    "abv": 40
+    "abv": 40,
+    "active": true
   },
   {
     "name": "Vodka Belvedere",
@@ -360,7 +392,8 @@
     "brand": "Belvedere",
     "country": "Polonia",
     "size": "700ml",
-    "abv": 40
+    "abv": 40,
+    "active": true
   },
   {
     "name": "Vodka Ciroc",
@@ -371,7 +404,8 @@
     "brand": "Ciroc",
     "country": "Francia",
     "size": "700ml",
-    "abv": 40
+    "abv": 40,
+    "active": true
   },
   {
     "name": "Vodka Smirnoff No. 21",
@@ -382,7 +416,8 @@
     "brand": "Smirnoff",
     "country": "Rusia",
     "size": "1L",
-    "abv": 37.5
+    "abv": 37.5,
+    "active": true
   },
   {
     "name": "Vodka Ketel One",
@@ -393,7 +428,8 @@
     "brand": "Ketel One",
     "country": "Países Bajos",
     "size": "700ml",
-    "abv": 40
+    "abv": 40,
+    "active": true
   },
   {
     "name": "Vodka Stolichnaya",
@@ -404,7 +440,8 @@
     "brand": "Stolichnaya",
     "country": "Rusia",
     "size": "700ml",
-    "abv": 40
+    "abv": 40,
+    "active": true
   },
   {
     "name": "Vodka Crystal Head",
@@ -415,7 +452,8 @@
     "brand": "Crystal Head",
     "country": "Canadá",
     "size": "750ml",
-    "abv": 40
+    "abv": 40,
+    "active": true
   },
   {
     "name": "Vodka Reyka",
@@ -426,7 +464,8 @@
     "brand": "Reyka",
     "country": "Islandia",
     "size": "700ml",
-    "abv": 40
+    "abv": 40,
+    "active": true
   },
   {
     "name": "Vodka Titos Handmade",
@@ -437,117 +476,127 @@
     "brand": "Titos",
     "country": "Estados Unidos",
     "size": "700ml",
-    "abv": 40
+    "abv": 40,
+    "active": true
   },
   {
-    "name": "Wine Château Margaux",
+    "name": "Vino Château Margaux",
     "description": "Vino tinto francés, uno de los más prestigiosos de Burdeos.",
-    "category": "Wine",
-    "imgUrl": "https://firebasestorage.googleapis.com/v0/b/liquors-12b23.appspot.com/o/Wines%2FWine_Ch%C3%A2teau_Margaux-removebg-preview.webp?alt=media&token=4d180952-72c1-4d72-aaeb-34318bf0a63d",
+    "category": "Vino",
+    "imgUrl": "https://firebasestorage.googleapis.com/v0/b/liquors-12b23.appspot.com/o/Vinos%2FVino_Ch%C3%A2teau_Margaux-removebg-preview.webp?alt=media&token=4d180952-72c1-4d72-aaeb-34318bf0a63d",
     "id": "7c9b5d7d-fb1d-4a2e-8d3d-5e0f95887d44",
     "brand": "Château Margaux",
     "country": "Francia",
     "size": "750ml",
-    "abv": 13
+    "abv": 13,
+    "active": true
   },
   {
-    "name": "Wine Vega Sicilia Único",
+    "name": "Vino Vega Sicilia Único",
     "description": "Vino tinto español, emblemático de la Ribera del Duero.",
-    "category": "Wine",
-    "imgUrl": "https://firebasestorage.googleapis.com/v0/b/liquors-12b23.appspot.com/o/Wines%2FWine_Vega_Sicilia_%C3%9Anico-removebg-preview.webp?alt=media&token=2280b3d9-fe53-4f89-8a4c-67f9752ae6ec",
+    "category": "Vino",
+    "imgUrl": "https://firebasestorage.googleapis.com/v0/b/liquors-12b23.appspot.com/o/Vinos%2FVino_Vega_Sicilia_%C3%9Anico-removebg-preview.webp?alt=media&token=2280b3d9-fe53-4f89-8a4c-67f9752ae6ec",
     "id": "8d0b6e8e-gc2e-5b3f-9e4e-6f1g06998e55",
     "brand": "Vega Sicilia",
     "country": "España",
     "size": "750ml",
-    "abv": 14
+    "abv": 14,
+    "active": true
   },
   {
-    "name": "Wine Opus One",
+    "name": "Vino Opus One",
     "description": "Vino tinto californiano, una colaboración entre Mondavi y Rothschild.",
-    "category": "Wine",
-    "imgUrl": "https://firebasestorage.googleapis.com/v0/b/liquors-12b23.appspot.com/o/Wines%2FWine_Opus_One-removebg-preview.webp?alt=media&token=3745b9f2-6364-4aa1-a145-f888f99a356a",
+    "category": "Vino",
+    "imgUrl": "https://firebasestorage.googleapis.com/v0/b/liquors-12b23.appspot.com/o/Vinos%2FVino_Opus_One-removebg-preview.webp?alt=media&token=3745b9f2-6364-4aa1-a145-f888f99a356a",
     "id": "9e1c7f9f-hd3f-6c4g-0f5f-7g2h170a9f66",
     "brand": "Opus One",
     "country": "Estados Unidos",
     "size": "750ml",
-    "abv": 14.5
+    "abv": 14.5,
+    "active": true
   },
   {
-    "name": "Wine Sassicaia",
+    "name": "Vino Sassicaia",
     "description": "Vino tinto italiano, considerado uno de los mejores de la Toscana.",
-    "category": "Wine",
-    "imgUrl": "https://firebasestorage.googleapis.com/v0/b/liquors-12b23.appspot.com/o/Wines%2FWine_Sassicaia-removebg-preview.webp?alt=media&token=cd3d09be-24c8-400d-a937-2392a28c5669",
+    "category": "Vino",
+    "imgUrl": "https://firebasestorage.googleapis.com/v0/b/liquors-12b23.appspot.com/o/Vinos%2FVino_Sassicaia-removebg-preview.webp?alt=media&token=cd3d09be-24c8-400d-a937-2392a28c5669",
     "id": "0f2d8g0g-ie4g-7d5h-1g6g-8h3i281b0g77",
     "brand": "Sassicaia",
     "country": "Italia",
     "size": "750ml",
-    "abv": 13.5
+    "abv": 13.5,
+    "active": true
   },
   {
-    "name": "Wine Château d'Yquem",
+    "name": "Vino Château d'Yquem",
     "description": "Vino blanco francés, uno de los mejores Sauternes.",
-    "category": "Wine",
-    "imgUrl": "https://firebasestorage.googleapis.com/v0/b/liquors-12b23.appspot.com/o/Wines%2FWine_Ch%C3%A2teau_d_Yquem-removebg-preview.webp?alt=media&token=8312931e-ffe5-49fe-b4ea-98e54b20783b",
+    "category": "Vino",
+    "imgUrl": "https://firebasestorage.googleapis.com/v0/b/liquors-12b23.appspot.com/o/Vinos%2FVino_Ch%C3%A2teau_d_Yquem-removebg-preview.webp?alt=media&token=8312931e-ffe5-49fe-b4ea-98e54b20783b",
     "id": "1g3e9h1h-jf5h-8e6i-2h7h-9i4j392c1h88",
     "brand": "Château d'Yquem",
     "country": "Francia",
     "size": "750ml",
-    "abv": 14
+    "abv": 14,
+    "active": true
   },
   {
-    "name": "Wine Barolo",
+    "name": "Vino Barolo",
     "description": "Vino tinto italiano, conocido como el 'Rey de los Vinos' de la región de Piamonte.",
-    "category": "Wine",
-    "imgUrl": "https://firebasestorage.googleapis.com/v0/b/liquors-12b23.appspot.com/o/Wines%2FWine_Barolo-removebg-preview.webp?alt=media&token=ad5ba625-c272-4222-b6ea-9472e104f0ce",
+    "category": "Vino",
+    "imgUrl": "https://firebasestorage.googleapis.com/v0/b/liquors-12b23.appspot.com/o/Vinos%2FVino_Barolo-removebg-preview.webp?alt=media&token=ad5ba625-c272-4222-b6ea-9472e104f0ce",
     "id": "a1b2c3d4-e5f6-7g8h-9i0j-k1l2m3n4o5p6",
     "brand": "Barolo",
     "country": "Italia",
     "size": "750ml",
-    "abv": 14
+    "abv": 14,
+    "active": true
   },
   {
-    "name": "Wine Brunello di Montalcino",
+    "name": "Vino Brunello di Montalcino",
     "description": "Vino tinto italiano de la región de Toscana, famoso por su longevidad.",
-    "category": "Wine",
-    "imgUrl": "https://firebasestorage.googleapis.com/v0/b/liquors-12b23.appspot.com/o/Wines%2FWine_Brunello_di_Montalcino-removebg-preview.webp?alt=media&token=76e9ad39-efde-4b0d-8eb2-d01d5458f409",
+    "category": "Vino",
+    "imgUrl": "https://firebasestorage.googleapis.com/v0/b/liquors-12b23.appspot.com/o/Vinos%2FVino_Brunello_di_Montalcino-removebg-preview.webp?alt=media&token=76e9ad39-efde-4b0d-8eb2-d01d5458f409",
     "id": "p6o5n4m3-l2k1-j0i9-h8g7-f6e5-d4c3b2a1",
     "brand": "Brunello di Montalcino",
     "country": "Italia",
     "size": "750ml",
-    "abv": 14
+    "abv": 14,
+    "active": true
   },
   {
-    "name": "Wine Châteauneuf-du-Pape",
+    "name": "Vino Châteauneuf-du-Pape",
     "description": "Vino tinto francés de la región del Ródano, conocido por su cuerpo y riqueza.",
-    "category": "Wine",
-    "imgUrl": "https://firebasestorage.googleapis.com/v0/b/liquors-12b23.appspot.com/o/Wines%2FWine_Ch%C3%A2teauneuf-du-Pape-removebg-preview.webp?alt=media&token=0ecccea3-04b1-44e1-a9f8-b7066aa5f591",
+    "category": "Vino",
+    "imgUrl": "https://firebasestorage.googleapis.com/v0/b/liquors-12b23.appspot.com/o/Vinos%2FVino_Ch%C3%A2teauneuf-du-Pape-removebg-preview.webp?alt=media&token=0ecccea3-04b1-44e1-a9f8-b7066aa5f591",
     "id": "m3n4o5p6-k1l2-j0i9-h8g7-f6e5-d4c3b2a1",
     "brand": "Châteauneuf-du-Pape",
     "country": "Francia",
     "size": "750ml",
-    "abv": 14.5
+    "abv": 14.5,
+    "active": true
   },
   {
-    "name": "Wine Malbec",
+    "name": "Vino Malbec",
     "description": "Vino tinto argentino, destacado por su sabor afrutado y suave.",
-    "category": "Wine",
-    "imgUrl": "https://firebasestorage.googleapis.com/v0/b/liquors-12b23.appspot.com/o/Wines%2FWine_Ch%C3%A2teau_Margaux-removebg-preview.webp?alt=media&token=4d180952-72c1-4d72-aaeb-34318bf0a63d",
+    "category": "Vino",
+    "imgUrl": "https://firebasestorage.googleapis.com/v0/b/liquors-12b23.appspot.com/o/Vinos%2FVino_Ch%C3%A2teau_Margaux-removebg-preview.webp?alt=media&token=4d180952-72c1-4d72-aaeb-34318bf0a63d",
     "id": "n4m3b2c1-a5d6-f7g8-h9i0-j1k2-l3m4n5o6",
     "brand": "Malbec",
     "country": "Argentina",
     "size": "750ml",
-    "abv": 13.5
+    "abv": 13.5,
+    "active": true
   },
   {
-    "name": "Wine Rioja Reserva",
+    "name": "Vino Rioja Reserva",
     "description": "Vino tinto español de la región de Rioja, envejecido durante varios años.",
-    "category": "Wine",
-    "imgUrl": "https://firebasestorage.googleapis.com/v0/b/liquors-12b23.appspot.com/o/Wines%2FWine_Rioja_Vega-removebg-preview.webp?alt=media&token=8eaf1e75-2eee-442d-b82d-caafe997aa14",
+    "category": "Vino",
+    "imgUrl": "https://firebasestorage.googleapis.com/v0/b/liquors-12b23.appspot.com/o/Vinos%2FVino_Rioja_Vega-removebg-preview.webp?alt=media&token=8eaf1e75-2eee-442d-b82d-caafe997aa14",
     "id": "o5n4m3-l2k1-j0i9-h8g7-f6e5-d4c3b2a1",
     "brand": "Rioja Reserva",
     "country": "España",
     "size": "750ml",
-    "abv": 14
+    "abv": 14,
+    "active": true
   }
 ]
-

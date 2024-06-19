@@ -20,6 +20,9 @@ export class Product {
   @Column({ type: 'varchar', length: 50, nullable: false })
   name: string;
 
+  @Column({ nullable: false, default: true })
+  active: boolean;
+
   @Column({ type: 'text', nullable: false })
   description: string;
 

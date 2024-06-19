@@ -1,7 +1,6 @@
 import {
   Body,
   Controller,
-  Delete,
   Get,
   NotFoundException,
   Param,
@@ -13,13 +12,7 @@ import {
 } from '@nestjs/common';
 import { ReviewsService } from './reviews.service';
 import { CreateReviewDto } from 'src/dtos/review.dto';
-import {
-  ApiBearerAuth,
-  ApiBody,
-  ApiParam,
-  ApiQuery,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiBearerAuth, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { Roles } from 'src/decorators/roles.decorator';
 import { UserRole } from 'src/enums/roles.enum';
@@ -99,7 +92,6 @@ export class ReviewsController {
   }
 
   //Solo user y premium pueden crear reviews
-  @ApiBody({ required: false })
   @ApiBearerAuth()
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(UserRole.User, UserRole.Premium)
@@ -140,7 +132,7 @@ export class ReviewsController {
   @ApiBearerAuth()
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(UserRole.User, UserRole.Premium, UserRole.Admin)
-  @Delete(':id')
+  @Put('delete/:id')
   deleteReview(@Param('id', ParseUUIDPipe) id: string) {
     const foundReview = this.reviewsService.deleteReview(id);
     if (!foundReview)

@@ -1,5 +1,9 @@
-   {
-    "name": "Lionel Andrés Messi Cuccittini",
-    "email": "l10nel@example.com",
-    "role": 2
-   }
+{
+  "name": "Lionel Andrés Messi Cuccittini",
+  "email": "lionel@gmail.com",
+  "profileImage": "https://ar.pinterest.com/pin/15833036181523274/",
+  "role": 2,
+  "firebaseUid": "firebaseUid12345678",
+  "provider": "google.com",
+  "newsletter": false
+}

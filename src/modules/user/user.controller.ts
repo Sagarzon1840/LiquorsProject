@@ -4,7 +4,6 @@ import {
   Delete,
   Get,
   NotFoundException,
-  // NotFoundException,
   Param,
   Post,
   Put,
@@ -28,6 +27,12 @@ import { Subscription } from 'src/entities/Subscription.entity';
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
+
+  @Get('newsletter/:id')
+  async newsletter(@Param('id') userId: string) {
+    const newsletter = await this.userService.newsletterBienvenida(userId);
+    return newsletter;
+  }
 
   //GET AllUser
   @Get()

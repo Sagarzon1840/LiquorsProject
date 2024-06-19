@@ -63,7 +63,9 @@ export class ReviewsService {
       (sum, review) => sum + Number(review.rate),
       0,
     );
-    const promRate = reviews.length !== 0 ? totalRate / reviews.length : 0;
+    let promRate = reviews.length !== 0 ? totalRate / reviews.length : 0;
+
+    promRate = parseFloat(promRate.toFixed(1));
 
     reviews = reviews.slice(startIndex, endIndex);
 
@@ -113,11 +115,18 @@ export class ReviewsService {
   }
 
   async deleteReview(id: string) {
-    const foundReview = this.reviewRepository.findOneBy({ id });
-    if (foundReview) {
-      (await foundReview).active = false;
+    const foundReview = await this.reviewRepository.findOneBy({ id });
+    if (!foundReview) {
+      throw new NotFoundException(`Review with id ${id} not found`);
+    }
+    if (foundReview.active === false) {
+      foundReview.active = true;
+      await this.reviewRepository.update(id, foundReview);
+      return `Review with ${id} activated`;
+    } else {
+      foundReview.active = false;
+      await this.reviewRepository.update(id, foundReview);
       return `Review with ${id} deleted`;
     }
-    throw new NotFoundException(`Review with id ${id} not found`);
   }
 }

@@ -12,7 +12,6 @@ import { Product } from 'src/entities/Product.entity';
 import { Users } from 'src/entities/User.entity';
 import { In, Repository } from 'typeorm';
 
-
 @Injectable()
 export class UserService {
   constructor(
@@ -25,7 +24,7 @@ export class UserService {
 
   //---------------------Create a new user-------------------------
   async createUser(user: CreateUserDTO): Promise<Users> {
-    const { email, firebaseUid } = user;
+    const { email, firebaseUid, profileImage } = user;
     const existingUser = await this.usersRepository.findOne({
       where: { email },
     });
@@ -35,6 +34,7 @@ export class UserService {
     const newUser = this.usersRepository.create({
       ...user,
       firebaseUid,
+      profileImage,
     });
     return await this.usersRepository.save(newUser);
   }
@@ -63,40 +63,40 @@ export class UserService {
     return user.products_id;
   }
 
-async getUserReviews(id: string): Promise<Users> {
-  const user = await this.usersRepository.findOne({
-    where: { id },
-    relations: ['reviews'],
-  });
-  if (!user) {
-    throw new NotFoundException(`Usuario con ID ${id} no fue encontrado`);
-  }
-  return user;
-}
-
-async getUserSubscription(id: string): Promise<Users> {
-  const user = await this.usersRepository.findOne({
-    where: { id },
-    relations: ['subscription'],
-  });
-  if (!user) {
-    throw new NotFoundException(`Usuario con ID ${id} no fue encontrado`);
-  }
-  return user;
-}
-//get userfavorites
-async getUserFavorites(userId: string): Promise<Product[]> {
-  const user = await this.usersRepository.findOne({
-    where: { id: userId },
-    relations: ['favorites'],
-  });
-
-  if (!user) {
-    throw new NotFoundException(`Usuario con ID ${userId} no fue encontrado`);
+  async getUserReviews(id: string): Promise<Users> {
+    const user = await this.usersRepository.findOne({
+      where: { id },
+      relations: ['reviews'],
+    });
+    if (!user) {
+      throw new NotFoundException(`Usuario con ID ${id} no fue encontrado`);
+    }
+    return user;
   }
 
-  return user.favorites;
-}
+  async getUserSubscription(id: string): Promise<Users> {
+    const user = await this.usersRepository.findOne({
+      where: { id },
+      relations: ['subscription'],
+    });
+    if (!user) {
+      throw new NotFoundException(`Usuario con ID ${id} no fue encontrado`);
+    }
+    return user;
+  }
+  //get userfavorites
+  async getUserFavorites(userId: string): Promise<Product[]> {
+    const user = await this.usersRepository.findOne({
+      where: { id: userId },
+      relations: ['favorites'],
+    });
+
+    if (!user) {
+      throw new NotFoundException(`Usuario con ID ${userId} no fue encontrado`);
+    }
+
+    return user.favorites;
+  }
   //---------------------Update a user by ID---------------------
   async updateUser(id: string, updateUserDto: UpdateUserDTO): Promise<Users> {
     const { email } = updateUserDto;
@@ -116,69 +116,87 @@ async getUserFavorites(userId: string): Promise<Product[]> {
     return updateUser;
   }
   //---------------------addFavoriteProduct for userId
-  async addFavoriteProduct(userId: string, productIds: string[]): Promise<string> {
+  async addFavoriteProduct(
+    userId: string,
+    productIds: string[],
+  ): Promise<string> {
     const user = await this.usersRepository.findOne({
       where: { id: userId },
       relations: ['favorites'],
     });
-  
+
     if (!user) {
       throw new NotFoundException(`Usuario con ID ${userId} no fue encontrado`);
     }
 
     user.favorites = user.favorites || [];
-  
-    const existingFavorites = user.favorites.map(favorite => favorite.id);
-  
-    const newProductIds = productIds.filter(productId => !existingFavorites.includes(productId));
-  
+
+    const existingFavorites = user.favorites.map((favorite) => favorite.id);
+
+    const newProductIds = productIds.filter(
+      (productId) => !existingFavorites.includes(productId),
+    );
+
     const newProducts = await this.productRepository.find({
       where: { id: In(newProductIds) },
     });
-  
+
     user.favorites.push(...newProducts);
-  
+
     await this.usersRepository.save(user);
-  
+
     return `Productos agregados como favoritos para el usuario con ID ${userId}`;
-}
-//----------------------Remove favorites
-async removeFavoriteProduct(userId: string, productId: string): Promise<string> {
-  const user = await this.usersRepository.findOne({
-    where: { id: userId },
-    relations: ['favorites'],
-  });
-
-  if (!user) {
-    throw new NotFoundException(`Usuario con ID ${userId} no fue encontrado`);
   }
+  //----------------------Remove favorites
+  async removeFavoriteProduct(
+    userId: string,
+    productId: string,
+  ): Promise<string> {
+    const user = await this.usersRepository.findOne({
+      where: { id: userId },
+      relations: ['favorites'],
+    });
 
-  const index = user.favorites.findIndex(favorite => favorite.id === productId);
+    if (!user) {
+      throw new NotFoundException(`Usuario con ID ${userId} no fue encontrado`);
+    }
 
-  if (index === -1) {
-    throw new NotFoundException(`Producto con ID ${productId} no es un favorito del usuario`);
+    const index = user.favorites.findIndex(
+      (favorite) => favorite.id === productId,
+    );
+
+    if (index === -1) {
+      throw new NotFoundException(
+        `Producto con ID ${productId} no es un favorito del usuario`,
+      );
+    }
+
+    user.favorites.splice(index, 1);
+
+    await this.usersRepository.save(user);
+
+    return `Producto con ID ${productId} eliminado de los favoritos del usuario con ID ${userId}`;
   }
-
-  user.favorites.splice(index, 1);
-
-  await this.usersRepository.save(user);
-
-  return `Producto con ID ${productId} eliminado de los favoritos del usuario con ID ${userId}`;
-}
   //--------------------Remove a user by ID----------------
   async removeUser(id: string): Promise<string> {
     const predefinedEmail = 'lionel@gmail.com';
     try {
-      const userToDelete = await this.usersRepository.findOne({ where: { id } });
+      const userToDelete = await this.usersRepository.findOne({
+        where: { id },
+      });
 
       if (!userToDelete) {
         throw new NotFoundException(`Usuario con ID ${id} no fue encontrado`);
       }
 
-      const preloadedUser = await this.usersRepository.findOne({ where: { email: predefinedEmail } });
+      const preloadedUser = await this.usersRepository.findOne({
+        where: { email: predefinedEmail },
+      });
 
       if (!preloadedUser) {
-        throw new NotFoundException(`Usuario de prueba con email ${predefinedEmail} no fue encontrado`);
+        throw new NotFoundException(
+          `Usuario de prueba con email ${predefinedEmail} no fue encontrado`,
+        );
       }
 
       // Reasignar productos
@@ -195,7 +213,9 @@ async removeFavoriteProduct(userId: string, productId: string): Promise<string> 
       return `Usuario con ID ${id} ha sido eliminado y sus productos han sido reasignados al usuario con email ${predefinedEmail}`;
     } catch (error) {
       console.error(error);
-      throw new Error('Ha ocurrido un error al eliminar el usuario y reasignar sus productos.');
+      throw new Error(
+        'Ha ocurrido un error al eliminar el usuario y reasignar sus productos.',
+      );
     }
   }
 
@@ -222,17 +242,20 @@ async removeFavoriteProduct(userId: string, productId: string): Promise<string> 
         role: user.role,
       };
       const secret = process.env.JWT_SECRET;
-      
+
       if (!secret) {
-        throw new UnauthorizedException('JWT_SECRET not found in environment variables');
+        throw new UnauthorizedException(
+          'JWT_SECRET not found in environment variables',
+        );
       }
       const token = this.jwtService.sign(payload, { secret });
-      
+
       return {
         message: 'Usuario exitosamente logueado!',
         id: user.id,
         name: user.name,
         email: user.email,
+        profileImage: user.profileImage,
         role: user.role,
         token,
       };
@@ -251,7 +274,7 @@ async removeFavoriteProduct(userId: string, productId: string): Promise<string> 
   //si ya esta registrado loguearse
 
   async signUp(user: CreateUserDTO) {
-    const { name, email, firebaseUid, provider } = user;
+    const { name, email, firebaseUid, provider, profileImage } = user;
     try {
       // Buscar usuario por email
       const foundUser = await this.usersRepository.findOne({
@@ -262,6 +285,7 @@ async removeFavoriteProduct(userId: string, productId: string): Promise<string> 
         if (!foundUser.provider && provider) {
           foundUser.firebaseUid = firebaseUid;
           foundUser.provider = provider;
+          foundUser.profileImage = profileImage;
           await this.usersRepository.save(foundUser);
 
           const payload = {
@@ -282,6 +306,7 @@ async removeFavoriteProduct(userId: string, productId: string): Promise<string> 
             id: foundUser.id,
             name: foundUser.name,
             email: foundUser.email,
+            profileImage: foundUser.profileImage,
             role: foundUser.role,
             token,
           };
@@ -295,15 +320,18 @@ async removeFavoriteProduct(userId: string, productId: string): Promise<string> 
           };
           const secret = process.env.JWT_SECRET;
           if (!secret) {
-            throw new UnauthorizedException('JWT_SECRET not found in environment variables');
+            throw new UnauthorizedException(
+              'JWT_SECRET not found in environment variables',
+            );
           }
-          const token = this.jwtService.sign(payload, { secret });    
-          
+          const token = this.jwtService.sign(payload, { secret });
+
           return {
             message: 'Usuario logueado correctamente!',
             id: foundUser.id,
             name: foundUser.name,
             email: foundUser.email,
+            profileImage: foundUser.profileImage,
             role: foundUser.role,
             token,
           };
@@ -318,6 +346,7 @@ async removeFavoriteProduct(userId: string, productId: string): Promise<string> 
         email,
         firebaseUid,
         provider: provider || null,
+        profileImage: profileImage || null,
       });
 
       const savedUser = await this.usersRepository.save(newUser);
@@ -329,15 +358,18 @@ async removeFavoriteProduct(userId: string, productId: string): Promise<string> 
       };
       const secret = process.env.JWT_SECRET;
       if (!secret) {
-        throw new UnauthorizedException('JWT_SECRET not found in environment variables');
+        throw new UnauthorizedException(
+          'JWT_SECRET not found in environment variables',
+        );
       }
       const token = this.jwtService.sign(payload, { secret });
-      
+
       return {
         message: 'Usuario registrado correctamente!',
         id: savedUser.id,
         name: savedUser.name,
         email: savedUser.email,
+        profileImage: savedUser.profileImage,
         role: savedUser.role,
         token,
       };

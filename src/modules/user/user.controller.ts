@@ -10,7 +10,15 @@ import {
   Put,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { AddFavoriteProductDTO, CreateUserDTO, LoginUsersDTO, RemoveFavoriteProductDTO, UpdateUserDTO } from 'src/dtos/user.dto';
+import {
+  AddBoxProductDTO,
+  AddFavoriteProductDTO,
+  CreateUserDTO,
+  LoginUsersDTO,
+  RemoveBoxProductDTO,
+  RemoveFavoriteProductDTO,
+  UpdateUserDTO,
+} from 'src/dtos/user.dto';
 import { Users } from 'src/entities/User.entity';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { Reviews } from 'src/entities/Review.entity';
@@ -60,11 +68,48 @@ export class UserController {
     }
     return user.subscription;
   }
- // GET user/:id/favorites
- @Get(':id/favorites')
- async getUserFavorites(@Param('id') userId: string) {
-   return this.userService.getUserFavorites(userId);
- }
+  // GET user/:id/favorites
+  @Get(':id/favorites')
+  async getUserFavorites(@Param('id') userId: string) {
+    return this.userService.getUserFavorites(userId);
+  }
+  // GET user/:id/box
+  @Get(':id/box')
+  async getUserBox(@Param('id') userId: string) {
+    return this.userService.getUserBox(userId);
+  }
+
+  // PUT user/:id/box
+  @Put(':id/box')
+  async updateUserBox(
+    @Param('id') userId: string,
+    @Body() body: AddBoxProductDTO,
+  ) {
+    const { products } = body;
+    return this.userService.updateBox(userId, products);
+  }
+
+  // DELETE user/:id/box
+  @Delete(':id/box')
+  async removeProductsFromBox(
+    @Param('id') userId: string,
+    @Body() body: RemoveBoxProductDTO,
+  ) {
+    const { productIds } = body;
+    return this.userService.removeProductFromBox(userId, productIds);
+  }
+
+  // POST user/:id/box
+  @Post(':id/box')
+  async addProductsToBox(
+    @Param('id') userId: string,
+    @Body() body: AddBoxProductDTO,
+  ) {
+    const { products } = body;
+    return this.userService.addProductToBox(userId, products);
+  }
+
+  //
   //PUT User
   @Put(':id')
   update(
@@ -73,15 +118,21 @@ export class UserController {
   ): Promise<Users> {
     return this.userService.updateUser(id, updateUser);
   }
-// DELETE user/:id/favorites
-// DELETE user/:id/favorites
-@Delete(':id/favorites')
-@ApiBody({ type: RemoveFavoriteProductDTO })
-async removeFavoriteProducts(@Param('id') userId: string, @Body() body: RemoveFavoriteProductDTO) {
-  const { productIds } = body;
-  const results = await Promise.all(productIds.map(productId => this.userService.removeFavoriteProduct(userId, productId)));
-  return results.join('\n');
-}
+  // DELETE user/:id/favorites
+  @Delete(':id/favorites')
+  @ApiBody({ type: RemoveFavoriteProductDTO })
+  async removeFavoriteProducts(
+    @Param('id') userId: string,
+    @Body() body: RemoveFavoriteProductDTO,
+  ) {
+    const { productIds } = body;
+    const results = await Promise.all(
+      productIds.map((productId) =>
+        this.userService.removeFavoriteProduct(userId, productId),
+      ),
+    );
+    return results.join('\n');
+  }
 
   //DELETE for UserID
   @Delete(':id')
@@ -98,7 +149,10 @@ async removeFavoriteProducts(@Param('id') userId: string, @Body() body: RemoveFa
   // POST user/:id/favorites
   @Post(':id/favorites')
   @ApiBody({ type: AddFavoriteProductDTO })
-  async addFavoriteProduct(@Param('id') userId: string, @Body() body: AddFavoriteProductDTO) {
+  async addFavoriteProduct(
+    @Param('id') userId: string,
+    @Body() body: AddFavoriteProductDTO,
+  ) {
     const { products } = body;
     return this.userService.addFavoriteProduct(userId, products);
   }

@@ -80,6 +80,14 @@ export class Users {
   })
   favorites: Product[];
 
+  @ManyToMany(() => Product)
+  @JoinTable({
+    name: 'box_products',
+    joinColumn: { name: 'user_id', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'product_id', referencedColumnName: 'id' },
+  })
+  box: Product[];
+
   @OneToMany(() => Product, (prod) => prod.seller)
   products_id: Product[];
 }

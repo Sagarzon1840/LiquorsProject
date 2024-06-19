@@ -43,7 +43,7 @@ export class Users {
   role: UserRole;
 
   @Column({
-    type: 'varchar',
+    type: 'text',
     length: 255,
     nullable: true,
   })

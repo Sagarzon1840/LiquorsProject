@@ -29,7 +29,7 @@ export class Product {
   @Column({ type: 'text', nullable: true })
   imgUrl: string;
 
-  @Column({ type: 'decimal', nullable: false, default: 0 })
+  @Column({ type: 'decimal', nullable: false, default: 5 })
   rate: number;
 
   @Column({ type: 'varchar', length: 30, nullable: false })

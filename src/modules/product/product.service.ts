@@ -27,23 +27,13 @@ export class ProductService {
     if (country)
       products = products.filter((product) => product.country === country);
     if (size) products = products.filter((product) => product.size === size);
-    if (rate) products = products.filter((product) => product.rate === rate);
+    if (rate)
+      products = products.filter(
+        (product) => rate - 0.4 < product.rate && product.rate < rate + 0.5,
+      );
     const start = (page - 1) * limit;
     const end = start + limit;
     const productsSlice = products.slice(start, end);
-
-    //Promedio los rates de cada producto
-    for (const product of productsSlice) {
-      const reviews = await this.reviewRepository.find({
-        where: { productId: { id: product.id } },
-      });
-      const totalRate = reviews.reduce(
-        (sum, review) => sum + Number(review.rate),
-        0,
-      );
-      const promRate = reviews.length !== 0 ? totalRate / reviews.length : 0;
-      (product as any).averageRate = parseFloat(promRate.toFixed(1));
-    }
 
     return productsSlice;
   }

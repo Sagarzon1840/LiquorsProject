@@ -464,7 +464,7 @@ export class UserService {
   //si ya esta registrado loguearse
 
   async signUp(user: CreateUserDTO) {
-    const { name, email, firebaseUid, provider, profileImage } = user;
+    const { name, email, firebaseUid, provider } = user;
     try {
       // Buscar usuario por email
       const foundUser = await this.usersRepository.findOne({
@@ -475,7 +475,6 @@ export class UserService {
         if (!foundUser.provider && provider) {
           foundUser.firebaseUid = firebaseUid;
           foundUser.provider = provider;
-          foundUser.profileImage = profileImage;
           await this.usersRepository.save(foundUser);
 
           const payload = {
@@ -536,7 +535,6 @@ export class UserService {
         email,
         firebaseUid,
         provider: provider || null,
-        profileImage: profileImage || null,
       });
 
       const savedUser = await this.usersRepository.save(newUser);

@@ -81,14 +81,6 @@ export class UpdateUserDTO {
   })
   email?: string;
 
-  @IsString()
-  @IsOptional()
-  @ApiProperty({
-    example: 'https://example.com/profile.jpg',
-    description: 'URL de la imagen de perfil del usuario',
-  })
-  profileImage?: string;
-
   @IsEnum(UserRole)
   @IsOptional()
   @ApiProperty({

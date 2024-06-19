@@ -35,7 +35,6 @@ export class UserService {
     if (!user) throw new NotFoundException(`User with ${id} not found`);
     if (user.role !== 4)
       throw new BadRequestException(`User with ${id} has to be Premium`);
-
     user.newsletter = true;
     await this.usersRepository.update(id, user);
 

@@ -4,13 +4,18 @@ import {
   Delete,
   Get,
   NotFoundException,
-  // NotFoundException,
   Param,
   Post,
   Put,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { AddFavoriteProductDTO, CreateUserDTO, LoginUsersDTO, RemoveFavoriteProductDTO, UpdateUserDTO } from 'src/dtos/user.dto';
+import {
+  AddFavoriteProductDTO,
+  CreateUserDTO,
+  LoginUsersDTO,
+  RemoveFavoriteProductDTO,
+  UpdateUserDTO,
+} from 'src/dtos/user.dto';
 import { Users } from 'src/entities/User.entity';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { Reviews } from 'src/entities/Review.entity';
@@ -20,6 +25,12 @@ import { Subscription } from 'src/entities/Subscription.entity';
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
+
+  @Get('newsletter/:id')
+  async newsletter(@Param('id') userId: string) {
+    const newsletter = await this.userService.newsletterBienvenida(userId);
+    return newsletter;
+  }
 
   //GET AllUser
   @Get()
@@ -60,11 +71,11 @@ export class UserController {
     }
     return user.subscription;
   }
- // GET user/:id/favorites
- @Get(':id/favorites')
- async getUserFavorites(@Param('id') userId: string) {
-   return this.userService.getUserFavorites(userId);
- }
+  // GET user/:id/favorites
+  @Get(':id/favorites')
+  async getUserFavorites(@Param('id') userId: string) {
+    return this.userService.getUserFavorites(userId);
+  }
   //PUT User
   @Put(':id')
   update(
@@ -73,15 +84,22 @@ export class UserController {
   ): Promise<Users> {
     return this.userService.updateUser(id, updateUser);
   }
-// DELETE user/:id/favorites
-// DELETE user/:id/favorites
-@Delete(':id/favorites')
-@ApiBody({ type: RemoveFavoriteProductDTO })
-async removeFavoriteProducts(@Param('id') userId: string, @Body() body: RemoveFavoriteProductDTO) {
-  const { productIds } = body;
-  const results = await Promise.all(productIds.map(productId => this.userService.removeFavoriteProduct(userId, productId)));
-  return results.join('\n');
-}
+  // DELETE user/:id/favorites
+  // DELETE user/:id/favorites
+  @Delete(':id/favorites')
+  @ApiBody({ type: RemoveFavoriteProductDTO })
+  async removeFavoriteProducts(
+    @Param('id') userId: string,
+    @Body() body: RemoveFavoriteProductDTO,
+  ) {
+    const { productIds } = body;
+    const results = await Promise.all(
+      productIds.map((productId) =>
+        this.userService.removeFavoriteProduct(userId, productId),
+      ),
+    );
+    return results.join('\n');
+  }
 
   //DELETE for UserID
   @Delete(':id')
@@ -98,7 +116,10 @@ async removeFavoriteProducts(@Param('id') userId: string, @Body() body: RemoveFa
   // POST user/:id/favorites
   @Post(':id/favorites')
   @ApiBody({ type: AddFavoriteProductDTO })
-  async addFavoriteProduct(@Param('id') userId: string, @Body() body: AddFavoriteProductDTO) {
+  async addFavoriteProduct(
+    @Param('id') userId: string,
+    @Body() body: AddFavoriteProductDTO,
+  ) {
     const { products } = body;
     return this.userService.addFavoriteProduct(userId, products);
   }

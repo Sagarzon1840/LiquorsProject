@@ -11,6 +11,8 @@ import { CreateUserDTO, LoginUsersDTO, UpdateUserDTO } from 'src/dtos/user.dto';
 import { Product } from 'src/entities/Product.entity';
 import { Users } from 'src/entities/User.entity';
 import { In, Repository } from 'typeorm';
+import * as nodemailer from 'nodemailer';
+import * as cron from 'node-cron';
 
 @Injectable()
 export class UserService {
@@ -20,7 +22,111 @@ export class UserService {
     @InjectRepository(Product)
     private productRepository: Repository<Product>,
     private readonly jwtService: JwtService,
-  ) {}
+  ) {
+    //Programación del newsletter a las 8 AM
+    cron.schedule('0 */5 * * *', () => {
+      this.sendDailyNewsletter();
+    });
+  }
+
+  //---------------------Nodemailer-------------------------
+  async newsletterBienvenida(id: string) {
+    const user = await this.usersRepository.findOneBy({ id });
+    if (!user) throw new NotFoundException(`User with ${id} not found`);
+    if (user.role !== 3)
+      throw new BadRequestException(`User with ${id} has to be Premium`);
+
+    user.newsletter = true;
+    await this.usersRepository.update(id, user);
+
+    const templateParams = {
+      user_name: user.name,
+      user_email: user.email,
+    };
+
+    // Configuración del transporte de nodemailer
+    const transporter = nodemailer.createTransport({
+      service: 'Gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: templateParams.user_email,
+      subject: 'Bienvenida al Boletín de Liquors',
+      text: `Hola, ${templateParams.user_name}, bienvenido a nuestro Boletín Informativo.
+      Att: Liquors Team`,
+    };
+
+    try {
+      const info = await transporter.sendMail(mailOptions);
+      return `Correo enviado con éxito: ${info.response}`;
+    } catch (error) {
+      console.log(error);
+      throw new BadRequestException(`${error.message}`);
+    }
+  }
+
+  async newsletterAuto(id: string) {
+    const user = await this.usersRepository.findOneBy({ id });
+    if (!user) throw new NotFoundException(`User with ${id} not found`);
+
+    const templateParams = {
+      user_name: user.name,
+      user_email: user.email,
+    };
+
+    // Configuración del transporte de nodemailer
+    const transporter = nodemailer.createTransport({
+      service: 'Gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: templateParams.user_email,
+      subject: 'Boletín Periódico de Liquors',
+      text: `Hola, ${templateParams.user_name}, este es tu boletín periódico.
+      Att: Liquors Team`,
+    };
+
+    try {
+      const info = await transporter.sendMail(mailOptions);
+      return `Correo enviado con éxito y usuario suscrito al boletín: ${info.response}`;
+    } catch (error) {
+      console.log(error);
+      throw new BadRequestException(`${error.message}`);
+    }
+  }
+
+  async sendDailyNewsletter() {
+    const users = await this.usersRepository.find();
+
+    for (const user of users) {
+      console.log(user);
+      if (user.newsletter === true) {
+        console.log(user.newsletter);
+        if (user.email) {
+          try {
+            await this.newsletterAuto(user.id);
+            console.log(`Correo enviado a ${user.email}`);
+          } catch (error) {
+            console.error(
+              `Error al enviar correo a ${user.email}: ${error.message}`,
+            );
+          }
+        }
+      } else {
+        console.log(user.newsletter);
+      }
+    }
+  }
 
   //---------------------Create a new user-------------------------
   async createUser(user: CreateUserDTO): Promise<Users> {
